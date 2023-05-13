@@ -1,4 +1,4 @@
 from flask import Blueprint, jsonify
 
-dashboard_bp = Blueprint('authentication', __name__)
+dashboard_bp = Blueprint('dashboard', __name__)
 

@@ -1,3 +1,3 @@
 from flask import Blueprint, jsonify
 
-nextMeal_bp = Blueprint('authentication', __name__)
+nextMeal_bp = Blueprint('nextMeal', __name__)

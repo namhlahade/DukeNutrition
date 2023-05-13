@@ -18,6 +18,7 @@ def signup():
     password2 = data.get('password2')
     email = data.get('email')
 
+
     if not (username and password and password2):
         return jsonify({'error': 'All fields are required.'}), 400
 
@@ -25,15 +26,26 @@ def signup():
         return jsonify({'error': 'Passwords do not match.'}), 400
 
     db = get_db()
-    user = db.execute('select user_id from users where username = :u', {"u": "username"})
+
+    emails = db.execute('select email from User_Table where email = ?', (email,))
+    allemails = emails.fetchall()
+
+    if len(allemails) != 0:
+        print(f"Users with username {email}: ")
+        print(allemails)
+        return jsonify({'error': 'Email already used.'}), 400
+
+    user = db.execute('select username from User_Table where username = ?', (username,))
     allusers = user.fetchall()
 
-    if allusers is not None:
+    if len(allusers) != 0:
+        print(f"Users in allusers with username {username}")
+        print(len(allusers))
         return jsonify({'error': 'Username already exists.'}), 400
 
     password_hash = generate_password_hash(password)
     userId = str(uuid.uuid4())
-    db.execute("insert into Users_Table values (?,?,?,?)", (userId, username, email, password_hash))
+    db.execute("insert into User_Table values (?,?,?,?)", (userId, username, email, password_hash))
     db.commit()
 
     return jsonify({'message': 'User created successfully.'}), 201

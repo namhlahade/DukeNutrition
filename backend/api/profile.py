@@ -1,3 +1,3 @@
 from flask import Blueprint, jsonify
 
-authentication_bp = Blueprint('authentication', __name__)
+profile_bp = Blueprint('profile', __name__)
