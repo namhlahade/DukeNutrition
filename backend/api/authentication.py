@@ -1,6 +1,14 @@
-from flask import Blueprint, jsonify, request
+import sqlite3
+from flask import Blueprint, jsonify, request, session, g
+from werkzeug.security import generate_password_hash, check_password_hash
+import uuid
+
 
 authentication_bp = Blueprint('authentication', __name__)
+
+def get_db():
+    db = sqlite3.connect('database.db')
+    return db
 
 @authentication_bp.route('/signup', methods=['POST'])
 def signup():
@@ -8,6 +16,7 @@ def signup():
     username = data.get('username')
     password = data.get('password')
     password2 = data.get('password2')
+    email = data.get('email')
 
     if not (username and password and password2):
         return jsonify({'error': 'All fields are required.'}), 400
@@ -16,13 +25,15 @@ def signup():
         return jsonify({'error': 'Passwords do not match.'}), 400
 
     db = get_db()
-    user = db.execute('SELECT id FROM users WHERE username = ?', (username,)).fetchone()
+    user = db.execute('select user_id from users where username = :u', {"u": "username"})
+    allusers = user.fetchall()
 
-    if user is not None:
+    if allusers is not None:
         return jsonify({'error': 'Username already exists.'}), 400
 
     password_hash = generate_password_hash(password)
-    db.execute('INSERT INTO users (username, password_hash) VALUES (?, ?)', (username, password_hash))
+    userId = str(uuid.uuid4())
+    db.execute("insert into Users_Table values (?,?,?,?)", (userId, username, email, password_hash))
     db.commit()
 
     return jsonify({'message': 'User created successfully.'}), 201
