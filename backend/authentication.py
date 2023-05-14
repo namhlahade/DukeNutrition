@@ -20,7 +20,7 @@ def signup():
     email = data.get('email')
 
 
-    if not (username and password and password2):
+    if not (username and password and password2 and email):
         return jsonify({'error': 'All fields are required.'}), 400
 
     if password != password2:
