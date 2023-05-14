@@ -58,9 +58,6 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    print("This is the variable type for password")
-    print(type(password))
-
     if not (username and password):
         return jsonify({'error': 'All fields are required.'}), 400
 
