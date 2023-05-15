@@ -74,3 +74,56 @@ def login():
     
     # TODO: generate and return a JWT token for authenticated requests
     return jsonify({'message': 'Logged in successfully.'}), 200
+
+# THIS IS THE SURVEY 
+@authentication_bp.route('/collectUserInfo', methods=['POST'])
+def collectUserInfo():
+    data = request.get_json()
+    userid = data.get("userid")
+    calories = data.get("calories")
+    protein = data.get("protein")
+    carbs = data.get("carbs")
+    fat = data.get("fat")
+    mealsPerDay = data.get("mealsPerDay")
+
+    if not (userid and calories and protein and carbs and fat and mealsPerDay):
+        return jsonify({'error': 'All questions need to be answered'})
+
+    db = get_db()
+    query = db.execute("select * from User_Pref where user_id = ?", (userid,))
+    userPref = query.fetchall()
+    query = db.execute("select * from User_Table where user_id = ?", (userid,))
+    users = query.fetchall()
+
+
+    if len(userPref) != 0 and len(users) != 0:
+        return jsonify({'error': 'User Preference already created.'}), 400
+    if len(userPref) == 0 and len(users) == 0:
+        return jsonify({'error': 'User has not created an account.'}), 400
+    
+    prefId = str(uuid.uuid4())
+    db.execute("insert into User_Pref values (?,?,?,?,?,?,?)", (prefId, userid, calories, protein, carbs, fat, mealsPerDay))
+    db.commit()
+
+    query = db.execute("select * from User_Pref where user_id = ?", (userid,))
+    userPref = query.fetchall()
+    print(userPref)
+
+    return jsonify({'message': f'Preferences added to user: {userid} successfully.'}), 201
+
+@authentication_bp.route('/getUserId', methods=['POST'])
+def getUserId():
+    data = request.get_json() 
+    username = data.get("username")
+
+    db = get_db()
+    query = db.execute("select * from User_Table where username = ?", (username,))
+    user = query.fetchone()
+
+    db.close()
+
+    if user is None:
+        return jsonify({'error': 'Could not find User ID'}), 404
+    
+    return jsonify({'user_id': user[0]})
+
