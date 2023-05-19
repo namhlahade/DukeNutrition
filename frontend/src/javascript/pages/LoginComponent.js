@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import './../../css/LoginComponent.css';
+
 const LoginComponent = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -7,32 +11,26 @@ const LoginComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form inputs
-    if (!username || !password) {
-      setError('All fields are required.');
-      return;
-    }
-
     setError(null);
     setLoading(true);
-
+    const response = '';
     try {
       // Send login request to the backend
-      const response = await axios.post('/login', { username, password });
-
+      response = await axios.post('http://127.0.0.1:5000/authentication/login', { username, password });
       // Handle successful login
       // TODO: Handle JWT token received from backend
-      console.log(response.data.message);
+      console.log(response[0]);
+      console.log("some text")
     } catch (error) {
       // Handle login error
-      setError('Invalid username or password.');
+      setError(response[0]);
     }
 
     setLoading(false);
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         {error && <p>{error}</p>}
@@ -59,7 +57,7 @@ const LoginComponent = () => {
         </button>
       </form>
     </div>
-  );
+  );  
 };
 
 export default LoginComponent;
