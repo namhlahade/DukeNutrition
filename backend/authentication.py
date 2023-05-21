@@ -125,5 +125,5 @@ def getUserId():
     if user is None:
         return jsonify({'error': 'Could not find User ID'}), 404
     
-    return jsonify({'user_id': user[0]})
+    return jsonify({'userid': user[0]})
 
