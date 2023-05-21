@@ -49,3 +49,4 @@ def todaysInfo():
 
     if user is None:
         return jsonify({'error': 'User not found'}), 404
+
