@@ -1,5 +1,9 @@
 import sqlite3
 from flask import Blueprint, jsonify, request
+import uuid
+from datetime import date
+
+
 
 nextMeal_bp = Blueprint('nextMeal', __name__)
 
@@ -8,7 +12,7 @@ def get_db():
     return db
 
 def mealID(restaurant, calories, protein, carb, fat):
-    stringID = f"{restaurant}{calories}{protein}{carb}{fat}"
+    stringID = f"{restaurant}{calories}{protein}{carb}{fat}".replace(" ", "_" )
     return stringID
     
 
@@ -17,6 +21,7 @@ def mealID(restaurant, calories, protein, carb, fat):
 @nextMeal_bp.route('/selectMeal', methods=['POST'])
 def selectMeal():
     data = request.get_json()
+    userid = data.get('userid')
 
     restaurant_mapping = {
         'Ginger_and_Soy': {
@@ -82,15 +87,38 @@ def selectMeal():
     method = getattr(meal, method_name)
 
     result = method(**method_args)
+    mealid = mealID(result[0], result[1], result[2], result[3], result[4])
+    print(f"Meal ID: {mealid}")
+    
+    db = get_db()
 
-    # Return the result as a JSON response
-    return jsonify({
-        'name': result[0],
-        'calories': result[1],
-        'protein': result[2],
-        'carbs': result[3],
-        'fat': result[4]
-    }), 200
+    query = db.execute("select * from User_Pref where user_id = ?", (userid,))
+    row = query.fetchone()
+
+    if row is None:
+        return jsonify({f"error": "No user preference was created."}), 400
+
+    prefid = row[0]
+    print(f"Pref Id: {prefid}")
+
+    userMealid = str(uuid.uuid4())
+    current_date = date.today()
+
+    query = db.execute("insert into User_Meal values (?,?,?,?,?,?,?,?,?,?)", (userMealid, userid, prefid, mealid, result[0], result[1], result[2], result[3], result[4], current_date.isoformat()))
+
+    db.commit()
+    query = db.execute("select * from User_Meal where user_id = ?", (userid,))
+    
+    allMeals = query.fetchall()
+    print(f"All the meals by user: {userid}")
+    print(allMeals)
+
+    db.close()
+    print("Meal Statistics:")
+    print(result[0], result[1], result[2], result[3], result[4])
+
+    return jsonify({f"message": "Successfully added meal with mealid: {mealid} to user: {userid}"}), 200
+
 
 class DukeMeal():
     def __init__(self):
@@ -180,23 +208,43 @@ class Ginger_and_Soy(DukeMeal):
     # Have to specify white or brown rice and number of servings of meat
     def california(self, rice, numMeatServings):
         notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Teriyaki Tofu": numMeatServings}, ["Kale Salad", "Seasoned Broccoli", "Seasoned Corn", "Stir-Fried Zucchini", "Cilantro"], ["Cusabi Sauce"])
-        return "California Bowl", cals, prot, carb, fats
+        name = "California Bowl"
+        if numMeatServings > 1:
+            name = name + " with Extra Protein"
+
+        return name, cals, prot, carb, fats
     
     def tokyo(self, rice, numMeatServings):
         notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Grilled Teriyaki Chicken": numMeatServings}, ["Kale Salad", "Shelled Edamame", "Seasoned Corn", "Green Onion", "Bubu Arare"], ["Eel Sauce", "Spicy Mayo", "Sesame Seeds"])
-        return "Tokyo Bowl", cals, prot, carb, fats
+        name = "Tokyo Bowl"
+        if numMeatServings > 1:
+            name = name + " with Extra Protein"
+
+        return name, cals, prot, carb, fats
     
     def seoul(self, rice, numMeatServings):
         notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Beef Bulgogi": numMeatServings}, ["Kale Salad", "Fried Egg", "Green Onion", "Kimchi Slaw", "Pickled Carrot", "Pickled Radish", "Stir-Fried Zucchini"], ["White Sauce", "Gochujang Sauce", "Sesame Seeds"])
-        return "Seoul Bowl", cals, prot, carb, fats
+        name = "Seoul Bowl"
+        if numMeatServings > 1:
+            name = name + " with Extra Protein"
+
+        return name, cals, prot, carb, fats
         
     def hong_kong(self, rice, numMeatServings):
         notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Spicy Pork": numMeatServings}, ["Cilantro", "Pickled Radish", "Seasoned Broccoli", "Spicy Cucumber", "Bubu Arare", "Stir-Fried Cabbage & Red Pepper"], ["Eel Sauce", "Sambal Sauce", "Sesame Seeds"])
-        return "Hong Kong Bowl", cals, prot, carb, fats
+        name = "Hong Kong Bowl"
+        if numMeatServings > 1:
+            name = name + " with Extra Protein"
+
+        return name, cals, prot, carb, fats
 
     def shanghai(self, rice, numMeatServings):
         notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Ginger Chicken": numMeatServings}, ["Cilantro", "Stir-Fried Cabbage & Red Pepper", "Stir-Fried Zucchini", "Bubu Arare"], ["White Sauce", "Sesame Seeds"])
-        return "Shanghai Bowl", cals, prot, carb, fats
+        name = "Shanghai Bowl"
+        if numMeatServings > 1:
+            name = name + " with Extra Protein"
+
+        return name, cals, prot, carb, fats
 
 class Bella_Union(DukeMeal):
     def __init__(self):

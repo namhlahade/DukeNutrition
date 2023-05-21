@@ -14,3 +14,4 @@ app.register_blueprint(profile_bp, url_prefix='/profile')
 
 if __name__ == '__main__':
     app.run()
+
