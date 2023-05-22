@@ -59,7 +59,7 @@ def login():
     password = data.get('password')
 
     if not (username and password):
-        return jsonify({'error': 'All fields are required.'}), 400
+        return jsonify({'error': 'All fields are required.'}), 401
 
     db = get_db()
     query = db.execute("select * from User_Table where username = ?", (username,))
@@ -127,3 +127,64 @@ def getUserId():
     
     return jsonify({'userid': user[0]})
 
+
+@authentication_bp.route('/deleteUser', methods=['POST'])
+def deleteUser():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+    email = data.get("email")
+    userid = data.get("userid")
+
+    if not (username and password and email and userid):
+        return jsonify({'error': 'All fields are required.'}), 400
+    
+    db = get_db()
+    query = db.execute("select * from User_Table where username = ?", (username,))
+    user = query.fetchone()
+
+    if user is None:
+        return jsonify({'error': 'User not found.'}), 404
+
+    if not check_password_hash(user[3], password):
+        return jsonify({'error': 'Invalid password.'}), 401
+    
+    if email != user[2]:
+        return jsonify({'error': 'Emails do not match'})
+    
+    query = db.execute("delete from User_Table where user_id = ?", (userid,))
+    query = db.execute("delete from User_Pref where user_id = ?", (userid,))
+    query = db.execute("delete from User_Meal where user_id = ?", (userid,))
+
+    db.commit()
+
+    query = db.execute("select * from User_Table where user_id = ?", (userid,))
+    user = query.fetchone()
+    
+    if user is None:
+        print(f"User: {userid} doesn't exist on User_Table")
+    
+    query = db.execute("select * from User_Pref where user_id = ?", (userid,))
+    user = query.fetchone()
+    
+    if user is None:
+        print(f"User: {userid} doesn't exist on User_Pref")
+    
+    query = db.execute("select * from User_Meal where user_id = ?", (userid,))
+    user = query.fetchall()
+    
+    if len(user) == 0:
+        print(f"User: {userid} doesn't exist on User_Meal")
+    
+
+    db.close()
+
+    return jsonify({"message": "User has been deleted."})
+
+
+
+
+
+    
+
+    

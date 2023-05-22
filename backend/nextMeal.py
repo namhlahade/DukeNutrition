@@ -14,9 +14,10 @@ def get_db():
 def mealID(restaurant, calories, protein, carb, fat):
     stringID = f"{restaurant}{calories}{protein}{carb}{fat}".replace(" ", "_" )
     return stringID
-    
 
-# Do a command called insertMeal
+
+def quickAdd():
+    return jsonify()
 
 @nextMeal_bp.route('/selectMeal', methods=['POST'])
 def selectMeal():
