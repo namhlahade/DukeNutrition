@@ -17,7 +17,23 @@ def mealID(restaurant, calories, protein, carb, fat):
 
 
 def quickAdd():
-    return jsonify()
+    data = request.get_json()
+    userid = data.get("userid")
+
+    db = get_db()
+    query = db.execute("SELECT * FROM User_Meal WHERE user_id = ? AND meal_id = (SELECT meal_id FROM User_Meal WHERE date_column >= DATE('now', '-7 days') GROUP BY meal_id ORDER BY COUNT(*) DESC LIMIT 1)", (userid,))
+    row = query.fetchone()
+
+    if row is None:
+        return jsonify({"message": "User hasn't documented anything eaten yet"})
+
+    return jsonify({
+        "name": row[4],
+        "calories": row[5],
+        "protein": row[6],
+        "carbs": row[7],
+        "fat": row[8]
+    })
 
 @nextMeal_bp.route('/selectMeal', methods=['POST'])
 def selectMeal():
@@ -118,7 +134,7 @@ def selectMeal():
     print("Meal Statistics:")
     print(result[0], result[1], result[2], result[3], result[4])
 
-    return jsonify({f"message": "Successfully added meal with mealid: {mealid} to user: {userid}"}), 200
+    return jsonify({f"message": f"Successfully added meal with mealid: {mealid} to user: {userid}"}), 200
 
 
 class DukeMeal():

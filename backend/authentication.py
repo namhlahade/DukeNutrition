@@ -10,6 +10,7 @@ def get_db():
     db = sqlite3.connect('database.db')
     return db
 
+# Just takes in the username, password, and email and stores into the database
 # This route allows the user to sign up if they have not created an account. If all the parts of the form are filled out, the email isn't already used, and the passwords match, then the user is added to the database.
 @authentication_bp.route('/signup', methods=['POST'])
 def signup():
@@ -19,9 +20,6 @@ def signup():
     password2 = data.get('password2')
     email = data.get('email')
 
-
-    if not (username and password and password2 and email):
-        return jsonify({'error': 'All fields are required.'}), 400
 
     if password != password2:
         return jsonify({'error': 'Passwords do not match.'}), 400
@@ -58,9 +56,6 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    if not (username and password):
-        return jsonify({'error': 'All fields are required.'}), 401
-
     db = get_db()
     query = db.execute("select * from User_Table where username = ?", (username,))
     user = query.fetchone()
@@ -86,8 +81,6 @@ def collectUserInfo():
     fat = data.get("fat")
     mealsPerDay = data.get("mealsPerDay")
 
-    if not (userid and calories and protein and carbs and fat and mealsPerDay):
-        return jsonify({'error': 'All questions need to be answered'})
 
     db = get_db()
     query = db.execute("select * from User_Pref where user_id = ?", (userid,))
@@ -123,7 +116,7 @@ def getUserId():
     db.close()
 
     if user is None:
-        return jsonify({'error': 'Could not find User ID'}), 404
+        return jsonify({'error': 'User does not exist'}), 404
     
     return jsonify({'userid': user[0]})
 
@@ -135,9 +128,6 @@ def deleteUser():
     password = data.get("password")
     email = data.get("email")
     userid = data.get("userid")
-
-    if not (username and password and email and userid):
-        return jsonify({'error': 'All fields are required.'}), 400
     
     db = get_db()
     query = db.execute("select * from User_Table where username = ?", (username,))
