@@ -1,0 +1,82 @@
+Name,Calories Cal,Fat Cal Cal,Fat g,Fat %,Sat Fat g,Sat Fat %,Trans Fat g,Chol mg,Chol %,Sodium mg,Sodium %,Potassium mg,Potassium %,Carbs g,Carbs %,Dietary Fiber g,Dietary Fiber %,Sugars g,Protein g,Calcium %,Iron %,Restaurant
+Americano Decaffeinated,38,0,0.0,0%,0.0,0%,0,0,0%,75,3%,620,13%,0,0%,0,0%,0,4,0%,0%,Bella_Union
+Americano Regular,57,18,2.0,3%,0.0,0%,0,0,0%,75,3%,660,14%,0,0%,0,0%,0,0,0%,0%,Bella_Union
+Cafe Au Lait Oat Milk,368,0,0.0,0%,2.0,10%,0,0,0%,330,14%,580,12%,47,16%,2,7%,6,8,15%,10%,Bella_Union
+Cafe Au Lait Skim Milk,99,0,0.0,0%,0.0,0%,0,0,0%,140,6%,30,1%,15,5%,0,0%,14,10,35%,0%,Bella_Union
+Cafe Au Lait Soy Milk,169,63,7.0,10%,0.0,0%,0,0,0%,450,19%,55,1%,17,6%,0,0%,13,9,0%,0%,Bella_Union
+Cafe Au Lait Whole Milk,265,117,13.0,20%,8.0,41%,0,60,19%,210,9%,35,1%,21,7%,0,0%,20,13,50%,0%,Bella_Union
+Cappuccino Oat Milk,242,0,0.0,0%,1.5,7%,0,0,0%,220,9%,390,8%,30,10%,1,5%,4,5,10%,6%,Bella_Union
+Cappuccino Skim Milk,110,0,0.0,0%,0.0,0%,0,0,0%,160,7%,40,1%,16,5%,0,0%,15,11,40%,0%,Bella_Union
+Cappuccino Soy Milk,118,40,4.5,7%,0.0,0%,0,0,0%,310,13%,40,1%,11,4%,0,0%,9,6,0%,0%,Bella_Union
+Cappuccino Whole Milk,229,99,11.0,18%,7.0,36%,0,50,17%,180,8%,15,0%,18,6%,0,0%,17,11,45%,0%,Bella_Union
+Carl's Macchiato Oat Milk,319,0,0.0,0%,1.0,6%,0,0,0%,200,8%,350,7%,52,17%,1,4%,28,5,8%,6%,Bella_Union
+Carl's Macchiato Skim Milk,196,0,0.0,0%,0.0,0%,0,0,0%,150,6%,35,1%,38,13%,0,0%,37,10,35%,0%,Bella_Union
+Carl's Macchiato Soy Milk,202,36,4.0,6%,0.0,0%,0,0,0%,290,12%,35,1%,33,11%,0,0%,31,6,0%,0%,Bella_Union
+Carl's Macchiato Whole Milk,292,90,10.0,15%,6.0,31%,0,45,14%,160,7%,35,1%,39,13%,0,0%,37,10,35%,0%,Bella_Union
+Decaf Mocha Oat Milk,289,0,0.0,0%,1.5,6%,0,0,0%,220,9%,370,8%,42,14%,2,8%,17,6,8%,6%,Bella_Union
+Decaf Mocha Skim Milk,268,0,0.0,1%,0.0,0%,0,0,0%,270,11%,60,1%,46,15%,2,6%,44,18,60%,0%,Bella_Union
+Decaf Mocha Soy Milk,224,54,6.0,9%,0.0,0%,0,0,0%,410,17%,45,1%,31,10%,1,5%,28,9,0%,0%,Bella_Union
+Decaf Mocha Whole Milk,436,153,17.0,27%,11.0,53%,0,75,25%,290,12%,60,1%,48,16%,2,6%,46,18,60%,0%,Bella_Union
+Decaf White Mocha Oat Milk,274,0,0.0,0%,1.5,6%,0,0,0%,240,10%,370,8%,40,13%,1,5%,13,5,8%,6%,Bella_Union
+Decaf White Mocha Skim Milk,146,0,0.0,0%,0.0,0%,0,0,0%,180,8%,40,1%,25,9%,0,0%,23,10,40%,0%,Bella_Union
+Decaf White Mocha Soy Milk,256,63,7.0,11%,0.0,0%,0,0,0%,550,23%,60,1%,35,12%,0,0%,29,10,0%,0%,Bella_Union
+Decaf White Mocha Whole Milk,247,90,10.0,16%,6.0,32%,0,45,15%,190,8%,35,1%,27,9%,0,0%,24,10,40%,0%,Bella_Union
+Decaffeinated Coffee,5,0,0.0,0%,0.0,0%,0,0,0%,10,1%,270,6%,0,0%,0,0%,0,< 1,0%,0%,Bella_Union
+Decaffeinated Red Eye,5,0,0.0,0%,0.0,0%,0,0,0%,10,0%,180,4%,0,0%,0,0%,0,< 1,0%,0%,Bella_Union
+Hot Chocolate Oat Milk,476,0,0.0,1%,2.0,9%,0,0,0%,300,13%,460,10%,77,26%,3,12%,41,8,10%,8%,Bella_Union
+Hot Chocolate Skim Milk,364,0,0.0,1%,0.0,0%,0,0,0%,280,12%,0,0%,70,23%,2,6%,67,19,70%,0%,Bella_Union
+Hot Chocolate Soy Milk,376,72,8.0,12%,0.0,0%,0,0,0%,530,22%,0,0%,62,21%,2,6%,57,12,0%,0%,Bella_Union
+Hot Chocolate Whole Milk,540,162,18.0,28%,11.0,56%,0,80,26%,300,12%,0,0%,71,24%,2,6%,69,19,70%,0%,Bella_Union
+Hot Tea,0,0,0.0,0%,0.0,0%,0,0,0%,0,0%,0,0%,0,0%,0,0%,0,0,0%,0%,Bella_Union
+Iced Carle's Macchiato Oat Milk,367,0,0.0,0%,1.5,6%,0,0,0%,210,9%,410,9%,62,21%,1,5%,36,5,8%,6%,Bella_Union
+Iced Carle's Macchiato Skim Milk,240,0,0.0,0%,0.0,0%,0,0,0%,160,7%,80,2%,48,16%,0,0%,46,10,40%,0%,Bella_Union
+Iced Carle's Macchiato Soy Milk,31,4,0.5,1%,0.0,0%,0,0,0%,40,2%,10,0%,5,2%,0,0%,5,< 1,0%,0%,Bella_Union
+Iced Carle's Macchiato Whole Milk,484,135,15.0,23%,9.0,45%,0,65,21%,240,10%,115,2%,69,23%,0,0%,68,14,50%,0%,Bella_Union
+Iced Latte Oat Milk,202,0,0.0,0%,1.0,5%,0,0,0%,180,8%,350,8%,25,8%,1,4%,3,4,8%,4%,Bella_Union
+Iced Latte Skim Milk,94,0,0.0,0%,0.0,0%,0,0,0%,135,6%,70,1%,13,4%,0,0%,12,9,35%,0%,Bella_Union
+Iced Latte Soy Milk,126,45,5.0,7%,0.0,0%,0,0,0%,320,14%,85,2%,12,4%,0,0%,9,7,0%,0%,Bella_Union
+Iced Latte Whole Milk,225,99,11.0,17%,7.0,34%,0,50,16%,180,8%,90,2%,18,6%,0,0%,16,11,40%,0%,Bella_Union
+Iced Mocha Decaf Oat Milk,359,4,0.5,1%,1.5,6%,0,0,0%,240,10%,410,9%,56,19%,3,13%,31,7,10%,6%,Bella_Union
+Iced Mocha Decaf Skim Milk,230,4,0.5,1%,0.0,0%,0,0,0%,180,8%,80,2%,42,14%,2,8%,41,12,40%,0%,Bella_Union
+Iced Mocha Decaf Soy Milk,191,36,4.0,6%,0.0,0%,0,0,0%,260,11%,60,1%,30,10%,2,6%,28,6,0%,0%,Bella_Union
+Iced Mocha Decaf Whole Milk,333,99,11.0,17%,6.0,32%,0,45,15%,190,8%,80,2%,44,15%,2,8%,42,12,40%,0%,Bella_Union
+Iced Mocha Oat Milk,289,4,0.5,1%,1.0,5%,0,0,0%,190,8%,330,7%,45,15%,3,10%,25,5,8%,4%,Bella_Union
+Iced Mocha Skim Milk,233,9,1.0,1%,0.0,0%,0,0,0%,180,8%,80,2%,42,14%,2,8%,41,11,40%,0%,Bella_Union
+Iced Mocha Soy Milk,241,45,5.0,8%,0.0,0%,0,0,0%,330,14%,80,2%,38,13%,2,8%,35,7,0%,0%,Bella_Union
+Iced Mocha Whole Milk,268,81,9.0,14%,5.0,26%,0,35,12%,150,6%,65,1%,35,12%,2,6%,34,9,30%,0%,Bella_Union
+Iced White Mocha Decaf Oat Milk,328,0,0.0,0%,1.5,6%,0,0,0%,280,12%,420,9%,52,17%,1,5%,23,5,10%,6%,Bella_Union
+Iced White Mocha Decaf Skim Milk,199,0,0.0,0%,0.0,0%,0,0,0%,220,9%,80,2%,38,13%,0,0%,33,10,40%,0%,Bella_Union
+Iced White Mocha Decaf Soy Milk,207,40,4.5,7%,0.0,0%,0,0,0%,370,16%,80,2%,33,11%,0,0%,28,6,0%,0%,Bella_Union
+Iced White Mocha Decaf Whole Milk,299,90,10.0,16%,6.0,32%,0,45,15%,240,10%,80,2%,39,13%,0,0%,34,11,40%,0%,Bella_Union
+Iced White Mocha Oat Milk,262,0,0.0,0%,1.0,5%,0,0,0%,230,9%,330,7%,41,14%,1,4%,18,4,8%,4%,Bella_Union
+Iced White Mocha Skim Milk,159,0,0.0,0%,0.0,0%,0,0,0%,180,8%,65,1%,30,10%,0,0%,26,8,30%,0%,Bella_Union
+Iced White Mocha Soy Milk,166,32,3.5,6%,0.0,0%,0,0,0%,300,12%,65,1%,27,9%,0,0%,22,5,0%,0%,Bella_Union
+Iced White Mocha Whole Milk,241,72,8.0,13%,5.0,26%,0,35,12%,190,8%,65,1%,31,10%,0,0%,27,8,30%,0%,Bella_Union
+Latte Oat Milk,242,0,0.0,0%,1.5,7%,0,0,0%,220,9%,390,8%,30,10%,1,5%,4,5,10%,6%,Bella_Union
+Latte Skim Milk,183,0,0.0,0%,0.0,0%,0,0,0%,260,11%,65,1%,27,9%,0,0%,24,18,70%,0%,Bella_Union
+Latte Soy Milk,197,72,8.0,12%,0.0,0%,0,0,0%,520,22%,65,1%,19,6%,0,0%,15,11,0%,0%,Bella_Union
+Latte Whole Milk,306,135,15.0,23%,9.0,48%,0,65,22%,240,10%,20,0%,25,8%,0,0%,23,15,60%,0%,Bella_Union
+Mango Smoothie,492,0,0.0,0%,0.0,0%,0,0,0%,0,0%,170,4%,124,41%,3,10%,119,0,2%,0%,Bella_Union
+Peach Smoothie,492,0,0.0,0%,0.0,0%,0,0,0%,0,0%,260,6%,127,42%,0,0%,119,0,2%,0%,Bella_Union
+Regular Coffee,1,0,0.0,0%,0.0,0%,0,0,0%,5,0%,170,4%,0,0%,0,0%,0,0,0%,0%,Bella_Union
+Regular Mocha Oat Milk,483,4,0.5,1%,2.0,11%,0,0,0%,360,15%,610,13%,70,23%,4,14%,28,9,15%,10%,Bella_Union
+Regular Mocha Skim Milk,215,0,0.0,1%,0.0,0%,0,0,0%,210,9%,50,1%,37,12%,1,5%,35,14,50%,0%,Bella_Union
+Regular Mocha Soy Milk,225,54,6.0,10%,0.0,0%,0,0,0%,410,17%,50,1%,31,10%,1,5%,28,9,0%,0%,Bella_Union
+Regular Mocha Whole Milk,438,162,18.0,27%,11.0,53%,0,75,25%,290,12%,60,1%,48,16%,2,6%,46,18,60%,0%,Bella_Union
+Regular Red Eye,78,18,2.0,3%,0.0,0%,0,0,0%,180,8%,3140,67%,0,0%,0,0%,0,6,0%,0%,Bella_Union
+Regular White Mocha Oat Milk,457,0,0.0,0%,2.0,11%,0,0,0%,400,17%,610,13%,66,22%,2,8%,21,8,15%,10%,Bella_Union
+Regular White Mocha Skim Milk,244,0,0.0,0%,0.0,0%,0,0,0%,300,13%,65,1%,43,14%,0,0%,38,17,60%,0%,Bella_Union
+Regular White Mocha Soy Milk,256,63,7.0,11%,0.0,0%,0,0,0%,550,23%,60,1%,35,12%,0,0%,29,10,0%,0%,Bella_Union
+Regular White Mocha Whole Milk,330,126,14.0,21%,8.0,43%,0,60,20%,260,11%,50,1%,35,12%,0,0%,32,14,50%,0%,Bella_Union
+Spiced Cider,248,0,0.0,1%,0.0,1%,0,0,0%,5,0%,280,6%,58,20%,0,0%,56,0,0%,0%,Bella_Union
+Steamer Oat Milk,444,0,0.0,0%,2.5,12%,0,0,0%,390,16%,640,14%,57,19%,2,9%,7,10,15%,10%,Bella_Union
+Steamer Skim Milk,197,0,0.0,0%,0.0,0%,0,0,0%,280,12%,0,0%,30,10%,0,0%,27,20,70%,0%,Bella_Union
+Steamer Soy Milk,170,63,7.0,10%,0.0,0%,0,0,0%,450,19%,0,0%,17,6%,0,0%,13,9,0%,0%,Bella_Union
+Steamer Whole Milk,237,108,12.0,18%,7.0,37%,0,50,17%,180,8%,0,0%,19,6%,0,0%,18,12,45%,0%,Bella_Union
+Strawberry Banana Smoothie,440,0,0.0,0%,0.0,0%,0,0,0%,10,1%,100,2%,111,37%,0,0%,93,0,6%,0%,Bella_Union
+Strawberry Smoothie,581,0,0.0,0%,0.0,0%,0,0,0%,15,1%,50,1%,149,50%,0,0%,144,0,6%,0%,Bella_Union
+White Hot Chocolate Oat Milk,340,0,0.0,0%,1.5,7%,0,0,0%,250,10%,350,7%,55,18%,1,5%,27,5,10%,6%,Bella_Union
+White Hot Chocolate Skim Milk,337,0,0.0,0%,0.0,0%,0,0,0%,310,13%,0,0%,66,22%,0,0%,61,18,70%,0%,Bella_Union
+White Hot Chocolate Soy Milk,279,54,6.0,9%,0.0,0%,0,0,0%,460,19%,0,0%,46,15%,0,0%,41,9,0%,0%,Bella_Union
+White Hot Chocolate Whole Milk,411,126,14.0,22%,9.0,45%,0,65,21%,270,11%,0,0%,54,18%,0,0%,50,14,50%,0%,Bella_Union
+Wildberry Smoothie,399,0,0.0,0%,0.0,0%,0,0,0%,10,0%,35,1%,97,32%,0,0%,95,0,4%,0%,Bella_Union
