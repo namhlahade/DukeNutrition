@@ -4,7 +4,7 @@ const Alert = ({ message, type }) => {
   return <div className={`alert alert-${type}`}>{message}</div>;
 };
 
-const SignUp = () => {
+const SignUp = ({ redirectToHomeContent}) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -37,7 +37,7 @@ const SignUp = () => {
           setAlert({ type: 'danger', message: result.error });
         } else {
           setAlert({ type: 'success', message: result.message });
-          // Perform any additional actions on success
+          redirectToHomeContent(true);
         }
       })
       .catch((error) => {

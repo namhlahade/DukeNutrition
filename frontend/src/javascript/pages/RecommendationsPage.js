@@ -43,15 +43,6 @@ function RecommendationsPage() {
         <Card></Card>
         <Card></Card>
         <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
       </List>
     </Container>
   );

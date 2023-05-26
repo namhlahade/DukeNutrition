@@ -1,55 +1,47 @@
-
-import Login from './components/login.component';
-import SignUp from './components/signup.component';
-import MealRecommendationPage from './pages/MealRecommendationPage';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import WebContent from './pages/WebContent';
+import LoginForm from './components/login.component';
+import SignUpForm from './components/signup.component';
+import Dashboard from './pages/RecommendationsPage';
 import SidebarNavigation from './components/Sidenav';
 import UserInfoSurvey from "./pages/UserInfoSurvey";
-import signup_login from './pages/signup_login';
-import React from 'react'
-import './../css/bootstrap.css'
-import './../css/App.css'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import './../css/bootstrap.css';
+import './../css/App.css';
 
 function App() {
+  const redirectToHomeContent = (isAuthenticated) => {
+    if (isAuthenticated) {
+      <SidebarNavigation />
+      window.location.href = '/content'; // Redirect to the homepage
+    }
+  };
+
   return (
     <Router>
-      <div className="content">
-        <SidebarNavigation />
-        {/* <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-          <div className="container">
-            <Link className="navbar-brand" to={'/sign-in'}>
-              DukeNetNutrition
-            </Link>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to={'/sign-in'}>
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to={'/sign-up'}>
-                    Sign up
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav> */}
-
+      <Routes>
+        <Route path="/content" element={<WebContent />} />
+        <Route exact path="/content/user-info-survey" element={<UserInfoSurvey />} />
+        <Route path="/content/dashboard" element={<Dashboard />} />
+      </Routes>
+      <div className="App">
         <div className="auth-wrapper">
           <div className="auth-inner">
             <Routes>
-              <Route exact path="/user-info-survey" element={<UserInfoSurvey />} />
-              <Route path="/sign-in" element={<Login />} />
-              <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/sidebar" element={<SidebarNavigation />} />
+              <Route
+                path="/sign-in"
+                element={<LoginForm redirectToHomeContent={redirectToHomeContent} />}
+              />
+              <Route
+                path="/"
+                element={<SignUpForm redirectToHomeContent={redirectToHomeContent} />}
+              />
             </Routes>
           </div>
         </div>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

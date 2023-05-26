@@ -8,24 +8,24 @@ export const navData = [
         id: 0,
         icon: <DashboardIcon/>,
         text: "Dashboard",
-        link: "/dashboard"
+        link: "/content/dashboard"
     },
     {
         id: 1,
         icon: <MealIcon/>,
         text: "Next Meal",
-        link: "/next-meal"
+        link: "/content/next-meal"
     },
     {
         id: 2,
         icon: <SurveyIcon/>,
         text: "User Info Survey",
-        link: "/user-info-survey"
+        link: "/content/user-info-survey"
     },
     {
         id: 3,
         icon: <ProfileIcon/>,
         text: "Profile",
-        link: "/profile"
+        link: "/content/profile"
     }
 ]

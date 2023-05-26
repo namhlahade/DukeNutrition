@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 // Default V2 theme
-import '../../css/sign-up.css';
+import '../../css/survey.css';
 // Modern theme
 // import 'survey-core/modern.min.css';
 import { Model } from 'survey-core';
