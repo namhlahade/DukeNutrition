@@ -17,7 +17,7 @@ def signup():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    password2 = data.get('password2')
+    password2 = data.get('confirmPassword')
     email = data.get('email')
 
 
