@@ -1,6 +1,6 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import Form from '../pages/signup.component.js';
+import Form from './signup.component.js';
 
 const ModalDialog = ({ open, handleClose }) => {
   return (

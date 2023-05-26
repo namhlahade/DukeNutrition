@@ -1,13 +1,9 @@
 
-import Login from './pages/login.component';
-import SignUp from './pages/signup.component';
+import Login from './components/login.component';
+import SignUp from './components/signup.component';
 import MealRecommendationPage from './pages/MealRecommendationPage';
-import SidebarNavigation from './pages/SidebarNavigation';
+import SidebarNavigation from './components/Sidenav';
 import UserInfoSurvey from "./pages/UserInfoSurvey";
-
-import { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import ModalDialog from './components/ModalDialog';
 import signup_login from './pages/signup_login';
 import React from 'react'
 import './../css/bootstrap.css'
@@ -17,8 +13,9 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 function App() {
   return (
     <Router>
-      <div className="App">
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+      <div className="content">
+        <SidebarNavigation />
+        {/* <nav className="navbar navbar-expand-lg navbar-light fixed-top">
           <div className="container">
             <Link className="navbar-brand" to={'/sign-in'}>
               DukeNetNutrition
@@ -38,14 +35,15 @@ function App() {
               </ul>
             </div>
           </div>
-        </nav>
+        </nav> */}
 
         <div className="auth-wrapper">
           <div className="auth-inner">
             <Routes>
-              <Route exact path="/" element={<Login />} />
+              <Route exact path="/user-info-survey" element={<UserInfoSurvey />} />
               <Route path="/sign-in" element={<Login />} />
               <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/sidebar" element={<SidebarNavigation />} />
             </Routes>
           </div>
         </div>

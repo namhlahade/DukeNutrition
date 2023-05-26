@@ -1,8 +1,8 @@
 import React from 'react'
 import '../../css/bootstrap.css'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import Login from './login.component'
-import SignUp from './signup.component'
+import Login from '../components/login.component'
+import SignUp from '../components/signup.component'
 function signup_login() {
   return (
     <Router>

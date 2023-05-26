@@ -55,6 +55,6 @@ function RecommendationsPage() {
       </List>
     </Container>
   );
-}
+};
 
 export default RecommendationsPage;
