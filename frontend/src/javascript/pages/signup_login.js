@@ -1,20 +1,35 @@
 import React from 'react'
 import '../../css/bootstrap.css'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import Login from '../components/login.component'
-import SignUp from '../components/signup.component'
-function signup_login({ redirectToHomeContent}) {
+import LoginForm from '../components/login.component'
+import SignUpForm from '../components/signup.component'
+function signup_login() {
+    const delayRender = (delay) => {
+        setTimeout(() => {
+           this.setState({ render : !this.state.render })
+        }, delay);
+      }
+      const redirectToHomeContent = (isAuthenticated) => {
+        if (isAuthenticated) {
+          delayRender(1500);
+          window.location.href = '/content'; // Redirect to the homepage
+        }
+      };
   return (
-      <div className="App">
-        <div className="auth-wrapper">
-          <div className="auth-inner">
-            <Routes>
-              <Route path="/sign-in" element={<Login redirectToHomeContent={redirectToHomeContent} />} />
-              <Route path="/" element={<SignUp redirectToHomeContent={redirectToHomeContent} />} />
-            </Routes>
-          </div>
+    <div className="auth-wrapper">
+        <div className="auth-inner">
+        <Routes>
+            <Route
+                path="/duke-net-nutrition/sign-in"
+                element={<LoginForm redirectToHomeContent={redirectToHomeContent} />}
+                />
+                <Route
+                path="/duke-net-nutrition/sign-up"
+                element={<SignUpForm redirectToHomeContent={redirectToHomeContent} />}
+                />
+        </Routes>
         </div>
-      </div>
+    </div>
   )
 }
 export default signup_login

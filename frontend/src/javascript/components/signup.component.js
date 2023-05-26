@@ -47,64 +47,68 @@ const SignUp = ({ redirectToHomeContent}) => {
   };
 
   return (
-    <div>
-      {alert && <Alert message={alert.message} type={alert.type} />}
-      <form onSubmit={handleSubmit}>
-        <h3>Sign Up</h3>
+    <div className="auth-wrapper">
+      <div className="auth-inner">
+        <div>
+          {alert && <Alert message={alert.message} type={alert.type} />}
+          <form onSubmit={handleSubmit}>
+            <h3>Sign Up</h3>
 
-        <div className="mb-3">
-          <label>Email address</label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Enter email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </div>
+            <div className="mb-3">
+              <label>Email address</label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </div>
 
-        <div className="mb-3">
-          <label>Username</label>
-          <input
-            type="username"
-            className="form-control"
-            placeholder="Enter username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </div>
+            <div className="mb-3">
+              <label>Username</label>
+              <input
+                type="username"
+                className="form-control"
+                placeholder="Enter username"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            </div>
 
-        <div className="mb-3">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Enter password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </div>
+            <div className="mb-3">
+              <label>Password</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Enter password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </div>
 
-        <div className="mb-3">
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Confirm password"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-          />
-        </div>
+            <div className="mb-3">
+              <label>Confirm Password</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+              />
+            </div>
 
-        <div className="d-grid">
-          <button type="submit" className="btn btn-primary">
-            Sign Up
-          </button>
+            <div className="d-grid">
+              <button type="submit" className="btn btn-primary">
+                Sign Up
+              </button>
+            </div>
+            <p className="forgot-password text-right">
+              Already registered <a href="/duke-net-nutrition/sign-in">sign in?</a>
+            </p>
+          </form>
         </div>
-        <p className="forgot-password text-right">
-          Already registered <a href="/sign-in">sign in?</a>
-        </p>
-      </form>
+      </div>
     </div>
   );
 };
