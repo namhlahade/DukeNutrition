@@ -17,9 +17,11 @@ def signup():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    password2 = data.get('password2')
+    password2 = data.get('confirmPassword')
     email = data.get('email')
 
+    if not (username and password and password2 and email):
+        return jsonify({'error': 'All fields are required.'}), 400
 
     if password != password2:
         return jsonify({'error': 'Passwords do not match.'}), 400
@@ -56,6 +58,9 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
+    if not (username and password):
+        return jsonify({'error': 'All fields are required.'}), 400
+
     db = get_db()
     query = db.execute("select * from User_Table where username = ?", (username,))
     user = query.fetchone()
@@ -81,6 +86,8 @@ def collectUserInfo():
     fat = data.get("fat")
     mealsPerDay = data.get("mealsPerDay")
 
+    if not (userid and calories and protein and carbs and fat and mealsPerDay):
+        return jsonify({'error': 'All questions need to be answered'})
 
     db = get_db()
     query = db.execute("select * from User_Pref where user_id = ?", (userid,))
