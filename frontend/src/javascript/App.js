@@ -22,6 +22,12 @@ function App() {
         window.location.href = '/duke-net-nutrition/content';
       }
     };
+    const redirectToSurvey = (isAuthenticated) => {
+      if (isAuthenticated) {
+        delayRender(1500);
+        window.location.href = '/duke-net-nutrition/content/user-info-survey';
+      }
+    };
 
   return (
     <Router>
@@ -32,7 +38,7 @@ function App() {
         />
         <Route
           path="/duke-net-nutrition/sign-up"
-          element={<SignUpForm redirectToHomeContent={redirectToHomeContent} />}
+          element={<SignUpForm redirectToHomeContent={redirectToSurvey} />}
         />
         <Route path="/duke-net-nutrition/content" element={<WebContent />} />
         <Route path="/duke-net-nutrition/content/dashboard" element={<Dashboard />} />
