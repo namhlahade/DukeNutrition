@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
+const Alert = ({ message, type }) => {
+  return <div className={`alert alert-${type}`}>{message}</div>;
+};
+
 const Login = () => {
+  const [alert, setAlert] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,18 +26,25 @@ const Login = () => {
       },
       body: JSON.stringify(data),
     })
-      .then(response => response.json())
-      .then(result => {
+      .then((response) => response.json())
+      .then((result) => {
         // Handle the response from the backend
-        console.log(result);
+        if (result.error) {
+          setAlert({ type: 'danger', message: result.error });
+        } else {
+          setAlert({ type: 'success', message: result.message });
+          // Perform any additional actions on success
+        }
       })
-      .catch(error => {
+      .catch((error) => {
         // Handle any errors that occurred during the request
         console.error('Error:', error);
       });
   };
 
   return (
+    <div>
+    {alert && <Alert message={alert.message} type={alert.type} />}
     <form onSubmit={handleSubmit}>
       <h3>Sign In</h3>
 
@@ -80,6 +92,7 @@ const Login = () => {
         Forgot <a href="#">password?</a>
       </p>
     </form>
+    </div>
   );
 };
 
