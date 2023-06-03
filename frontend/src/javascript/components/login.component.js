@@ -31,9 +31,11 @@ const Login = ({ redirectToHomeContent}) => {
         // Handle the response from the backend
         if (result.error) {
           setAlert({ type: 'danger', message: result.error });
+          console.log({"Error": result.error});
         } else {
           setAlert({ type: 'success', message: result.message });
           redirectToHomeContent(true);
+          console.log({"Error": result.message})
         }
       })
       .catch((error) => {
