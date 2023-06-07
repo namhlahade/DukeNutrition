@@ -59,6 +59,8 @@ def allRestaurants():
     
     return jsonify(restaurants), 200
 
+
+
 @nextMeal_bp.route('/selectMeal', methods=['POST'])
 def selectMeal():
     data = request.get_json()
