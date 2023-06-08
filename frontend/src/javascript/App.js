@@ -6,6 +6,7 @@ import SignUpForm from './components/signup.component';
 import SignUpLogin from './pages/signup_login';
 import Dashboard from './pages/RecommendationsPage';
 import SidebarNavigation from './components/Sidenav';
+import MealDisplay from './components/mealDisplay.component';
 import UserInfoSurvey from "./pages/UserInfoSurvey";
 import './../css/bootstrap.css';
 import './../css/App.css';
@@ -32,6 +33,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<MealDisplay />} />
         <Route
           path="/duke-net-nutrition/sign-in"
           element={<LoginForm redirectToHomeContent={redirectToHomeContent} />}
