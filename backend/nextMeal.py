@@ -57,8 +57,7 @@ def allRestaurants():
             else:
                 restaurants[restaurant][meal_name].append(meal_id)
     
-    return jsonify(restaurants), 200
-
+    return jsonify(restaurants)
 
 
 @nextMeal_bp.route('/selectMeal', methods=['POST'])

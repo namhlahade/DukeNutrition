@@ -7,7 +7,7 @@ import SignUpLogin from './pages/signup_login';
 import Dashboard from './pages/RecommendationsPage';
 import SidebarNavigation from './components/Sidenav';
 import UserInfoSurvey from "./pages/UserInfoSurvey";
-import MealDisplayForm from "./components/mealDisplay.component"
+import MealDisplay from "./components/mealDisplay.component"
 import './../css/bootstrap.css';
 import './../css/App.css';
 
@@ -44,7 +44,7 @@ function App() {
         <Route path="/duke-net-nutrition/content" element={<WebContent />} />
         <Route path="/duke-net-nutrition/content/dashboard" element={<Dashboard />} />
         <Route path="/duke-net-nutrition/content/user-info-survey" element={<UserInfoSurvey />} />
-        <Route path="/duke-net-nutrition/content/next-meal" element={<MealDisplayForm />} />
+        <Route path="/duke-net-nutrition/content/next-meal" element={<MealDisplay />} />
       </Routes>
     </Router>
   );
