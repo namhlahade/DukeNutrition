@@ -1,3 +1,4 @@
+import React, { Component }  from 'react';
 import { useCallback } from 'react';
 
 // Default V2 theme
