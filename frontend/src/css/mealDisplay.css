@@ -1,11 +1,14 @@
-.box {
-    width: 200px;
-    height: 200px;
-    background-color: blue;
-    transition: background-color 0.3s ease;
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
   }
   
-  label {
-    display: block;
-    margin-top: 10px;
+  .custom-checkbox input {
+    margin-right: 10px;
   }
+  
+  .custom-checkbox span {
+    font-weight: bold;
+  }
+  

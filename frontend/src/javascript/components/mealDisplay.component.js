@@ -1,20 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-
-function changeColor() {
-  var checkbox = document.getElementById("colorCheckbox");
-  var box = document.getElementById("myBox");
-
-  if (checkbox.checked) {
-    box.style.backgroundColor = "red";
-  } else {
-    box.style.backgroundColor = "blue";
-  }
-}
+import styles from '../../css/mealDisplay.css'
 
 const MealDisplay = () => {
   const [restaurantData, setRestaurantData] = useState(null);
+  const [boxColor, setBoxColor] = useState("transparent")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +13,7 @@ const MealDisplay = () => {
         const response = await fetch('http://127.0.0.1:5000/nextMeal/allRestaurants');
         const data = await response.json();
         setRestaurantData(data);
-        console.log("Data from allRestaurants API call")
+        console.log("Data from allRestaurants API call");
         console.log(data);
       } catch (error) {
         console.error('Error fetching restaurant data:', error);
@@ -32,56 +23,50 @@ const MealDisplay = () => {
     fetchData();
   }, []);
 
+  const changeColor = (event) => {
+    const checkbox = event.target;
+
+    if (checkbox.checked) {
+      setBoxColor("transparent")
+    } else {
+      setBoxColor("red")
+    }
+    checkbox.parentElement.style.backgroundColor = boxColor;
+  };
+
   if (restaurantData === null) {
     return <div>Loading...</div>;
   }
 
   return (
-    // <div>
-    //   {Object.entries(restaurantData).map(([outerKey, nestedData]) => (
-    //     <div key={outerKey}>
-    //       <h1>{outerKey}</h1>
-    //       <div>
-    //         {Object.entries(nestedData).map(([type, things]) => (
-    //           <div key={type}>
-    //             <h2>{type}</h2>
-    //             <div>
-    //               {things.map((thing) => (
-    //                 <h4 key={thing}>{thing}</h4>
-    //               ))}
-    //             </div>
-    //           </div>
-    //         ))}
-    //       </div>
-    //     </div>
-    //   ))}
-    // </div>
-
     <Accordion>
       {Object.entries(restaurantData).map(([outerKey, nestedData]) => (
-        <Accordion.Item eventKey={outerKey}>
+        <Accordion.Item key={outerKey} eventKey={outerKey}>
           <Accordion.Header>{outerKey}</Accordion.Header>
           <Accordion.Body>
             <Accordion>
-            <div>
               {Object.entries(nestedData).map(([type, things]) => (
-                <Accordion.Item eventKey={type}>
+                <Accordion.Item key={type} eventKey={type}>
                   <Accordion.Header>{type}</Accordion.Header>
-                    <Accordion.Body>
-                      <div>
-                        {things.map((thing) => (
-                          <h4 key={thing}>{thing}</h4>
-                        ))}
-                      </div>
-                    </Accordion.Body>
+                  <Accordion.Body>
+                    <div className="checkbox-list">
+                      {things.map((thing) => (
+                        <div>
+                          <label key={thing} className="custom-checkbox">
+                          <input type="checkbox" onClick={changeColor} />
+                          <span className="checkbox-text">{thing}</span>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </Accordion.Body>
                 </Accordion.Item>
               ))}
-            </div>
             </Accordion>
           </Accordion.Body>
         </Accordion.Item>
       ))}
-  </Accordion>
+    </Accordion>
   );
 };
 
