@@ -2,6 +2,7 @@ import sqlite3
 from flask import Blueprint, jsonify, request
 import uuid
 from datetime import date
+from authentication import getUserIdentification
 
 
 
@@ -62,7 +63,11 @@ def allRestaurants():
 @nextMeal_bp.route('/selectMeal', methods=['POST'])
 def selectMeal():
     data = request.get_json()
-    userid = data.get('userid')
+    userid = getUserIdentification()
+    print(f"This is userid: {userid}")
+
+    if userid is None:
+        return jsonify({"error": "Unauthorized Access"}), 401
 
     restaurant_mapping = {
         'Ginger_and_Soy': {
@@ -97,7 +102,7 @@ def selectMeal():
         'Pitchforks': {
             'class': Pitchforks,
             'variables': {
-                'add_item': ['name', 'addons', 'sides']
+                'add_item': ['main', 'addon', 'side']
             },
             'methods': {
                 'add_item': 'addItem'

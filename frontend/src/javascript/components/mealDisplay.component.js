@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
-import styles from '../../css/mealDisplay.css'
+import Button from 'react-bootstrap/Button';
+import styles from "../../css/mealDisplay.css"
+
 
 const MealDisplay = () => {
   const [restaurantData, setRestaurantData] = useState(null);
-  const [boxColor, setBoxColor] = useState("transparent")
+  const [meal, setMeal] = useState({});
+  const [mealData, setMealData] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,7 +18,9 @@ const MealDisplay = () => {
         setRestaurantData(data);
         console.log("Data from allRestaurants API call");
         console.log(data);
-      } catch (error) {
+      } 
+      
+      catch (error) {
         console.error('Error fetching restaurant data:', error);
       }
     };
@@ -23,50 +28,179 @@ const MealDisplay = () => {
     fetchData();
   }, []);
 
-  const changeColor = (event) => {
+  useEffect(() => {
+    console.log(meal);
+  },[meal]);
+
+  useEffect(() => {
+    console.log(mealData);
+  },[mealData]);
+
+  const dataGather = (event, restaurant, type, thing) => {
     const checkbox = event.target;
 
     if (checkbox.checked) {
-      setBoxColor("transparent")
-    } else {
-      setBoxColor("red")
+      console.log("Checkbox is checked?")
+      console.log(restaurant, type, thing)
+
+      setMeal((prevMeals) => {
+        // If restaurant already in prevMeals
+        if (prevMeals.hasOwnProperty(restaurant)) {
+          const restaurantData = prevMeals[restaurant]
+
+          if (restaurantData.hasOwnProperty(type)) {
+            const updateRestaurantData = {
+              ...restaurantData,
+              [type]: [...restaurantData[type], thing]
+            };
+            return {
+              ...prevMeals,
+              [restaurant]: updateRestaurantData
+            };
+
+          }
+          else {
+            const updateRestaurantData = {
+              ...restaurantData,
+              [type]: [thing]
+            }
+            return {
+              ...prevMeals,
+              [restaurant]: updateRestaurantData
+            };
+          }
+        }
+
+        else {
+          return {
+            ...prevMeals,
+            [restaurant]: {
+              [type]: [thing]
+            }
+          }
+        }
+
+      })
+
+    } 
+    else {
+      setMeal((prevMeals) => {
+        if (prevMeals.hasOwnProperty(restaurant)) {
+          const restaurantData = prevMeals[restaurant];
+  
+          if (restaurantData.hasOwnProperty(type)) {
+            const updatedTypeData = restaurantData[type].filter(
+              (item) => item !== thing
+            );
+  
+            // If the updated type data is empty, remove the type from the restaurant data
+            if (updatedTypeData.length === 0) {
+              const updatedRestaurantData = { ...restaurantData };
+              delete updatedRestaurantData[type];
+  
+              // If the updated restaurant data is empty, remove the restaurant from the meal data
+              if (Object.keys(updatedRestaurantData).length === 0) {
+                const updatedMealData = { ...prevMeals };
+                delete updatedMealData[restaurant];
+                return updatedMealData;
+              }
+  
+              return {
+                ...prevMeals,
+                [restaurant]: updatedRestaurantData,
+              };
+            }
+  
+            const updatedRestaurantData = {
+              ...restaurantData,
+              [type]: updatedTypeData,
+            };
+  
+            return {
+              ...prevMeals,
+              [restaurant]: updatedRestaurantData,
+            };
+          }
+        }
+  
+        return prevMeals;
+      });
     }
-    checkbox.parentElement.style.backgroundColor = boxColor;
   };
+
+  const sendData = (meal) => {
+    console.log("Sending this meal to API");
+    console.log(meal);
+
+
+
+    const fetchCalsAndMacs = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/nextMeal/selectMeal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(meal),
+        })
+        const calsAndMacs = response.json();
+        setMealData(calsAndMacs);
+        setMeal({});
+      }
+      catch(error) {
+        console.log('Error fetching restaurant data:', error);
+      }
+    }
+    fetchCalsAndMacs();
+
+  }
 
   if (restaurantData === null) {
     return <div>Loading...</div>;
   }
 
   return (
-    <Accordion>
-      {Object.entries(restaurantData).map(([outerKey, nestedData]) => (
-        <Accordion.Item key={outerKey} eventKey={outerKey}>
-          <Accordion.Header>{outerKey}</Accordion.Header>
-          <Accordion.Body>
-            <Accordion>
-              {Object.entries(nestedData).map(([type, things]) => (
-                <Accordion.Item key={type} eventKey={type}>
-                  <Accordion.Header>{type}</Accordion.Header>
-                  <Accordion.Body>
-                    <div className="checkbox-list">
-                      {things.map((thing) => (
-                        <div>
-                          <label key={thing} className="custom-checkbox">
-                          <input type="checkbox" onClick={changeColor} />
-                          <span className="checkbox-text">{thing}</span>
-                          </label>
+    <>
+      <div>
+        <h1>Duke Meals</h1>
+      </div>
+      <div>
+        <Accordion>
+          {Object.entries(restaurantData).map(([restaurant, nestedData]) => (
+            <Accordion.Item key={restaurant} eventKey={restaurant}>
+              <Accordion.Header>{restaurant}</Accordion.Header>
+              <Accordion.Body>
+                <Accordion>
+                  {Object.entries(nestedData).map(([type, things]) => (
+                    <Accordion.Item key={type} eventKey={type}>
+                      <Accordion.Header>{type}</Accordion.Header>
+                      <Accordion.Body>
+                        <div className="checkbox-list">
+                          {things.map((thing) => (
+                            <div className='box'>
+                              <label key={thing} className="custom-checkbox">
+                                <input
+                                  type="checkbox"
+                                  onClick={(event) => dataGather(event, restaurant, type, thing)}
+                                />
+                              <span className="checkbox-text">{thing}</span>
+                              </label>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-              ))}
-            </Accordion>
-          </Accordion.Body>
-        </Accordion.Item>
-      ))}
-    </Accordion>
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  ))}
+                </Accordion>
+              </Accordion.Body>
+            </Accordion.Item>
+          ))}
+        </Accordion>
+      </div>
+      <div>
+        <Button variant="outline-primary" onClick={() => sendData(meal)}>Add Meal</Button>
+      </div>
+    </>
   );
 };
 

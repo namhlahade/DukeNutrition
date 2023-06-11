@@ -3,8 +3,11 @@ from flask import Blueprint, jsonify, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
 
-
+useridentification = None
 authentication_bp = Blueprint('authentication', __name__)
+
+def getUserIdentification():
+    return useridentification
 
 def get_db():
     db = sqlite3.connect('database.db')
@@ -113,7 +116,7 @@ def collectUserInfo():
 
 @authentication_bp.route('/getUserId', methods=['POST'])
 def getUserId():
-    data = request.get_json() 
+    data = request.get_json()
     username = data.get("username")
 
     db = get_db()
