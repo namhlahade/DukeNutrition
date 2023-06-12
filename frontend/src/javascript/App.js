@@ -17,23 +17,23 @@ function App() {
           this.setState({ render : !this.state.render })
       }, delay);
     }
-    const redirectToHomeContent = (isAuthenticated) => {
-      if (isAuthenticated) {
-        delayRender(1500);
-        window.location.href = '/duke-net-nutrition/content';
-      }
-    };
-    const redirectToSurvey = (isAuthenticated) => {
-      if (isAuthenticated) {
-        delayRender(1500);
-        window.location.href = '/duke-net-nutrition/content/user-info-survey';
-      }
-    };
+  const redirectToHomeContent = (isAuthenticated) => {
+    if (isAuthenticated) {
+      delayRender(1500);
+      window.location.href = '/duke-net-nutrition/content';
+    }
+  };
+  const redirectToSurvey = (isAuthenticated) => {
+    if (isAuthenticated) {
+      delayRender(1500);
+      window.location.href = '/duke-net-nutrition/content/user-info-survey';
+    }
+  };
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MealDisplay />} />
+        <Route path="/duke-net-nutrition/content/next-meal" element={<MealDisplay />} />
         <Route
           path="/duke-net-nutrition/sign-in"
           element={<LoginForm redirectToHomeContent={redirectToHomeContent} />}

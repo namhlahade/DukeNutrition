@@ -3,6 +3,9 @@ import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 import styles from "../../css/mealDisplay.css"
 
+const TypeOfMeal = {
+  "Pitchforks": "add_item"
+}
 
 const MealDisplay = () => {
   const [restaurantData, setRestaurantData] = useState(null);
@@ -29,6 +32,7 @@ const MealDisplay = () => {
   }, []);
 
   useEffect(() => {
+    console.log("Meal Variable: ")
     console.log(meal);
   },[meal]);
 
@@ -129,19 +133,35 @@ const MealDisplay = () => {
   };
 
   const sendData = (meal) => {
-    console.log("Sending this meal to API");
-    console.log(meal);
+
+    const mealSend = {}
+    for (const [restaurant, restaurantData] of Object.entries(meal)){
+      mealSend["restaurant"] = restaurant;
+      mealSend["meal_type"] = TypeOfMeal[restaurant];
+      for (const [type, things] of Object.entries(restaurantData)){
+        mealSend[type] = things;
+      }
+    }
+
+    mealSend["userid"] = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+
+    console.log("Meal being sent to API:");
+    console.log(mealSend);
+
+    // send request in the form of ...
+    // restaurant, properties of restaurant, 
 
 
 
     const fetchCalsAndMacs = async () => {
+
       try {
         const response = await fetch('http://127.0.0.1:5000/nextMeal/selectMeal', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(meal),
+        body: JSON.stringify(mealSend),
         })
         const calsAndMacs = response.json();
         setMealData(calsAndMacs);

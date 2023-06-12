@@ -4,7 +4,7 @@ const Alert = ({ message, type }) => {
   return <div className={`alert alert-${type}`}>{message}</div>;
 };
 
-const Login = ({ redirectToHomeContent}) => {
+const Login = ({ redirectToHomeContent, userIdentification}) => {
   const [alert, setAlert] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -44,8 +44,9 @@ const Login = ({ redirectToHomeContent}) => {
         
         else {
           setAlert({ type: 'success', message: result.message });
-          redirectToHomeContent(true);
-          console.log("Please work")
+
+          redirectToHomeContent(false);
+
           fetch('http://127.0.0.1:5000/authentication/getUserId', {
             method: 'POST',
             headers: {
