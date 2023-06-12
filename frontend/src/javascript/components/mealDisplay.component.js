@@ -45,7 +45,7 @@ const MealDisplay = () => {
     const checkbox = event.target;
 
     if (checkbox.checked) {
-      console.log("Checkbox is checked?")
+      console.log("Checkbox is checked")
       console.log(restaurant, type, thing)
 
       setMeal((prevMeals) => {
@@ -183,7 +183,7 @@ const MealDisplay = () => {
   return (
     <>
       <div>
-        <h1>Duke Meals</h1>
+        <h1 className='mainHeading'>Duke Meals</h1>
       </div>
       <div>
         <Accordion>
@@ -218,7 +218,7 @@ const MealDisplay = () => {
           ))}
         </Accordion>
       </div>
-      <div>
+      <div className='submitButton'>
         <Button variant="outline-primary" onClick={() => sendData(meal)}>Add Meal</Button>
       </div>
     </>

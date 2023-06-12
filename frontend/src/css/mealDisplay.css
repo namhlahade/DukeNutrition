@@ -22,3 +22,16 @@
     border-radius: 5px;
     background-color: blue;
   }
+
+  .mainHeading {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .submitButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+  
