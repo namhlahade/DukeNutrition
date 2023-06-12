@@ -32,11 +32,12 @@ const MealDisplay = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Meal Variable: ")
+    console.log("meal Variable: ")
     console.log(meal);
   },[meal]);
 
   useEffect(() => {
+    console.log("mealData variable")
     console.log(mealData);
   },[mealData]);
 
@@ -163,7 +164,7 @@ const MealDisplay = () => {
         },
         body: JSON.stringify(mealSend),
         })
-        const calsAndMacs = response.json();
+        const calsAndMacs = await response.json();
         setMealData(calsAndMacs);
         setMeal({});
       }

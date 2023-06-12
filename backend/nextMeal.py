@@ -136,16 +136,20 @@ def selectMeal():
     result = method(**method_args)
     mealid = mealID(result[0], result[1], result[2], result[3], result[4])
     print(f"Meal ID: {mealid}")
+
+    print("These are the results:")
+    for i in range(len(result)):
+        print(result[i])
     
     db = get_db()
-    print("These are the results:")
-    print(result)
+    
     query = db.execute("select * from User_Pref where user_id = ?", (userid,))
     row = query.fetchone()
 
+
     if row is None:
         return jsonify({f"error": "No user preference was created."}), 400
-
+    
     prefid = row[0]
     print(f"Pref Id: {prefid}")
 

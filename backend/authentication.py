@@ -82,7 +82,8 @@ def login():
 @authentication_bp.route('/collectUserInfo', methods=['POST'])
 def collectUserInfo():
     data = request.get_json()
-    userid = data.get("userid")
+    #userid = data.get("userid")
+    userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6"
     calories = data.get("calories")
     protein = data.get("protein")
     carbs = data.get("carbs")
