@@ -3,8 +3,11 @@ from flask import Blueprint, jsonify, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
 
-
+useridentification = None
 authentication_bp = Blueprint('authentication', __name__)
+
+def getUserIdentification():
+    return useridentification
 
 def get_db():
     db = sqlite3.connect('database.db')
@@ -79,7 +82,8 @@ def login():
 @authentication_bp.route('/collectUserInfo', methods=['POST'])
 def collectUserInfo():
     data = request.get_json()
-    userid = data.get("userid")
+    #userid = data.get("userid")
+    userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6"
     calories = data.get("calories")
     protein = data.get("protein")
     carbs = data.get("carbs")
@@ -113,7 +117,7 @@ def collectUserInfo():
 
 @authentication_bp.route('/getUserId', methods=['POST'])
 def getUserId():
-    data = request.get_json() 
+    data = request.get_json()
     username = data.get("username")
 
     db = get_db()

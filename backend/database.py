@@ -1,5 +1,6 @@
 import csv
 import sqlite3
+import csv
 
 connection = sqlite3.connect("database.db")
 
@@ -22,13 +23,12 @@ table_names = cursor.fetchall()
 num_tables = len(table_names)
 
 # Print the number of tables
-print(f"There are {table_names} tables in the database.")'''
+print(f"There are {num_tables} tables in the database.")'''
 
 # Deleting a table
 '''cursor.execute("DROP TABLE IF EXISTS Meals")
 connection.commit()
 cursor.close'''
-
 
 # Adding restaurant to database
 '''with open('Restaurants/Pitchfork.csv', 'r') as csv_file:
@@ -52,6 +52,8 @@ cursor.close'''
 
 # Close the cursor and the database connection
 cursor.close()'''
+
+
 
 
 

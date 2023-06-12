@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Alert = ({ message, type }) => {
   return <div className={`alert alert-${type}`}>{message}</div>;
 };
 
-const Login = ({ redirectToHomeContent}) => {
+const Login = ({ redirectToHomeContent, userIdentification}) => {
   const [alert, setAlert] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [userId, setUserId] = useState({})
+
+  useEffect(() => {
+    console.log(userId)
+  }, [userId]);
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevents default form submission behavior
@@ -17,6 +22,10 @@ const Login = ({ redirectToHomeContent}) => {
       username: username,
       password: password,
     };
+
+    const userIDData = {
+      username: username
+    }
 
     // Send an HTTP POST request to the backend API endpoint
     fetch('http://127.0.0.1:5000/authentication/login', {
@@ -31,9 +40,28 @@ const Login = ({ redirectToHomeContent}) => {
         // Handle the response from the backend
         if (result.error) {
           setAlert({ type: 'danger', message: result.error });
-        } else {
+        } 
+        
+        else {
           setAlert({ type: 'success', message: result.message });
+
           redirectToHomeContent(true);
+
+          fetch('http://127.0.0.1:5000/authentication/getUserId', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userIDData)
+          })
+            .then((response) => response.json())
+            .then((userIdResult) => {
+              // Set the user ID in state
+              setUserId(userIdResult);
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
         }
       })
       .catch((error) => {
@@ -101,3 +129,4 @@ const Login = ({ redirectToHomeContent}) => {
 };
 
 export default Login;
+

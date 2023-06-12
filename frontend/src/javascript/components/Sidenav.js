@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import { navData } from "../lib/navData";
+import React, { Component }  from 'react';
 import { useState } from "react";
 
 export default function Sidenav() {
