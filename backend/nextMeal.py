@@ -111,7 +111,7 @@ def selectMeal():
         }
         # Add more restaurants here
     }
-    print(data['restaurant'])
+
     restaurant_name = data['restaurant']
     print(f"Restaurant Name: {restaurant_name}")
     meal_type = data['meal_type']
@@ -133,14 +133,13 @@ def selectMeal():
     method_args = {var: data[var] for var in variables[meal_type]}
     method = getattr(meal, method_name)
 
-    print(method_args)
-
     result = method(**method_args)
     mealid = mealID(result[0], result[1], result[2], result[3], result[4])
     print(f"Meal ID: {mealid}")
     
     db = get_db()
-
+    print("These are the results:")
+    print(result)
     query = db.execute("select * from User_Pref where user_id = ?", (userid,))
     row = query.fetchone()
 
@@ -165,6 +164,7 @@ def selectMeal():
     db.close()
     print("Meal Statistics:")
     print(result[0], result[1], result[2], result[3], result[4])
+    print("It works!")
 
     return jsonify({f"message": f"Successfully added meal with mealid: {mealid} to user: {userid}"}), 200
 
@@ -340,10 +340,10 @@ class Pitchforks(DukeMeal):
             print(itemInfo)
 
             self.name = itemInfo[0]
-            self.calories += 0 if isinstance(itemInfo[1], str) else itemInfo[1]
-            self.protein += 0 if isinstance(itemInfo[19], str) else itemInfo[19]
-            self.carbs += 0 if isinstance(itemInfo[14], str) else itemInfo[14]
-            self.fat += 0 if isinstance(itemInfo[3], str) else itemInfo[3]
+            self.calories += 0 if isinstance(itemInfo[2], str) else itemInfo[2]
+            self.protein += 0 if isinstance(itemInfo[20], str) else itemInfo[20]
+            self.carbs += 0 if isinstance(itemInfo[15], str) else itemInfo[15]
+            self.fat += 0 if isinstance(itemInfo[4], str) else itemInfo[4]
 
         for elem in addon:
             query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (elem, "Pitchforks"))
@@ -351,10 +351,10 @@ class Pitchforks(DukeMeal):
             print("Information about add on:")
             print(addonInfo)
 
-            self.calories += 0 if isinstance(addonInfo[1], str) else addonInfo[1]
-            self.protein += 0 if isinstance(addonInfo[19], str) else addonInfo[19]
-            self.carbs += 0 if isinstance(addonInfo[14], str) else addonInfo[14]
-            self.fat += 0 if isinstance(addonInfo[3], str) else addonInfo[3]
+            self.calories += 0 if isinstance(addonInfo[2], str) else addonInfo[2]
+            self.protein += 0 if isinstance(addonInfo[20], str) else addonInfo[20]
+            self.carbs += 0 if isinstance(addonInfo[15], str) else addonInfo[15]
+            self.fat += 0 if isinstance(addonInfo[4], str) else addonInfo[4]
 
         for elem in side:
             query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (elem, "Pitchforks"))
@@ -362,11 +362,10 @@ class Pitchforks(DukeMeal):
             print("Information about side:")
             print(sideInfo)
 
-            self.calories += 0 if isinstance(sideInfo[1], str) else sideInfo[1]
-            self.protein += 0 if isinstance(sideInfo[19], str) else sideInfo[19]
-            self.carbs += 0 if isinstance(sideInfo[14], str) else sideInfo[14]
-            self.fat += 0 if isinstance(sideInfo[3], str) else sideInfo[3]
+            self.calories += 0 if isinstance(sideInfo[2], str) else sideInfo[2]
+            self.protein += 0 if isinstance(sideInfo[20], str) else sideInfo[20]
+            self.carbs += 0 if isinstance(sideInfo[15], str) else sideInfo[15]
+            self.fat += 0 if isinstance(sideInfo[4], str) else sideInfo[4]
 
         db.close()
-        print("It works!")
         return self.name, self.calories, self.protein, self.carbs, self.fat
