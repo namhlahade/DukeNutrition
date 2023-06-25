@@ -8,8 +8,17 @@ import Dashboard from './pages/RecommendationsPage';
 import SidebarNavigation from './components/Sidenav';
 import MealDisplay from './components/mealDisplay.component';
 import UserInfoSurvey from "./pages/UserInfoSurvey";
+import RequireAuth from './components/RequireAuth';
+import PersistLogin from './components/PersistLogin';
+import Unauthorized from './components/Unauthorized';
 import './../css/bootstrap.css';
 import './../css/App.css';
+
+const ROLES = {
+  'User': 2001,
+  'Editor': 1984,
+  'Admin': 5150
+}
 
 function App() {
   const delayRender = (delay) => {
@@ -31,22 +40,34 @@ function App() {
     };
 
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<MealDisplay />} />
         <Route
           path="/duke-net-nutrition/sign-in"
-          element={<LoginForm redirectToHomeContent={redirectToHomeContent} />}
+          element={<LoginForm />}
         />
         <Route
           path="/duke-net-nutrition/sign-up"
-          element={<SignUpForm redirectToHomeContent={redirectToSurvey} />}
+          element={<SignUpForm />}
         />
-        <Route path="/duke-net-nutrition/content" element={<WebContent />} />
-        <Route path="/duke-net-nutrition/content/dashboard" element={<Dashboard />} />
-        <Route path="/duke-net-nutrition/content/user-info-survey" element={<UserInfoSurvey />} />
+        <Route path="unauthorized" element={<Unauthorized />} />
+
+         {/* we want to protect these routes */}
+         <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+              <Route path="/duke-net-nutrition/content" element={<WebContent />} />
+            </Route>
+            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+              <Route path="/duke-net-nutrition/dashboard" element={<Dashboard />} />
+            </Route>
+            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+              <Route path="/duke-net-nutrition/user-info-survey" element={<UserInfoSurvey />} />
+            </Route>
+        </Route>
+
+        {/* catch all */}
+        {/* <Route path="*" element={<Missing />} /> */}
       </Routes>
-    </Router>
   );
 }
 

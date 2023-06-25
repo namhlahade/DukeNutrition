@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
+import useAuth from '../hooks/useAuth';
+import { useRef, useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Alert = ({ message, type }) => {
   return <div className={`alert alert-${type}`}>{message}</div>;
 };
 
-const Login = ({ redirectToHomeContent}) => {
+const Login = () => {
   const [alert, setAlert] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { setAuth, persist, setPersist } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevents default form submission behavior
@@ -24,23 +31,41 @@ const Login = ({ redirectToHomeContent}) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true,
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
-      .then((result) => {
+      .then((response) => response.json()) // The first .then() handles the raw HTTP response from the server.
+      .then((data) => {
         // Handle the response from the backend
-        if (result.error) {
-          setAlert({ type: 'danger', message: result.error });
+        if (data.error) {
+          setAlert({ type: 'danger', message: data.error });
         } else {
-          setAlert({ type: 'success', message: result.message });
-          redirectToHomeContent(true);
+          setAlert({ type: 'success', message: data.message });
+          const accessToken = data.accessToken;
+          const roles = data.role; //user code
+          console.log(data.accessToken);
+          console.log(data.role);
+          console.log(data.message);
+          setAuth({ username, password, roles, accessToken });
+          setUsername('');
+          setPassword('');
+          //redirectToHomeContent(true);
+          navigate(from, { replace: true });
         }
-      })
+      }) // The second .then() handles the parsed JSON data extracted from the response.
       .catch((error) => {
         // Handle any errors that occurred during the request
         console.error('Error:', error);
       });
   };
+
+  const togglePersist = () => {
+      setPersist(prev => !prev);
+  }
+
+  useEffect(() => {
+      localStorage.setItem("persist", persist);
+  }, [persist])
 
   return (
     <div className="auth-wrapper">
@@ -76,10 +101,11 @@ const Login = ({ redirectToHomeContent}) => {
               <div className="custom-control custom-checkbox">
                 <input
                   type="checkbox"
-                  className="custom-control-input"
-                  id="customCheck1"
+                  id="persist"
+                  onChange={togglePersist}
+                  checked={persist}
                 />
-                <label className="custom-control-label" htmlFor="customCheck1">
+                <label className="custom-control-label" htmlFor="persist">
                   Remember me
                 </label>
               </div>
@@ -94,6 +120,12 @@ const Login = ({ redirectToHomeContent}) => {
               Forgot <a href="#">password?</a>
             </p>
           </form>
+          <p className="forgot-password text-left">
+                Need an Account?{' '}
+                <span className="line">
+                    <Link to="/duke-net-nutrition/sign-up">Sign Up</Link>
+                </span>
+            </p>
         </div>
       </div>
     </div>

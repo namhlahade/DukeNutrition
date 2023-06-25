@@ -1,4 +1,6 @@
 import sqlite3
+from flask_httpauth import HTTPBasicAuth
+import basic_auth
 from flask import Blueprint, jsonify, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
@@ -73,7 +75,11 @@ def login():
         return jsonify({'error': 'Invalid password.'}), 401
     
     # TODO: generate and return a JWT token for authenticated requests
-    return jsonify({'message': 'Logged in successfully.'}), 200
+    #token = basic_auth.current_user().get_token()
+    return jsonify({'message': 'Logged in successfully.',
+                    'role': 2001,
+                    'accessToken': 'token'
+                    }), 200
 
 # THIS IS THE SURVEY 
 @authentication_bp.route('/collectUserInfo', methods=['POST'])

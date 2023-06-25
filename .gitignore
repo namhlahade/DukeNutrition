@@ -1,5 +1,7 @@
 env/
 
+/frontend/src/javascript/.env
+
 # dependencies
 /node_modules
 /.pnp
