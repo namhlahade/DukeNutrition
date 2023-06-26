@@ -29,14 +29,11 @@ export const UserProvider = ({ children }) => {
             setAlert({ type: 'danger', message: data.error });
             } else {
             setAlert({ type: 'success', message: data.message });
-            const accessToken = data.accessToken;
-            setCookies('token', accessToken);
-            const roles = data.role; //user code
             // console.log(data.accessToken);
             // console.log(data.role);
             // console.log(data.message);
-            setCookies('token', data.accessToken); // your token
-            setCookies('name', username); // optional data
+            setCookies('token', data.accessToken, {maxAge:86400}); // your token, expiration time in seconds (1 day)
+            setCookies('name', username, {maxAge:86400}); // optional data 
             //redirectToHomeContent(true);
             navigate(from, { replace: true });
             }
