@@ -13,10 +13,11 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
+from corsOptions import cors_options
 
 app = Flask(__name__)
 app.debug = True
-CORS(app)
+CORS(app, origins="*") # Enable CORS for all domains on all routes which is not recommended for production because it is a security risk
 
 app.register_blueprint(authentication_bp, url_prefix='/authentication')
 app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
