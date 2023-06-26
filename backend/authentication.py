@@ -5,6 +5,10 @@ from flask import Blueprint, jsonify, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
 
+import jwt
+import datetime
+from config import ACCESS_TOKEN
+
 
 authentication_bp = Blueprint('authentication', __name__)
 
@@ -74,11 +78,11 @@ def login():
     if not check_password_hash(user[3], password):
         return jsonify({'error': 'Invalid password.'}), 401
     
-    # TODO: generate and return a JWT token for authenticated requests
-    #token = basic_auth.current_user().get_token()
+    access_token = encode_auth_token(username)
+
     return jsonify({'message': 'Logged in successfully.',
                     'role': 2001,
-                    'accessToken': 'token'
+                    'accessToken': access_token
                     }), 200
 
 # THIS IS THE SURVEY 
@@ -186,8 +190,38 @@ def deleteUser():
 
 
 
-
-
+def encode_auth_token(username):
+    """
+    Generates the Auth Token
+    :return: string
+    """
+    try:
+        payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
+            'iat': datetime.datetime.utcnow(),
+            'sub': username
+        }
+        return jwt.encode(
+            payload,
+            ACCESS_TOKEN,
+            algorithm='HS256'
+        )
+    except Exception as e:
+        return e
     
+@staticmethod
+def decode_auth_token(auth_token):
+    """
+    Decodes the auth token
+    :param auth_token:
+    :return: integer|string
+    """
+    try:
+        payload = jwt.decode(auth_token, ACCESS_TOKEN)
+        return payload['sub']
+    except jwt.ExpiredSignatureError:
+        return 'Signature expired. Please log in again.'
+    except jwt.InvalidTokenError:
+        return 'Invalid token. Please log in again.'
 
     

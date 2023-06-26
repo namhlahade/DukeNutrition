@@ -5,12 +5,14 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 import { navData } from "../lib/navData";
 import React, { Component }  from 'react';
 import { useState } from "react";
+import { useAuth } from "../context/AuthProvider";
 
 export default function Sidenav() {
     const [open, setopen] = useState(true)
     const toggleOpen = () => {
         setopen(!open)
     }
+    const { logout } = useAuth();
   return (
     <div className={open?styles.sidenav:styles.sidenavClosed}>
         <button className={styles.menuBtn} onClick={toggleOpen}>
@@ -22,6 +24,9 @@ export default function Sidenav() {
             <span className={styles.linkText}>{item.text}</span>
         </NavLink>
         })}
+        <button class="logout-button" onClick={logout}>
+            Logout
+        </button>
     </div>
   )
 }
