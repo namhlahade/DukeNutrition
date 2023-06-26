@@ -4,7 +4,9 @@ import Button from 'react-bootstrap/Button';
 import styles from "../../css/mealDisplay.css"
 
 const TypeOfMeal = {
-  "Pitchforks": "add_item"
+  "Pitchforks": "add_item",
+  "Bella_Union": "add_item",
+  "Ginger_and_Soy": "build_your_own"
 }
 
 const MealDisplay = () => {

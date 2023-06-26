@@ -25,13 +25,13 @@ num_tables = len(table_names)
 # Print the number of tables
 print(f"There are {num_tables} tables in the database.")'''
 
-# Deleting a table
+# Deleting a table (meals)
 '''cursor.execute("DROP TABLE IF EXISTS Meals")
 connection.commit()
 cursor.close'''
 
 # Adding restaurant to database
-'''with open('Restaurants/Pitchfork.csv', 'r') as csv_file:
+'''with open('Restaurants/Ginger_And_Soy.csv', 'r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
 
     # Iterate over each row in the CSV file
@@ -48,10 +48,10 @@ cursor.close'''
         cursor.execute(query, column_values)
 
     # Commit the changes
-    connection.commit()
+    connection.commit()'''
 
 # Close the cursor and the database connection
-cursor.close()'''
+cursor.close()
 
 
 
