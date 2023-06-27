@@ -1,0 +1,23 @@
+
+#parentContainer{
+    display: flex;
+    flex-direction: column;
+    overflow:hidden;
+    width:auto;
+    display:inline;
+
+}
+
+#mealCardContainer{
+    display: flex;
+    flex-direction: row;
+    text-align:center;
+}
+
+h1{
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 0px;
+    text-align: center;
+}

@@ -11,7 +11,6 @@ const Alert = ({ message, type }) => {
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { setAuth, persist, setPersist } = useAuth();
   const [alert, setAlert] = useState(null);
   const { login } = useAuth();
 
@@ -19,15 +18,6 @@ const Login = () => {
     event.preventDefault(); // Prevents default form submission behavior
     login({ username, password, alert });
   };
-
-  const togglePersist = () => {
-      setPersist(prev => !prev);
-  }
-
-  useEffect(() => {
-      localStorage.setItem("persist", persist);
-  }, [persist])
-
 
 return (
     <div className="auth-wrapper">
@@ -64,8 +54,8 @@ return (
                 <input
                   type="checkbox"
                   id="persist"
-                  onChange={togglePersist}
-                  checked={persist}
+                  // onChange={togglePersist}
+                  // checked={persist}
                 />
                 <label className="custom-control-label" htmlFor="persist">
                   Remember me

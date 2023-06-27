@@ -1,5 +1,8 @@
 import React, { Component }  from 'react';
 import styled from 'styled-components';
+import { LineChart } from '../components/lineChart.component';
+import { MealCard } from '../components/mealCard.component';
+import style from "../../css/dashboard.css"
 
 const Container = styled.div`
   background: #36393e;
@@ -30,22 +33,19 @@ const Card = styled.div`
 
 function RecommendationsPage() {
   return (
-    <Container> // 6
-      <List>
-        {/* {[0, 1, 2, 3, 5, 6, 7, 8, 9].map(item => <Card>{item}</Card>)} */}
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-      </List>
-    </Container>
+    <>
+      <div id='parentContainer' >
+        <LineChart />
+        <br />
+        <br />
+        <h1>Previous Meals</h1>
+        <div id='mealCardContainer'>
+          <MealCard id='mealCard'/>
+          <MealCard id='mealCard'/>
+          <MealCard id='mealCard'/>
+        </div>
+      </div>
+    </>
   );
 };
 

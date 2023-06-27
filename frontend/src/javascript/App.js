@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import WebContent from './pages/WebContent';
 import LoginForm from './components/login.component';
 import SignUpForm from './components/signup.component';
+import Profile from './components/profile.component.tsx';
 import SignUpLogin from './pages/signup_login';
 import Dashboard from './pages/RecommendationsPage';
 import SidebarNavigation from './components/Sidenav';
@@ -59,8 +60,12 @@ function App() {
           <Route path="/duke-net-nutrition/dashboard" element={<Dashboard />} />
         </Route>
         <Route element={<ProtectRoutes />}>
-          <Route path="/duke-net-nutrition/user-info-survey" element={<UserInfoSurvey />} />
+          <Route path="/duke-net-nutrition/user-preferences" element={<UserInfoSurvey />} />
         </Route>
+        <Route element={<ProtectRoutes />}>
+          <Route path="/duke-net-nutrition/profile" element={<Profile />} />
+        </Route>
+
 
         {/* catch all */}
         {/* <Route path="*" element={<Missing />} /> */}

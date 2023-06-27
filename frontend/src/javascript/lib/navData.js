@@ -9,24 +9,24 @@ export const navData = [
         id: 0,
         icon: <DashboardIcon/>,
         text: "Dashboard",
-        link: "/duke-net-nutrition/content/dashboard"
+        link: "/duke-net-nutrition/dashboard"
     },
     {
         id: 1,
         icon: <MealIcon/>,
-        text: "Next Meal",
-        link: "/duke-net-nutrition/content/next-meal"
+        text: "Create Meal",
+        link: "/duke-net-nutrition/create-meal"
     },
     {
         id: 2,
         icon: <SurveyIcon/>,
-        text: "User Info Survey",
-        link: "/duke-net-nutrition/content/user-info-survey"
+        text: "User Preferences",
+        link: "/duke-net-nutrition/user-preferences"
     },
     {
         id: 3,
         icon: <ProfileIcon/>,
         text: "Profile",
-        link: "/duke-net-nutrition/content/profile"
+        link: "/duke-net-nutrition/profile"
     }
 ]
