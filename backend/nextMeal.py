@@ -93,7 +93,7 @@ def selectMeal():
         'Bella_Union': {
             'class': Bella_Union,
             'variables': {
-                'add_item': ['item_name', 'addons']
+                'add_item': ['addons'] # Should be ['item_name', 'addons']
             },
             'methods': {
                 'add_item': 'addItem'
@@ -202,34 +202,38 @@ class Ginger_and_Soy(DukeMeal):
         self.carbs = 0
         self.fat = 0
 
+        self.name = ""
         theName = "Build you own bowl with"
-        for typeOfMeat in self.meat.keys():
+        for typeOfMeat in self.meat:
             theName = theName + " " + typeOfMeat
         
-        self.name = theName + " and " + rice
+        for typeOfRice in rice:
+            self.name = theName + " and " + typeOfRice
 
         db = get_db()
-        query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (self.rice, "Ginger_and_Soy"))
-        riceInfo = query.fetchone()
-        print("Information about rice:")
-        print(riceInfo)
+        for typeOfRice in self.rice:
+            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (typeOfRice, "Ginger_and_Soy"))
+            riceInfo = query.fetchone()
+            print("Information about rice:")
+            print(riceInfo)
 
-        self.calories += 0 if isinstance(riceInfo[1], str) else riceInfo[1]
-        self.protein += 0 if isinstance(riceInfo[19], str) else riceInfo[19]
-        self.carbs += 0 if isinstance(riceInfo[14], str) else riceInfo[14]
-        self.fat += 0 if isinstance(riceInfo[3], str) else riceInfo[3]
+            self.calories += 0 if isinstance(riceInfo[1], str) else riceInfo[1]
+            self.protein += 0 if isinstance(riceInfo[19], str) else riceInfo[19]
+            self.carbs += 0 if isinstance(riceInfo[14], str) else riceInfo[14]
+            self.fat += 0 if isinstance(riceInfo[3], str) else riceInfo[3]
+        
+        print("This is self.meat")
+        print(self.meat)
+        for key in self.meat:
+            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (key, "Ginger_and_Soy"))
+            meatInfo = query.fetchone()
+            print("Information about meat:")
+            print(meatInfo)
 
-        for key, value in self.meat.items():
-            for _ in range(value):
-                query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (key, "Ginger_and_Soy"))
-                meatInfo = query.fetchone()
-                print("Information about meat:")
-                print(meatInfo)
-
-                self.calories += 0 if isinstance(meatInfo[1], str) else meatInfo[1]
-                self.protein += 0 if isinstance(meatInfo[19], str) else meatInfo[19]
-                self.carbs += 0 if isinstance(meatInfo[14], str) else meatInfo[14]
-                self.fat += 0 if isinstance(meatInfo[3], str) else meatInfo[3]
+            self.calories += 0 if isinstance(meatInfo[1], str) else meatInfo[1]
+            self.protein += 0 if isinstance(meatInfo[19], str) else meatInfo[19]
+            self.carbs += 0 if isinstance(meatInfo[14], str) else meatInfo[14]
+            self.fat += 0 if isinstance(meatInfo[3], str) else meatInfo[3]
 
         for addon in self.addons:
             query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (addon, "Ginger_and_Soy"))
@@ -303,9 +307,9 @@ class Bella_Union(DukeMeal):
     def __init__(self):
         super().__init__()
     
-    def addItem(self, name, addons):
+    def addItem(self, addons):
         db = get_db()
-        query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (name, "Bella_Union"))
+        '''query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (name, "Bella_Union"))
         itemInfo = query.fetchone()
         print("Information about item:")
         print(itemInfo)
@@ -314,9 +318,12 @@ class Bella_Union(DukeMeal):
         self.calories += 0 if isinstance(itemInfo[1], str) else itemInfo[1]
         self.protein += 0 if isinstance(itemInfo[19], str) else itemInfo[19]
         self.carbs += 0 if isinstance(itemInfo[14], str) else itemInfo[14]
-        self.fat += 0 if isinstance(itemInfo[3], str) else itemInfo[3]
+        self.fat += 0 if isinstance(itemInfo[3], str) else itemInfo[3]'''
+
+        self.name = ""
 
         for elem in addons:
+            self.name = self.name + elem + " "
             query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (elem, "Bella_Union"))
             addonInfo = query.fetchone()
             print("Information about add on:")

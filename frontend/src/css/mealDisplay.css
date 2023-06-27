@@ -28,10 +28,13 @@
     padding: 10px;
   }
 
-  .submitButton {
+  .portion-btn {
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 10px;
+    justify-content: flex-end;
+    margin-top: 5px;
   }
   
+  .portion-btn button {
+    margin-left: 5px;
+  }

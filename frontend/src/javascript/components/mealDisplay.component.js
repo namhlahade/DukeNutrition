@@ -200,14 +200,16 @@ const MealDisplay = () => {
                       <Accordion.Body>
                         <div className="checkbox-list">
                           {things.map((thing) => (
-                            <div className='box'>
-                              <label key={thing} className="custom-checkbox">
-                                <input
-                                  type="checkbox"
-                                  onClick={(event) => dataGather(event, restaurant, type, thing)}
-                                />
-                              <span className="checkbox-text">{thing}</span>
-                              </label>
+                            <div>
+                              <div className='box'>
+                                <label key={thing} className="custom-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    onClick={(event) => dataGather(event, restaurant, type, thing)}
+                                  />
+                                <span className="checkbox-text">{thing}</span>
+                                </label>
+                              </div>
                             </div>
                           ))}
                         </div>
