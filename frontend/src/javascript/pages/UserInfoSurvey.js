@@ -1,3 +1,4 @@
+import React, { Component }  from 'react';
 import { useCallback } from 'react';
 
 // Default V2 theme
@@ -13,6 +14,8 @@ const Alert = ({ message, type }) => {
 
 const handleSubmit = (data) => {
     // Send an HTTP POST request to the backend API endpoint
+    console.log("This is the data:")
+    console.log(data)
     fetch('http://127.0.0.1:5000/authentication/collectUserInfo', {
       method: 'POST',
       headers: {
