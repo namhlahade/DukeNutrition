@@ -217,10 +217,10 @@ class Ginger_and_Soy(DukeMeal):
             print("Information about rice:")
             print(riceInfo)
 
-            self.calories += 0 if isinstance(riceInfo[1], str) else riceInfo[1]
-            self.protein += 0 if isinstance(riceInfo[19], str) else riceInfo[19]
-            self.carbs += 0 if isinstance(riceInfo[14], str) else riceInfo[14]
-            self.fat += 0 if isinstance(riceInfo[3], str) else riceInfo[3]
+            self.calories += 0 if isinstance(riceInfo[2], str) else riceInfo[2]
+            self.protein += 0 if isinstance(riceInfo[20], str) else riceInfo[20]
+            self.carbs += 0 if isinstance(riceInfo[15], str) else riceInfo[15]
+            self.fat += 0 if isinstance(riceInfo[4], str) else riceInfo[4]
         
         print("This is self.meat")
         print(self.meat)
@@ -230,10 +230,10 @@ class Ginger_and_Soy(DukeMeal):
             print("Information about meat:")
             print(meatInfo)
 
-            self.calories += 0 if isinstance(meatInfo[1], str) else meatInfo[1]
-            self.protein += 0 if isinstance(meatInfo[19], str) else meatInfo[19]
-            self.carbs += 0 if isinstance(meatInfo[14], str) else meatInfo[14]
-            self.fat += 0 if isinstance(meatInfo[3], str) else meatInfo[3]
+            self.calories += 0 if isinstance(meatInfo[2], str) else meatInfo[2]
+            self.protein += 0 if isinstance(meatInfo[20], str) else meatInfo[20]
+            self.carbs += 0 if isinstance(meatInfo[15], str) else meatInfo[15]
+            self.fat += 0 if isinstance(meatInfo[4], str) else meatInfo[3]
 
         for addon in self.addons:
             query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (addon, "Ginger_and_Soy"))
@@ -241,10 +241,10 @@ class Ginger_and_Soy(DukeMeal):
             print("Information about addon:")
             print(addonInfo)
             
-            self.calories += 0 if isinstance(addonInfo[1], str) else addonInfo[1]
-            self.protein += 0 if isinstance(addonInfo[19], str) else addonInfo[19]
-            self.carbs += 0 if isinstance(addonInfo[14], str) else addonInfo[14]
-            self.fat += 0 if isinstance(addonInfo[3], str) else addonInfo[3]
+            self.calories += 0 if isinstance(addonInfo[2], str) else addonInfo[2]
+            self.protein += 0 if isinstance(addonInfo[20], str) else addonInfo[20]
+            self.carbs += 0 if isinstance(addonInfo[15], str) else addonInfo[15]
+            self.fat += 0 if isinstance(addonInfo[4], str) else addonInfo[4]
 
         for sauce in self.sauces:
             query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (sauce, "Ginger_and_Soy"))
@@ -252,10 +252,10 @@ class Ginger_and_Soy(DukeMeal):
             print("Information about sauce:")
             print(sauceInfo)
 
-            self.calories += 0 if isinstance(sauceInfo[1], str) else sauceInfo[1]
-            self.protein += 0 if isinstance(sauceInfo[19], str) else sauceInfo[19]
-            self.carbs += 0 if isinstance(sauceInfo[14], str) else sauceInfo[14]
-            self.fat += 0 if isinstance(sauceInfo[3], str) else sauceInfo[3]
+            self.calories += 0 if isinstance(sauceInfo[2], str) else sauceInfo[2]
+            self.protein += 0 if isinstance(sauceInfo[20], str) else sauceInfo[20]
+            self.carbs += 0 if isinstance(sauceInfo[15], str) else sauceInfo[15]
+            self.fat += 0 if isinstance(sauceInfo[4], str) else sauceInfo[4]
 
 
         db.close()
@@ -329,10 +329,10 @@ class Bella_Union(DukeMeal):
             print("Information about add on:")
             print(addonInfo)
 
-            self.calories += 0 if isinstance(addonInfo[1], str) else addonInfo[1]
-            self.protein += 0 if isinstance(addonInfo[19], str) else addonInfo[19]
-            self.carbs += 0 if isinstance(addonInfo[14], str) else addonInfo[14]
-            self.fat += 0 if isinstance(addonInfo[3], str) else addonInfo[3]
+            self.calories += 0 if isinstance(addonInfo[1], str) else addonInfo[2]
+            self.protein += 0 if isinstance(addonInfo[19], str) else addonInfo[20]
+            self.carbs += 0 if isinstance(addonInfo[14], str) else addonInfo[15]
+            self.fat += 0 if isinstance(addonInfo[3], str) else addonInfo[4]
 
         db.close()
 
