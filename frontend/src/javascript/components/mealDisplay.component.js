@@ -27,7 +27,10 @@ const MealDisplay = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/nextMeal/allRestaurants');
+        const options = {
+          method: 'GET',
+        };
+        const response = await fetch('http://127.0.0.1:5000/nextMeal/allRestaurants', options);
         const data = await response.json();
         setRestaurantData(data);
         console.log("Data from allRestaurants API call");

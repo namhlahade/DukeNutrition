@@ -1,9 +1,12 @@
+
 .sidenav {
     width: 250px;
     transition: width 0.3s ease-in-out;
     height: 100vh;
     background-color: rgb(10,25,41);
     padding-top: 28px;
+    display: flex;
+    flex-direction: column;
 }
 .sidenavClosed {
     composes: sidenav;
@@ -19,8 +22,14 @@
     text-decoration: none;
     overflow: hidden;
 }
-.linkText {
+.linkTextVisible {
     padding-left: 16px;
+    visibility: visible;
+}
+
+.linkTextHidden {
+    padding-left: 16px;
+    visibility: hidden;
 }
 
 .sideitem:hover {
@@ -36,4 +45,26 @@
     border: none;
     cursor: pointer;
     padding-left: 20px;
+}
+
+.logoutButton{
+    align-self: center;
+    align-self: flex-start;  
+    justify-self: flex-end;
+    position: flex;
+    color: #B2BAC2;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding-left: 20px;
+}
+
+.logoutButtonContainer{
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #B2BAC2;
+    text-decoration: none;
+    overflow: hidden;
 }
