@@ -101,6 +101,7 @@ def collectUserInfo():
     mealsPerDay = data.get("mealsPerDay")
 
     if not (userid and calories and protein and carbs and fat and mealsPerDay):
+        print("All questions need to be answered")
         return jsonify({'error': 'All questions need to be answered'})
 
     db = get_db()
@@ -111,8 +112,12 @@ def collectUserInfo():
 
 
     if len(userPref) != 0 and len(users) != 0:
+        print("User preferences already created")
+        print(users[0])
+        print(userPref[0])
         return jsonify({'error': 'User Preference already created.'}), 400
     if len(userPref) == 0 and len(users) == 0:
+        print("User Account has not been created")
         return jsonify({'error': 'User has not created an account.'}), 400
     
     prefId = str(uuid.uuid4())

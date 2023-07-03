@@ -6,6 +6,7 @@ import { RestartAlt } from '@mui/icons-material';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import LoadingSpinner from '../components/LoadingSpinner.js';
 
 const TypeOfMeal = {
   "Pitchforks": "add_item",
@@ -201,7 +202,7 @@ const MealDisplay = () => {
   };
 
   if (restaurantData === null) {
-    return <div>Loading...</div>;
+    return <div><LoadingSpinner/></div>;
   }
 
   return (
@@ -234,9 +235,9 @@ const MealDisplay = () => {
                                   </Col>
                                   <Col>
                                     <div className="plusMinus">
-                                      <button class="plus-button plus-button--small" onClick = {() => addMeal(restaurant, type, thing)}/>
-                                      <span className>{mealCounterData[restaurant][type][thing]}</span>
-                                      <button class="minus-button minus-button--small" onClick = {() => deleteMeal(restaurant, type, thing)}/>
+                                      <button className="plus-button plus-button--small" onClick = {() => addMeal(restaurant, type, thing)}/>
+                                      <span>{mealCounterData[restaurant][type][thing]}</span>
+                                      <button className="minus-button minus-button--small" onClick = {() => deleteMeal(restaurant, type, thing)}/>
                                     </div>
                                   </Col>    
                                 </div>
