@@ -23,7 +23,5 @@ env/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-backend/__pycache__/authentication.cpython-39.pyc
-backend/__pycache__/dashboard.cpython-39.pyc
+backend/__pycache__/
 .gitignore
-backend/__pycache__/profile.cpython-39.pyc
