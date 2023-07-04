@@ -4,6 +4,7 @@ import WebContent from './pages/WebContent';
 import LoginForm from './components/login.component';
 import SignUpForm from './components/signup.component';
 import Profile from './components/profile.component.tsx';
+import ProfileChange from './components/profileComponent2';
 import SignUpLogin from './pages/signup_login';
 import Dashboard from './pages/RecommendationsPage';
 import SidebarNavigation from './components/Sidenav';
@@ -63,7 +64,7 @@ function App() {
           <Route path="/duke-net-nutrition/user-preferences" element={<UserInfoSurvey />} />
         </Route>
         <Route element={<ProtectRoutes />}>
-          <Route path="/duke-net-nutrition/profile" element={<Profile />} />
+          <Route path="/duke-net-nutrition/profile" element={<ProfileChange />} />
         </Route>
 
 
