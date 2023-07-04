@@ -15,7 +15,7 @@ def userInfo():
     userid = data.get('userid')
 
     if not userid:
-        return jsonify({'error': 'Need userid to change profile'}), 200
+        return jsonify({'error': 'Need userid to change profile'}), 400
 
     db = get_db()
     
