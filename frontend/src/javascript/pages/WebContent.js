@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Dashboard from './RecommendationsPage';
+import Dashboard from './Dashboard';
 import SidebarNavigation from '../components/Sidenav';
 import UserInfoSurvey from "./UserInfoSurvey";
 

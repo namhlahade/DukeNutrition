@@ -2,9 +2,9 @@
 .sidenav {
     width: 15%; /* 15% of the parent element */
     transition: width 0.3s ease-in-out;
-    height: 100vh;
     background-color: rgb(10,25,41);
     padding-top: 28px;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }

@@ -5,7 +5,7 @@ import LoginForm from './components/login.component';
 import SignUpForm from './components/signup.component';
 import Profile from './components/profile.component.tsx';
 import ProfileChange from './components/profileComponent2';
-import Dashboard from './pages/RecommendationsPage';
+import Dashboard from './pages/Dashboard';
 import MealDisplay from './components/mealDisplay.component';
 import UserInfoSurvey from "./pages/UserInfoSurvey";
 import Unauthorized from './components/Unauthorized';
