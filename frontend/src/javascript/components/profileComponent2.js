@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import { useCallback } from 'react';
 
 // Default V2 theme
@@ -7,7 +7,6 @@ import '../../css/survey.css';
 // import 'survey-core/modern.min.css';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
-import { profile } from 'console';
 
 const surveyJson = {
   elements: [{

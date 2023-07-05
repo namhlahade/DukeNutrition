@@ -5,13 +5,12 @@ import LoginForm from './components/login.component';
 import SignUpForm from './components/signup.component';
 import Profile from './components/profile.component.tsx';
 import ProfileChange from './components/profileComponent2';
-import SignUpLogin from './pages/signup_login';
-import Dashboard from './pages/RecommendationsPage';
-import SidebarNavigation from './components/Sidenav';
+import Dashboard from './pages/Dashboard';
 import MealDisplay from './components/mealDisplay.component';
 import UserInfoSurvey from "./pages/UserInfoSurvey";
 import Unauthorized from './components/Unauthorized';
 import { ProtectRoutes } from './hooks/protectRoutes';
+import PageLayout from './components/PageLayout.component';
 import './../css/bootstrap.css';
 import './../css/App.css';
 
@@ -42,32 +41,29 @@ function App() {
 
   return (
       <Routes>
-        <Route path="/duke-net-nutrition/content/next-meal" element={<MealDisplay />} />
         <Route
-          path="/duke-net-nutrition/sign-in"
-          element={<LoginForm />}
-        />
-        <Route
-          path="/duke-net-nutrition/sign-up"
-          element={<SignUpForm />}
-        />
-        <Route path="unauthorized" element={<Unauthorized />} />
+            path="/duke-net-nutrition/sign-in"
+            element={<LoginForm />}
+          />
+          <Route
+            path="/duke-net-nutrition/sign-up"
+            element={<SignUpForm />}
+          />
+          <Route path="/duke-net-nutrition/unauthorized" element={<Unauthorized />} />
+        <Route path="/" element={<PageLayout />} >
+          <Route path="/duke-net-nutrition/create-meal" element={<MealDisplay />} />
 
-         {/* we want to protect these routes */}
-        <Route element={<ProtectRoutes />}>
-          <Route path="/duke-net-nutrition/content" element={<WebContent />} />
+          {/* we want to protect these routes */}
+          <Route element={<ProtectRoutes />}>
+            <Route path="/duke-net-nutrition/dashboard" element={<Dashboard />} />
+          </Route>
+          <Route element={<ProtectRoutes />}>
+            <Route path="/duke-net-nutrition/user-preferences" element={<UserInfoSurvey />} />
+          </Route>
+          <Route element={<ProtectRoutes />}>
+            <Route path="/duke-net-nutrition/profile" element={<ProfileChange />} />
+          </Route>
         </Route>
-        <Route element={<ProtectRoutes />}>
-          <Route path="/duke-net-nutrition/dashboard" element={<Dashboard />} />
-        </Route>
-        <Route element={<ProtectRoutes />}>
-          <Route path="/duke-net-nutrition/user-preferences" element={<UserInfoSurvey />} />
-        </Route>
-        <Route element={<ProtectRoutes />}>
-          <Route path="/duke-net-nutrition/profile" element={<ProfileChange />} />
-        </Route>
-
-
         {/* catch all */}
         {/* <Route path="*" element={<Missing />} /> */}
       </Routes>

@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
             setCookies('token', data.accessToken, {maxAge:86400}); // your token, expiration time in seconds (1 day)
             setCookies('name', username, {maxAge:86400}); // optional data 
             //redirectToHomeContent(true);
-            navigate('/duke-net-nutrition/content', { replace: true });
+            navigate('/duke-net-nutrition/dashboard', { replace: true });
             }
         }) // The second .then() handles the parsed JSON data extracted from the response.
         .catch((error) => {

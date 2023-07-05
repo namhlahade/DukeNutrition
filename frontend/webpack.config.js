@@ -6,4 +6,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
+  resolve: {
+    fallback: {
+      "console": require.resolve("console-browserify") // or false if you don't want a polyfill
+    }
+  }
 };
