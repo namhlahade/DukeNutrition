@@ -11,7 +11,7 @@
 #mealCardContainer{
     display: flex;
     flex-direction: row;
-    text-align:center;
+    text-align: center;
 }
 
 h1{
@@ -20,4 +20,10 @@ h1{
     color: black;
     margin-bottom: 0px;
     text-align: center;
+}
+
+#showMoreButton{
+    text-align:center;
+    margin: 0 auto;
+    display: block;
 }

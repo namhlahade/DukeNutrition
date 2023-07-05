@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import { useCallback } from 'react';
 
 // Default V2 theme

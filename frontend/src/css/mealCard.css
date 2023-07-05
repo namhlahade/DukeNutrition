@@ -11,3 +11,8 @@
     justify-content: center;
     align-items: center;
 }
+
+.cardImage {
+    padding: "1em 1em 0 1em";
+    object-fit: "contain";
+}
