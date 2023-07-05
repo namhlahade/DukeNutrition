@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import WebContent from './pages/WebContent';
 import LoginForm from './components/login.component';
 import SignUpForm from './components/signup.component';
 import Profile from './components/profile.component.tsx';
 import ProfileChange from './components/profileComponent2';
-import Dashboard from './pages/Dashboard';
+import {Dashboard} from './pages/Dashboard';
 import MealDisplay from './components/mealDisplay.component';
 import UserInfoSurvey from "./pages/UserInfoSurvey";
 import Unauthorized from './components/Unauthorized';
@@ -50,7 +49,7 @@ function App() {
             element={<SignUpForm />}
           />
           <Route path="/duke-net-nutrition/unauthorized" element={<Unauthorized />} />
-        <Route path="/" element={<PageLayout />} >
+        <Route element={<PageLayout />} >
           <Route path="/duke-net-nutrition/create-meal" element={<MealDisplay />} />
 
           {/* we want to protect these routes */}

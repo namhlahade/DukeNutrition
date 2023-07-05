@@ -27,7 +27,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export function MealCard() {
+export function MealCard({restaurantName, date, ingredients}) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -42,14 +42,14 @@ export function MealCard() {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Restauran_Name"
-        subheader="insert_date"
+        title={restaurantName}
+        subheader={date}
       />
       <CardMedia
         component="img"
         height="150"
         image = {require('../../resources/images/pitchforks_label.png')}
-        alt="Paella dish"
+        alt="pitchforks"
         class='cardImage'
       />
       <CardContent>

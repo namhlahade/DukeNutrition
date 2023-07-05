@@ -7,6 +7,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import LoadingSpinner from '../components/LoadingSpinner.js';
+import { SurveyError } from 'survey-core';
+import Alert from './Alert';
+import {useDash} from '../context/DashProvider.js';
 
 const TypeOfMeal = {
   "Pitchforks": "add_item",
@@ -16,9 +19,11 @@ const TypeOfMeal = {
 
 
 const MealDisplay = () => {
-  const [restaurantData, setRestaurantData] = useState(null); // This is the all the restaurant dat (all restaurants, types of meals, and food)
+  const [restaurantData, setRestaurantData] = useState(null); // This is the all the restaurant data (all restaurants, types of meals, and food)
   const [meal, setMeal] = useState({}); // This is the meal that is being built and added to the database
   const [mealCounterData, setMealCounterData] = useState({});
+  const [alert, setAlert] = useState(null);
+  const handleAddMeal = useDash().handleAddMeal;
 
   useEffect(() => {
     console.log("mealCounterData: ")
@@ -57,6 +62,7 @@ const MealDisplay = () => {
       
       catch (error) {
         console.error('Error fetching restaurant data:', error);
+        setAlert({ type: 'danger', message: 'Error fetching restaurant data!' });
       }
     };
 
@@ -69,7 +75,7 @@ const MealDisplay = () => {
 
     if (Object.keys(tempMeal).length === 1){
       if (!Object.keys(tempMeal).includes(restaurant)){
-        alert("You can only add one restaurant at a time!"); // Want to create a warning pop up
+        setAlert({ type: 'danger', message: 'You can only add one restaurant at a time!' });
         return;
       }
     }
@@ -128,7 +134,7 @@ const MealDisplay = () => {
   const sendData = () => {
     console.log("Add Meal Button pressed.")
     if (Object.keys(meal).length === 0){
-      alert("Your Meal is Empty!"); // Want to create a warning pop up
+      setAlert({ type: 'danger', message: 'Your Meal is Empty!' });
       return;
     }
     var restaurant = Object.keys(meal)[0];
@@ -190,11 +196,13 @@ const MealDisplay = () => {
 
         console.log(tempMeal);
         setMealCounterData(tempMeal)
-
-
+        setAlert({ type: 'success', message: 'Meal Added!' });
+        handleAddMeal({mealSend});
+        console.log('sent meal to dashboard history');
       }
       catch(error) {
         console.log('Error fetching restaurant data:', error);
+        setAlert({ type: 'danger', message: 'Error fetching restaurant data!' });
       }
     }
     fetchCalsAndMacs();
@@ -209,6 +217,7 @@ const MealDisplay = () => {
     <>
       <div>
         <h1 className='mainHeading'>Duke Meals</h1>
+        {alert && <Alert message={alert.message} type={alert.type} />}
       </div>
       <div>
       <div className="custom-accordion">
