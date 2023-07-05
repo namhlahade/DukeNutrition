@@ -7,7 +7,6 @@ import '../../css/survey.css';
 // import 'survey-core/modern.min.css';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
-import { profile } from 'console';
 
 const surveyJson = {
   elements: [{
@@ -48,39 +47,48 @@ const surveyJson = {
 };
 
 const ProfileChange = () => {
-    const [profileChangeInput, setProfileChangeInput] = useState({});
+    const [profileChangeInput, setProfileChangeInput] = useState(null);
+    const [alert, setAlert] = useState(null);
 
     useEffect(() => {
         console.log("Input being sent to profile change API");
         console.log(profileChangeInput);
-    },[profileChangeInput]);
+    }, [profileChangeInput]);    
 
-  const handleSubmit = (data) => {
-    const tempProfile = { ...data }
-    tempProfile["userid"] = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
-    setProfileChangeInput(tempProfile);
+    const handleSubmit = (data) => {
+        console.log("data recieved from hitting submit button")
+        console.log(data)
+        const tempProfile = { ...data }
+        console.log("tempData variable information")
+        console.log(tempProfile)
+        tempProfile["userid"] = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+        setProfileChangeInput(tempProfile);
+        console.log("Immediate Change");
+        console.log(profileChangeInput)
 
-    fetch('http://127.0.0.1:5000/profile/userInfo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          // Handle the response from the backend
-          if (result.error) {
-            alert("Failure");
-          } else {
-            alert("Success");
-          }
-        })
-        .catch((error) => {
-          // Handle any errors that occurred during the request
-          console.error('Error:', error);
-        });
-  };
+        fetch('http://127.0.0.1:5000/profile/userInfo', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(profileChangeInput),
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              // Handle the response from the backend
+              if (result.error) {
+                setAlert({ type: 'danger', message: result.error });
+              } else {
+                setAlert({ type: 'success', message: result.message });
+                // redirectToHomeContent(true);
+              }
+            })
+            .catch((error) => {
+              // Handle any errors that occurred during the request
+              console.error('Error:', error);
+            });
+        
+    };
 
   const Alert = ({ message, type }) => {
     return <div className={`alert alert-${type}`}>{message}</div>;
