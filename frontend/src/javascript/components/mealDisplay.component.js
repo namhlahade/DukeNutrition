@@ -197,12 +197,12 @@ const MealDisplay = () => {
         console.log(tempMeal);
         setMealCounterData(tempMeal)
         setAlert({ type: 'success', message: 'Meal Added!' });
-        handleAddMeal({mealSend});
+        handleAddMeal({restaurant: mealSend["restaurant"], mealType: mealSend["meal_type"]});
         console.log('sent meal to dashboard history');
       }
       catch(error) {
-        console.log('Error fetching restaurant data:', error);
-        setAlert({ type: 'danger', message: 'Error fetching restaurant data!' });
+        console.log('Error Creating Meal:', error);
+        setAlert({ type: 'danger', message: 'Error Creating Meal!' });
       }
     }
     fetchCalsAndMacs();
