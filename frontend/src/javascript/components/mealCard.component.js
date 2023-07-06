@@ -16,6 +16,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {Delete} from '@mui/icons-material';
 import { Reorder } from '@mui/icons-material';
+import { useEffect, useState } from "react";
 import '../../css/mealCard.css'
 
 const ExpandMore = styled((props) => {
@@ -34,6 +35,34 @@ export function MealCard({restaurant, date, ingredients, mealID}) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const [isDeleted, setIsDeleted] = useState(false);
+
+  const deleteCard = () => {
+    setIsDeleted(true);
+  };
+
+  useEffect(() => {
+    const deletedCardIds = JSON.parse(localStorage.getItem("deletedCardIds")) || [];
+    if (deletedCardIds.includes(mealID)) {
+      setIsDeleted(true);
+    }
+  }, [mealID]);
+
+  useEffect(() => {
+    const deletedCardIds = JSON.parse(localStorage.getItem("deletedCardIds")) || [];
+    if (isDeleted) {
+      localStorage.setItem("deletedCardIds", JSON.stringify([...deletedCardIds, mealID]));
+    } else {
+      localStorage.setItem(
+        "deletedCardIds",
+        JSON.stringify(deletedCardIds.filter((id) => id !== mealID))
+      );
+    }
+  }, [mealID, isDeleted]);
+
+  if (isDeleted) {
+    return null;
+  }
 
   const chooseRestaurantImage = (restaurant) => {
     if(restaurant === "Pitchforks"){
@@ -47,13 +76,6 @@ export function MealCard({restaurant, date, ingredients, mealID}) {
     }
     else{
       return;
-    }
-  }
-  const deleteCard = () => {
-    const cardElement = document.getElementById(mealID);
-    if (cardElement) {
-      cardElement.style.display = 'none';
-      console.log("mealID: " + mealID);
     }
   }
 
