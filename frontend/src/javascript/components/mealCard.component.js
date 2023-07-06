@@ -37,6 +37,8 @@ export function MealCard({restaurant, date, ingredients, mealID}) {
   };
   const [isDeleted, setIsDeleted] = useState(false);
 
+  ////////////////////////////////////////////////////////////////////////////////////////
+
   const deleteCard = () => {
     setIsDeleted(true);
   };
