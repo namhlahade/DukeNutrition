@@ -269,6 +269,10 @@ const MealDisplay = () => {
       <div className='submitButton'>
         <Button variant="outline-primary" onClick = {() => sendData()}>Add Meal</Button>
       </div>
+      <div className='submitButton'>
+        <Button variant="outline-primary" >Clear</Button>
+      </div>
+
     </>
   );
 };
