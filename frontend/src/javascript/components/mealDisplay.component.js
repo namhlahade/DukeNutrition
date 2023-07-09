@@ -29,6 +29,11 @@ const MealDisplay = () => {
     console.log("mealCounterData: ")
     console.log(mealCounterData);
   },[mealCounterData]);
+
+  useEffect(() => {
+    console.log("meal: ")
+    console.log(meal);
+  },[meal]);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +73,26 @@ const MealDisplay = () => {
 
     fetchData();
   }, []);
+
+  const clearMeal = () => {
+    setMeal({});
+    console.log("clearMeal Meal Variable:");
+    console.log(meal);
+
+    const tempMeal = { ...mealCounterData }
+      for (var restaurant in tempMeal){
+        for (var type in tempMeal[restaurant]){
+          for (const food in tempMeal[restaurant][type]){
+            tempMeal[restaurant][type][food] = 0;
+          }
+        }
+      }
+
+      setMealCounterData(tempMeal);
+      console.log("clearMeal MealCounter Variable:")
+      console.log(tempMeal);
+      
+  };
 
   const addMeal = (restaurant, type, thing) => {
     const tempMealCounterData = { ...mealCounterData };
@@ -270,7 +295,7 @@ const MealDisplay = () => {
         <Button variant="outline-primary" onClick = {() => sendData()}>Add Meal</Button>
       </div>
       <div className='submitButton'>
-        <Button variant="outline-primary" >Clear</Button>
+        <Button variant="outline-primary" onClick = {() => clearMeal()}>Clear</Button>
       </div>
 
     </>
