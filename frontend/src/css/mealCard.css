@@ -1,5 +1,5 @@
 
-#mealCard{
+.mealCard{
     margin: 20px;
     background: #fff;
     height: 400px;
@@ -15,4 +15,8 @@
 .cardImage {
     padding: "1em 1em 0 1em";
     object-fit: "contain";
+}
+
+#deleteButton{
+    border: none;
 }

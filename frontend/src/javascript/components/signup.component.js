@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-
-const Alert = ({ message, type }) => {
-  return <div className={`alert alert-${type}`}>{message}</div>;
-};
+import Alert from './Alert';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
