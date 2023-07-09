@@ -2,10 +2,52 @@
 #parentContainer{
     display: flex;
     flex-direction: column;
-    overflow:hidden;
     width:auto;
     display:inline;
+    overflow-x: hidden;
+}
 
+#topPane{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    overflow-x: hidden;
+}
+
+#chartContainer{
+    width: 75%;
+    overflow-x: hidden;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+    margin: 20px;
+}
+
+#chartSelectors{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#chartSelector{
+    border: rgba(0, 0, 0, 0.6) solid 1px;
+    border-radius: 20px;
+    padding: 1px;
+    color: rgba(0, 0, 0, 0.6);
+    width: 15%;
+}
+
+#chartSelector:hover{
+    background-color: #007bff;
+    color: white;
+}
+
+#chartSelector:active{
+    background-color: #007bff;
+    color: white;
 }
 
 #mealCardList{

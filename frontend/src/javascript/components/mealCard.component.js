@@ -13,6 +13,7 @@ import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {Tooltip} from "react-tooltip"; 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {Delete} from '@mui/icons-material';
 import { Reorder } from '@mui/icons-material';
@@ -97,15 +98,18 @@ export function MealCard({restaurant, date, ingredients, mealID}) {
           subheader={date}
           avatar={
             <IconButton>
-              <Typography variant="subtitle2">Reorder</Typography>
               <Reorder />
-            </IconButton>}
+              {/* <Tooltip title="Tooltip for the register button" placement="top" place="top" effect="solid">
+              </Tooltip> */}
+            </IconButton>
+          }
+
         />
         <CardMedia
           component="img"
           height="150"
           image = {chooseRestaurantImage(restaurant)}
-          alt="pitchforks"
+          alt={restaurant}
           class='cardImage'
         />
         <CardContent subheader={date} >

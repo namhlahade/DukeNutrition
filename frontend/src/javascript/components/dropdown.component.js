@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function BasicSelect() {
+export function DropDownComponent({title, menuItems}) {
   const [age, setAge] = React.useState('');
 
   const handleChange = (event) => {
@@ -15,18 +15,17 @@ export default function BasicSelect() {
   return (
     <Box sx={{ minWidth: 130 }}>
       <FormControl sx={{ minWidth: 130 }}>
-        <InputLabel id="demo-simple-select-label">Time Period</InputLabel>
+        <InputLabel id="demo-simple-select-label">{title}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={age}
-          label="Time Period"
+          label={title}
           onChange={handleChange}
         >
-          <MenuItem value={7}>7 Days</MenuItem>
-          <MenuItem value={30}>30 Days</MenuItem>
-          <MenuItem value={180}>180 Days</MenuItem>
-          <MenuItem value={365}>365 Days</MenuItem>
+          {menuItems?.map((item, index) => (
+            <MenuItem key={index} value={item}>{item}</MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>
