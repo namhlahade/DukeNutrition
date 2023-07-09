@@ -156,7 +156,8 @@ const MealDisplay = () => {
     }
     console.log("updated meal variable after pressing Add Meal Button")
     console.log(meal)
-
+    //handleAddMeal({meal}); 
+    
     const mealSend = {}
     for (const [restaurant, restaurantData] of Object.entries(meal)){
       mealSend["restaurant"] = restaurant;
@@ -197,7 +198,7 @@ const MealDisplay = () => {
         console.log(tempMeal);
         setMealCounterData(tempMeal)
         setAlert({ type: 'success', message: 'Meal Added!' });
-        handleAddMeal({restaurant: mealSend["restaurant"], mealType: mealSend["meal_type"]});
+        handleAddMeal({restaurant: mealSend["restaurant"], mealType: mealSend["meal_type"]}); // 
         console.log('sent meal to dashboard history');
       }
       catch(error) {
