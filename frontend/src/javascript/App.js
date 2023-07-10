@@ -11,7 +11,6 @@ import Unauthorized from './components/Unauthorized';
 import { ProtectRoutes } from './hooks/protectRoutes';
 import PageLayout from './components/PageLayout.component';
 import './../css/bootstrap.css';
-import './../css/App.css';
 
 const ROLES = {
   'User': 2001,

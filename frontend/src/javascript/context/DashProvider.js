@@ -34,23 +34,41 @@ export const DashProvider = ({ children }) => {
   }, []);
 
   // Function to handle adding a meal to the dashboard history
-  const handleAddMeal = ({ restaurant, mealType, ingredients }) => {
-    if (restaurant && mealType) {
+  const handleAddMeal = ({meal, restaurant}) => {
+    if (meal && restaurant) {
+      console.log(meal);
       const today = new Date();
       const dd = String(today.getDate()).padStart(2, '0');
       const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
       const yyyy = today.getFullYear();
       const date = mm + '/' + dd + '/' + yyyy;
+      var hours = today.getHours();
+      var minutes = today.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      var time = hours + ':' + minutes + ' ' + ampm;
       const mealID = generateRandomId();
+
+      console.log("restaurant: " + restaurant);
+      const addons = meal?.addon?.[0];
+      console.log("addons: " + addons?.[0]);
+      const mainDish = meal?.main?.[0];
+      console.log("mainDish: " + mainDish?.[0]);
+      const sides = meal?.side?.[0];
+      console.log("sides: " + sides?.[0]);
+
 
       const newCard = {
         mealID,
         restaurant,
-        date,
+        date, 
+        time,
         ingredients: {
-          ingredient_1: "hey",
-          ingredient_2: "hello",
-          ingredient_3: "hey"
+          ingredient_1: mainDish,
+          ingredient_2: sides,
+          ingredient_3: addons
         }
       };
 

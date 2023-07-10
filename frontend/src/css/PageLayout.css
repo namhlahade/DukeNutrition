@@ -1,7 +1,11 @@
 
+.grid-container{
+    overflow-x: hidden;
+}
 
 .contentPane {
     width: 85%;
     height: 100%;
     padding-left: 4%;
+    overflow-x: hiddens;
 }

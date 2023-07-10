@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import '../../css/PageLayout.css';
 
 const PageLayout = () => (
-  <Grid container >
+  <Grid id='grid-container' container >
     <SideMenuBar />  
     <div className="contentPane">
       <Outlet /> 

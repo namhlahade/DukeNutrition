@@ -31,7 +31,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export function MealCard({restaurant, date, ingredients, mealID}) {
+export function MealCard({mealID, restaurant, date, time, ingredients}) {
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -84,27 +84,28 @@ export function MealCard({restaurant, date, ingredients, mealID}) {
 
   if(restaurant && date && ingredients){
 
-    const ingredientList = Array.isArray(ingredients) ? ingredients : [];
+    const ingredientList = Object.values(ingredients);
+    console.log("ingredientList: \n");
+    console.log(ingredients);
+    console.log("restaurant: " + restaurant);
 
     return (
       <Card class={'mealCard'} id={mealID}>
-        <CardHeader
-          // action={
-          //   <IconButton aria-label="settings">
-          //     <MoreVertIcon />
-          //   </IconButton>
-          // }
-          // title={restaurant}
-          subheader={date}
-          avatar={
-            <IconButton>
+        <div id='cardHeaderDiv'>
+          <IconButton>
               <Reorder />
               {/* <Tooltip title="Tooltip for the register button" placement="top" place="top" effect="solid">
               </Tooltip> */}
-            </IconButton>
-          }
-
-        />
+          </IconButton>
+          <Typography> 
+            {date}
+            <br/>
+            {time}
+          </Typography>
+          <IconButton id="deleteButton" onClick={deleteCard}>
+            <Delete/>
+          </IconButton>
+        </div>
         <CardMedia
           component="img"
           height="150"
@@ -115,9 +116,6 @@ export function MealCard({restaurant, date, ingredients, mealID}) {
         <CardContent subheader={date} >
             <IconButton aria-label="settings">
               <MoreVertIcon />
-            </IconButton>
-            <IconButton id="deleteButton" onClick={deleteCard}>
-              <Delete/>
             </IconButton>
           <Typography variant="body2" color="text.secondary" component="ul">
             {ingredientList.map((ingredient, index) => (
