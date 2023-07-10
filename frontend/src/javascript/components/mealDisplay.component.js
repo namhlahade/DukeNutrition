@@ -174,38 +174,38 @@ const MealDisplay = () => {
     handleAddMeal({meal:meal[restaurant], restaurant: restaurant}); 
     setAlert({ type: 'success', message: 'Meal Added!' });
 
-    const fetchCalsAndMacs = async () => {
+    // const fetchCalsAndMacs = async () => {
 
-      try {
-        const response = await fetch('http://127.0.0.1:5000/nextMeal/selectMeal', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(mealSend),
-        })
-        const calsAndMacs = await response.json();
-        console.log(calsAndMacs)
-        setMeal({});
+    //   try {
+    //     const response = await fetch('http://127.0.0.1:5000/nextMeal/selectMeal', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(mealSend),
+    //     })
+    //     const calsAndMacs = await response.json();
+    //     console.log(calsAndMacs)
+    //     setMeal({});
 
-        const tempMeal = { ...mealCounterData }
-        for (var restaurant in tempMeal){
-          for (var type in tempMeal[restaurant]){
-            for (const food in tempMeal[restaurant][type]){
-              tempMeal[restaurant][type][food] = 0;
-            }
-          }
-        }
+    //     const tempMeal = { ...mealCounterData }
+    //     for (var restaurant in tempMeal){
+    //       for (var type in tempMeal[restaurant]){
+    //         for (const food in tempMeal[restaurant][type]){
+    //           tempMeal[restaurant][type][food] = 0;
+    //         }
+    //       }
+    //     }
 
-        console.log(tempMeal);
-        setMealCounterData(tempMeal)
-      }
-      catch(error) {
-        console.log('Error Creating Meal:', error);
-        setAlert({ type: 'danger', message: 'Error Creating Meal!' });
-      }
-    }
-    fetchCalsAndMacs();
+    //     console.log(tempMeal);
+    //     setMealCounterData(tempMeal)
+    //   }
+    //   catch(error) {
+    //     console.log('Error Creating Meal:', error);
+    //     setAlert({ type: 'danger', message: 'Error Creating Meal!' });
+    //   }
+    // }
+    // fetchCalsAndMacs();
 
   };
 

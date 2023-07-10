@@ -31,7 +31,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export function MealCard({mealID, restaurant, date, time, ingredients}) {
+export function MealCard({mealID, restaurant, date, time, ingredientList}) {
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -82,10 +82,8 @@ export function MealCard({mealID, restaurant, date, time, ingredients}) {
     }
   }
 
-  if(restaurant && date && ingredients){
-
-    const ingredientList = Object.values(ingredients);
-    console.log("ingredientList: \n");
+  if(restaurant && date && ingredientList){
+    const ingredients = Object.values(ingredientList);
     console.log(ingredients);
     console.log("restaurant: " + restaurant);
 
@@ -97,10 +95,10 @@ export function MealCard({mealID, restaurant, date, time, ingredients}) {
               {/* <Tooltip title="Tooltip for the register button" placement="top" place="top" effect="solid">
               </Tooltip> */}
           </IconButton>
-          <Typography> 
-            {date}
-            <br/>
+          <Typography id="dateTime"  color="text.secondary"> 
             {time}
+            <br/>
+            {date}
           </Typography>
           <IconButton id="deleteButton" onClick={deleteCard}>
             <Delete/>
@@ -113,17 +111,18 @@ export function MealCard({mealID, restaurant, date, time, ingredients}) {
           alt={restaurant}
           class='cardImage'
         />
-        <CardContent subheader={date} >
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-          <Typography variant="body2" color="text.secondary" component="ul">
-            {ingredientList.map((ingredient, index) => (
+        <div id='cardContent' subheader={date} >
+          <Typography id='ingredientList' variant="body2" color="text.secondary" component="ul">
+            {ingredients.map((ingredient, index) => (
               <li key={index}>{ingredient}</li>
             ))}
           </Typography>
-        </CardContent>
+          <vl id="verticalLine"></vl>
+        </div>
         <CardActions disableSpacing>
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
+          </IconButton>
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}

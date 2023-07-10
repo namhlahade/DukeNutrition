@@ -52,25 +52,36 @@ export const DashProvider = ({ children }) => {
       const mealID = generateRandomId();
 
       console.log("restaurant: " + restaurant);
-      const addons = meal?.addon?.[0];
-      console.log("addons: " + addons?.[0]);
-      const mainDish = meal?.main?.[0];
-      console.log("mainDish: " + mainDish?.[0]);
-      const sides = meal?.side?.[0];
-      console.log("sides: " + sides?.[0]);
-
-
+  
+      // Iterate over properties and assign values to variables
+      const ingredientList = {};
+      for (const [itemType, itemArray] of Object.entries(meal)) {
+        if (Array.isArray(itemArray)) {
+          var itemCounter = 0;
+          for (let i = 0; i < itemArray.length; i++) {
+            const ingredientKey = `${itemType}_${itemArray[i]}`;
+            if (ingredientKey in ingredientList) {
+              itemCounter++;
+            } else {
+              itemCounter = 1;
+            }
+          }
+          ingredientList[itemType] = `${itemType.charAt(0).toUpperCase() + itemType.slice(1)}: ${itemArray[itemArray.length - 1]} (${itemCounter})`;
+        }
+      }
+      
+      console.log(JSON.stringify(ingredientList));
+    
+  
       const newCard = {
         mealID,
         restaurant,
-        date, 
+        date,
         time,
-        ingredients: {
-          ingredient_1: mainDish,
-          ingredient_2: sides,
-          ingredient_3: addons
-        }
+        ingredientList,
       };
+
+      console.log(newCard);
 
       setMealCards([...mealCards, newCard]);
 
