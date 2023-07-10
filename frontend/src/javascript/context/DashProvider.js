@@ -1,6 +1,6 @@
 import React, { Component }  from 'react';
 import styled from 'styled-components';
-import { LineChart } from '../components/lineChart.component';
+import { LineChart } from '../components/charts/lineChart.component';
 import { MealCard } from '../components/mealCard.component';
 import "../../css/dashboard.css"
 import { Button } from '@mui/material';

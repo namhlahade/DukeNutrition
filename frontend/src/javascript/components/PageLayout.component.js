@@ -6,7 +6,7 @@ import '../../css/PageLayout.css';
 const PageLayout = () => (
   <Grid container >
     <SideMenuBar />  
-    <div class="contentPane">
+    <div className="contentPane">
       <Outlet /> 
     </div>     
   </Grid>
