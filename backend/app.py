@@ -17,7 +17,8 @@ from corsOptions import cors_options
 
 app = Flask(__name__)
 app.debug = True
-CORS(app, origins="*") # Enable CORS for all domains on all routes which is not recommended for production because it is a security risk
+# Enable CORS for all domains on all routes which is not recommended for production because it is a security risk
+CORS(app, origins="*")
 
 app.register_blueprint(authentication_bp, url_prefix='/authentication')
 app.register_blueprint(dashboard_bp, url_prefix='/dashboard')

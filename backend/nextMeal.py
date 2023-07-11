@@ -1,19 +1,20 @@
 import sqlite3
 from flask import Blueprint, jsonify, request
 import uuid
-from datetime import date
+from datetime import date, datetime
 from authentication import getUserIdentification
 
 
-
 nextMeal_bp = Blueprint('nextMeal', __name__)
+
 
 def get_db():
     db = sqlite3.connect('database.db')
     return db
 
+
 def mealID(restaurant, calories, protein, carb, fat):
-    stringID = f"{restaurant}{calories}{protein}{carb}{fat}".replace(" ", "_" )
+    stringID = f"{restaurant}{calories}{protein}{carb}{fat}".replace(" ", "_")
     return stringID
 
 
@@ -36,6 +37,7 @@ def quickAdd():
         "fat": row[8]
     })
 
+
 @nextMeal_bp.route('/allRestaurants', methods=['GET'])
 def allRestaurants():
     db = get_db()
@@ -57,13 +59,14 @@ def allRestaurants():
                 restaurants[restaurant][meal_name] = [meal_id]
             else:
                 restaurants[restaurant][meal_name].append(meal_id)
-    
+
     return jsonify(restaurants), 200
+
 
 @nextMeal_bp.route('/selectMeal', methods=['POST'])
 def selectMeal():
     data = request.get_json()
-    #userid = data.get('userid')
+    # userid = data.get('userid')
     userid = '86a75215-6fb8-4d9e-8d89-960a71288ff6'
     print(f"This is userid: {userid}")
 
@@ -93,7 +96,7 @@ def selectMeal():
         'Bella_Union': {
             'class': Bella_Union,
             'variables': {
-                'add_item': ['addons'] # Should be ['item_name', 'addons']
+                'add_item': ['addons']  # Should be ['item_name', 'addons']
             },
             'methods': {
                 'add_item': 'addItem'
@@ -140,30 +143,34 @@ def selectMeal():
     print("These are the results:")
     for i in range(len(result)):
         print(result[i])
-    
+
     db = get_db()
-    
+
     query = db.execute("select * from User_Pref where user_id = ?", (userid,))
     row = query.fetchone()
 
-
     if row is None:
         return jsonify({f"error": "No user preference was created."}), 400
-    
+
     prefid = row[0]
     print(f"Pref Id: {prefid}")
 
     userMealid = str(uuid.uuid4())
-    current_date = date.today()
 
-    query = db.execute("insert into User_Meal values (?,?,?,?,?,?,?,?,?,?)", (userMealid, userid, prefid, mealid, result[0], result[1], result[2], result[3], result[4], current_date.isoformat()))
+    meal_date = date.today()  # Current date
+
+    # Update the query and parameters to include the `meal_date` column
+    query = "INSERT INTO User_Meal VALUES (?,?,?,?,?,?,?,?,?,?)"
+    parameters = (userMealid, userid, prefid, mealid,
+                  result[0], result[1], result[2], result[3], result[4], meal_date)
+    db.execute(query, parameters)
 
     db.commit()
-    query = db.execute("select * from User_Meal where user_id = ?", (userid,))
-    
-    allMeals = query.fetchall()
-    print(f"All the meals by user: {userid}")
-    print(allMeals)
+    # query = db.execute("select * from User_Meal where user_id = ?", (userid,))
+
+    # allMeals = query.fetchall()
+    # print(f"All the meals by user: {userid}")
+    # print(allMeals)
 
     db.close()
     print("Meal Statistics:")
@@ -181,7 +188,7 @@ class DukeMeal():
         self.carbs = 0
         self.fat = 0
 
-    
+
 # rice variable is a string, meat variable is a dictionary where key is meat and value is # of servings, addons is a list (list of vegetables), sauces is a list (list of sauces)
 class Ginger_and_Soy(DukeMeal):
     def __init__(self):
@@ -206,89 +213,104 @@ class Ginger_and_Soy(DukeMeal):
         theName = "Build you own bowl with"
         for typeOfMeat in self.meat:
             theName = theName + " " + typeOfMeat
-        
+
         for typeOfRice in rice:
             self.name = theName + " and " + typeOfRice
 
         db = get_db()
         for typeOfRice in self.rice:
-            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (typeOfRice, "Ginger_and_Soy"))
+            query = db.execute(
+                "select * from Meals where Name = ? and Restaurant = ?", (typeOfRice, "Ginger_and_Soy"))
             riceInfo = query.fetchone()
             print("Information about rice:")
             print(riceInfo)
 
             self.calories += 0 if isinstance(riceInfo[2], str) else riceInfo[2]
-            self.protein += 0 if isinstance(riceInfo[20], str) else riceInfo[20]
+            self.protein += 0 if isinstance(riceInfo[20],
+                                            str) else riceInfo[20]
             self.carbs += 0 if isinstance(riceInfo[15], str) else riceInfo[15]
             self.fat += 0 if isinstance(riceInfo[4], str) else riceInfo[4]
-        
+
         print("This is self.meat")
         print(self.meat)
         for key in self.meat:
-            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (key, "Ginger_and_Soy"))
+            query = db.execute(
+                "select * from Meals where Name = ? and Restaurant = ?", (key, "Ginger_and_Soy"))
             meatInfo = query.fetchone()
             print("Information about meat:")
             print(meatInfo)
 
             self.calories += 0 if isinstance(meatInfo[2], str) else meatInfo[2]
-            self.protein += 0 if isinstance(meatInfo[20], str) else meatInfo[20]
+            self.protein += 0 if isinstance(meatInfo[20],
+                                            str) else meatInfo[20]
             self.carbs += 0 if isinstance(meatInfo[15], str) else meatInfo[15]
             self.fat += 0 if isinstance(meatInfo[4], str) else meatInfo[3]
 
         for addon in self.addons:
-            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (addon, "Ginger_and_Soy"))
+            query = db.execute(
+                "select * from Meals where Name = ? and Restaurant = ?", (addon, "Ginger_and_Soy"))
             addonInfo = query.fetchone()
             print("Information about addon:")
             print(addonInfo)
-            
-            self.calories += 0 if isinstance(addonInfo[2], str) else addonInfo[2]
-            self.protein += 0 if isinstance(addonInfo[20], str) else addonInfo[20]
-            self.carbs += 0 if isinstance(addonInfo[15], str) else addonInfo[15]
+
+            self.calories += 0 if isinstance(
+                addonInfo[2], str) else addonInfo[2]
+            self.protein += 0 if isinstance(
+                addonInfo[20], str) else addonInfo[20]
+            self.carbs += 0 if isinstance(addonInfo[15],
+                                          str) else addonInfo[15]
             self.fat += 0 if isinstance(addonInfo[4], str) else addonInfo[4]
 
         for sauce in self.sauces:
-            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (sauce, "Ginger_and_Soy"))
+            query = db.execute(
+                "select * from Meals where Name = ? and Restaurant = ?", (sauce, "Ginger_and_Soy"))
             sauceInfo = query.fetchone()
             print("Information about sauce:")
             print(sauceInfo)
 
-            self.calories += 0 if isinstance(sauceInfo[2], str) else sauceInfo[2]
-            self.protein += 0 if isinstance(sauceInfo[20], str) else sauceInfo[20]
-            self.carbs += 0 if isinstance(sauceInfo[15], str) else sauceInfo[15]
+            self.calories += 0 if isinstance(
+                sauceInfo[2], str) else sauceInfo[2]
+            self.protein += 0 if isinstance(
+                sauceInfo[20], str) else sauceInfo[20]
+            self.carbs += 0 if isinstance(sauceInfo[15],
+                                          str) else sauceInfo[15]
             self.fat += 0 if isinstance(sauceInfo[4], str) else sauceInfo[4]
-
 
         db.close()
 
         return self.name, self.calories, self.protein, self.carbs, self.fat
-    
+
     # Have to specify white or brown rice and number of servings of meat
     def california(self, rice, numMeatServings):
-        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Teriyaki Tofu": numMeatServings}, ["Kale Salad", "Seasoned Broccoli", "Seasoned Corn", "Stir-Fried Zucchini", "Cilantro"], ["Cusabi Sauce"])
+        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Teriyaki Tofu": numMeatServings}, [
+                                                            "Kale Salad", "Seasoned Broccoli", "Seasoned Corn", "Stir-Fried Zucchini", "Cilantro"], ["Cusabi Sauce"])
         name = "California Bowl"
         if numMeatServings > 1:
             name = name + " with Extra Protein"
 
         return name, cals, prot, carb, fats
-    
+
     def tokyo(self, rice, numMeatServings):
-        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Grilled Teriyaki Chicken": numMeatServings}, ["Kale Salad", "Shelled Edamame", "Seasoned Corn", "Green Onion", "Bubu Arare"], ["Eel Sauce", "Spicy Mayo", "Sesame Seeds"])
+        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Grilled Teriyaki Chicken": numMeatServings}, [
+                                                            "Kale Salad", "Shelled Edamame", "Seasoned Corn", "Green Onion", "Bubu Arare"], ["Eel Sauce", "Spicy Mayo", "Sesame Seeds"])
         name = "Tokyo Bowl"
         if numMeatServings > 1:
             name = name + " with Extra Protein"
 
         return name, cals, prot, carb, fats
-    
+
     def seoul(self, rice, numMeatServings):
-        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Beef Bulgogi": numMeatServings}, ["Kale Salad", "Fried Egg", "Green Onion", "Kimchi Slaw", "Pickled Carrot", "Pickled Radish", "Stir-Fried Zucchini"], ["White Sauce", "Gochujang Sauce", "Sesame Seeds"])
+        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Beef Bulgogi": numMeatServings}, [
+                                                            "Kale Salad", "Fried Egg", "Green Onion", "Kimchi Slaw", "Pickled Carrot", "Pickled Radish", "Stir-Fried Zucchini"], ["White Sauce", "Gochujang Sauce", "Sesame Seeds"])
         name = "Seoul Bowl"
         if numMeatServings > 1:
             name = name + " with Extra Protein"
 
         return name, cals, prot, carb, fats
-        
+
     def hong_kong(self, rice, numMeatServings):
-        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Spicy Pork": numMeatServings}, ["Cilantro", "Pickled Radish", "Seasoned Broccoli", "Spicy Cucumber", "Bubu Arare", "Stir-Fried Cabbage & Red Pepper"], ["Eel Sauce", "Sambal Sauce", "Sesame Seeds"])
+        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Spicy Pork": numMeatServings}, [
+                                                            "Cilantro", "Pickled Radish", "Seasoned Broccoli", "Spicy Cucumber", "Bubu Arare", "Stir-Fried Cabbage & Red Pepper"], ["Eel Sauce", "Sambal Sauce", "Sesame Seeds"])
         name = "Hong Kong Bowl"
         if numMeatServings > 1:
             name = name + " with Extra Protein"
@@ -296,17 +318,19 @@ class Ginger_and_Soy(DukeMeal):
         return name, cals, prot, carb, fats
 
     def shanghai(self, rice, numMeatServings):
-        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Ginger Chicken": numMeatServings}, ["Cilantro", "Stir-Fried Cabbage & Red Pepper", "Stir-Fried Zucchini", "Bubu Arare"], ["White Sauce", "Sesame Seeds"])
+        notName, cals, prot, carb, fats = self.buildYourOwn(rice, {"Ginger Chicken": numMeatServings}, [
+                                                            "Cilantro", "Stir-Fried Cabbage & Red Pepper", "Stir-Fried Zucchini", "Bubu Arare"], ["White Sauce", "Sesame Seeds"])
         name = "Shanghai Bowl"
         if numMeatServings > 1:
             name = name + " with Extra Protein"
 
         return name, cals, prot, carb, fats
 
+
 class Bella_Union(DukeMeal):
     def __init__(self):
         super().__init__()
-    
+
     def addItem(self, addons):
         db = get_db()
         '''query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (name, "Bella_Union"))
@@ -324,57 +348,70 @@ class Bella_Union(DukeMeal):
 
         for elem in addons:
             self.name = self.name + elem + " "
-            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (elem, "Bella_Union"))
+            query = db.execute(
+                "select * from Meals where Name = ? and Restaurant = ?", (elem, "Bella_Union"))
             addonInfo = query.fetchone()
             print("Information about add on:")
             print(addonInfo)
 
-            self.calories += 0 if isinstance(addonInfo[1], str) else addonInfo[2]
-            self.protein += 0 if isinstance(addonInfo[19], str) else addonInfo[20]
-            self.carbs += 0 if isinstance(addonInfo[14], str) else addonInfo[15]
+            self.calories += 0 if isinstance(
+                addonInfo[1], str) else addonInfo[2]
+            self.protein += 0 if isinstance(
+                addonInfo[19], str) else addonInfo[20]
+            self.carbs += 0 if isinstance(addonInfo[14],
+                                          str) else addonInfo[15]
             self.fat += 0 if isinstance(addonInfo[3], str) else addonInfo[4]
 
         db.close()
 
         return self.name, self.calories, self.protein, self.carbs, self.fat
 
+
 class Pitchforks(DukeMeal):
     def __init__(self):
         super().__init__()
-    
+
     def addItem(self, main, addon, side):
         db = get_db()
         for item in main:
-            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (item, "Pitchforks"))
+            query = db.execute(
+                "select * from Meals where Name = ? and Restaurant = ?", (item, "Pitchforks"))
             itemInfo = query.fetchone()
             print("Information about item:")
             print(itemInfo)
 
             self.name = itemInfo[0]
             self.calories += 0 if isinstance(itemInfo[2], str) else itemInfo[2]
-            self.protein += 0 if isinstance(itemInfo[20], str) else itemInfo[20]
+            self.protein += 0 if isinstance(itemInfo[20],
+                                            str) else itemInfo[20]
             self.carbs += 0 if isinstance(itemInfo[15], str) else itemInfo[15]
             self.fat += 0 if isinstance(itemInfo[4], str) else itemInfo[4]
 
         for elem in addon:
-            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (elem, "Pitchforks"))
+            query = db.execute(
+                "select * from Meals where Name = ? and Restaurant = ?", (elem, "Pitchforks"))
             addonInfo = query.fetchone()
             print("Information about add on:")
             print(addonInfo)
 
-            self.calories += 0 if isinstance(addonInfo[2], str) else addonInfo[2]
-            self.protein += 0 if isinstance(addonInfo[20], str) else addonInfo[20]
-            self.carbs += 0 if isinstance(addonInfo[15], str) else addonInfo[15]
+            self.calories += 0 if isinstance(
+                addonInfo[2], str) else addonInfo[2]
+            self.protein += 0 if isinstance(
+                addonInfo[20], str) else addonInfo[20]
+            self.carbs += 0 if isinstance(addonInfo[15],
+                                          str) else addonInfo[15]
             self.fat += 0 if isinstance(addonInfo[4], str) else addonInfo[4]
 
         for elem in side:
-            query = db.execute("select * from Meals where Name = ? and Restaurant = ?", (elem, "Pitchforks"))
+            query = db.execute(
+                "select * from Meals where Name = ? and Restaurant = ?", (elem, "Pitchforks"))
             sideInfo = query.fetchone()
             print("Information about side:")
             print(sideInfo)
 
             self.calories += 0 if isinstance(sideInfo[2], str) else sideInfo[2]
-            self.protein += 0 if isinstance(sideInfo[20], str) else sideInfo[20]
+            self.protein += 0 if isinstance(sideInfo[20],
+                                            str) else sideInfo[20]
             self.carbs += 0 if isinstance(sideInfo[15], str) else sideInfo[15]
             self.fat += 0 if isinstance(sideInfo[4], str) else sideInfo[4]
 

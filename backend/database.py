@@ -52,10 +52,10 @@ cursor.close'''
     connection.commit()'''
 
 # Close the cursor and the database connection
+connection.commit()
+
+
 cursor.close()
-
-
-
 
 
 connection.close()

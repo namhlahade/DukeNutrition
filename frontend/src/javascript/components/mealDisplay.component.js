@@ -156,7 +156,6 @@ const MealDisplay = () => {
     }
     console.log("updated meal variable after pressing Add Meal Button")
     console.log(meal)
-    console.log('sent meal to dashboard history');
     
     const mealSend = {}
     for (const [restaurant, restaurantData] of Object.entries(meal)){
@@ -172,40 +171,41 @@ const MealDisplay = () => {
     console.log("Meal being sent to API:");
     console.log(mealSend);
     handleAddMeal({meal:meal[restaurant], restaurant: restaurant}); 
+    console.log('sent meal to dashboard history');
     setAlert({ type: 'success', message: 'Meal Added!' });
 
-    // const fetchCalsAndMacs = async () => {
+    const fetchCalsAndMacs = async () => {
 
-    //   try {
-    //     const response = await fetch('http://127.0.0.1:5000/nextMeal/selectMeal', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(mealSend),
-    //     })
-    //     const calsAndMacs = await response.json();
-    //     console.log(calsAndMacs)
-    //     setMeal({});
+      try {
+        const response = await fetch('http://127.0.0.1:5000/nextMeal/selectMeal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(mealSend),
+        })
+        const calsAndMacs = await response.json();
+        console.log(calsAndMacs)
+        setMeal({});
 
-    //     const tempMeal = { ...mealCounterData }
-    //     for (var restaurant in tempMeal){
-    //       for (var type in tempMeal[restaurant]){
-    //         for (const food in tempMeal[restaurant][type]){
-    //           tempMeal[restaurant][type][food] = 0;
-    //         }
-    //       }
-    //     }
+        const tempMeal = { ...mealCounterData }
+        for (var restaurant in tempMeal){
+          for (var type in tempMeal[restaurant]){
+            for (const food in tempMeal[restaurant][type]){
+              tempMeal[restaurant][type][food] = 0;
+            }
+          }
+        }
 
-    //     console.log(tempMeal);
-    //     setMealCounterData(tempMeal)
-    //   }
-    //   catch(error) {
-    //     console.log('Error Creating Meal:', error);
-    //     setAlert({ type: 'danger', message: 'Error Creating Meal!' });
-    //   }
-    // }
-    // fetchCalsAndMacs();
+        console.log(tempMeal);
+        setMealCounterData(tempMeal)
+      }
+      catch(error) {
+        console.log('Error Creating Meal:', error);
+        setAlert({ type: 'danger', message: 'Error Creating Meal!' });
+      }
+    }
+    fetchCalsAndMacs();
 
   };
 

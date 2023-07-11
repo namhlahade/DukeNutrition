@@ -6,47 +6,13 @@ import {DropDownComponent} from '../dropdown.component';
 import * as Utils from './utils';
 import { Button } from 'react-bootstrap';
 import { getElement } from 'survey-core';
+import { useEffect, useState } from 'react';
 import '../../../css/chart.css'
 
 ChartJS.register(...registerables);
 
-const config = {
-  type: 'bar',
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Chart.js Bar Chart'
-      }
-    }
-  },
-};
-
 const DATA_COUNT = 7;
 const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
-
-const labels = Utils.months({count: 7});
-const data = {
-  labels: labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: Utils.numbers(NUMBER_CFG),
-      borderColor: Utils.CHART_COLORS.red,
-      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-    },
-    {
-      label: 'Dataset 2',
-      data: Utils.numbers(NUMBER_CFG),
-      borderColor: Utils.CHART_COLORS.blue,
-      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
-    }
-  ]
-};
 
 const actions = [
   {
@@ -110,26 +76,120 @@ const actions = [
   }
 ];
 
-export function BarChart() {
+export const BarChart = () => {
+
+  let calsAndMacs = {};
+  let targetCalsAndMacs = {};
+  const [calsAndMacsKeys, setCalsAndMacsKeys] = useState([]);
+  const [calsAndMacsValues, setCalsAndMacsValues] = useState([]);
+  const [targetCalsAndMacsValues, setTargetCalsAndMacs] = useState([]);
+
+  const fetchActualWeeklyMacros = async () => {
+    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+  
+    try {
+      const response = await fetch('http://127.0.0.1:5000/dashboard/thisWeeksStats', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userid: userid }),
+      });
+  
+      calsAndMacs = await response.json();
+      setCalsAndMacsKeys(Object.keys(calsAndMacs));
+      setCalsAndMacsValues(Object.values(calsAndMacs));
+      console.log(calsAndMacs);
+      console.log(calsAndMacsKeys);
+      console.log(calsAndMacsValues);
+    } catch (error) {
+      console.log('Error: ', error);
+    }
+  };
+
+
+  const fetchTargetWeeklyMacros = async () => {
+    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+  
+    try {
+      const response = await fetch('http://127.0.0.1:5000/dashboard/thisWeeksTargets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userid: userid }),
+      });
+  
+      targetCalsAndMacs = await response.json();
+      setTargetCalsAndMacs(Object.values(targetCalsAndMacs));
+    } catch (error) {
+      console.log('Error: ', error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchActualWeeklyMacros();
+  }, []);
+
+  useEffect(() => {
+    fetchTargetWeeklyMacros();
+  }, []);
+
+  const barChart = true ? (
+    <Chart
+      type="bar"
+      config={{
+          type: 'bar',
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Chart.js Bar Chart'
+              }
+            }
+          },
+        }}
+      data = {{
+        labels: calsAndMacsKeys,
+        datasets: [
+          {
+            label: 'Daily Average (Past 7 Days)',
+            data: calsAndMacsValues,
+            borderColor: Utils.CHART_COLORS.red,
+            backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
+          },
+          {
+            label: 'Daily Goal',
+            data: targetCalsAndMacsValues,
+            borderColor: Utils.CHART_COLORS.blue,
+            backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
+          }
+        ]
+      }}
+    />
+  ) : null;
+  // call fetchBarStats() here before exporting BarChart()
+
   return (
     <div id='chart-id'>
-      <Chart id={'barChart'}
-        type={'bar'}
-        config={config}
-        data={data}
-        actions={actions}
-      />
+      {barChart}
       <br />
       <div id={'chart-actions-row'}>
-        {actions?.map((action, index) => (
+        {/* {actions?.map((action, index) => (
           <Button id='chart-action' key={index} onClick={() => action.handler(document.getElementById('barChart'))}>
             {action.name}
           </Button>
-        ))}
+        ))} */}
       </ div>
     </div>
   );  
-}
+};
 
 
 // https://www.chartjs.org/docs/latest/samples/bar/vertical.html
+
