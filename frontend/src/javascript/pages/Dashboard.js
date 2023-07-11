@@ -61,9 +61,7 @@ export const Dashboard = () => {
         <h1>Previous Meals</h1>
         <div id="mealCardList">
           {mealCards?.map((card, index) => (
-            <div key={index}>
-              <MealCard mealID={card.mealID} restaurant={card.restaurant} date={card.date} time={card.time} ingredientList={card.ingredientList} calsAndMacs={card.calsAndMacs}/>
-            </div>
+            <MealCard mealID={card.mealID} restaurant={card.restaurant} date={card.date} time={card.time} ingredientList={card.ingredientList} calsAndMacs={card.calsAndMacs}/>
           ))}
         </div>
         <Button id="showMoreButton">Show More</Button>

@@ -56,6 +56,7 @@ input[type="radio"] {
     display: flex;
     flex-direction: row;
     text-align: center;
+    flex-wrap: wrap;
 }
 
 h1{
@@ -70,4 +71,9 @@ h1{
     text-align:center;
     margin: 0 auto;
     display: block;
+}
+
+#mealCardContainer{
+    width: calc(33% - 20px);
+    border: 1px solid blue;
 }
