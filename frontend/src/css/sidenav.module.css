@@ -1,6 +1,6 @@
 
 .sidenav {
-    width: 15%; /* 15% of the parent element */
+    width: 100%; /* 15% of the parent element */
     transition: width 0.3s ease-in-out;
     background-color: rgb(10,25,41);
     padding-top: 28px;
