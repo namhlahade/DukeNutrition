@@ -1,3 +1,8 @@
+#mealDisplayContainer{
+  width: 1000px;  /*jank but it looks nice on the screen sorry namh lol*/
+}
+
+
 .custom-checkbox {
     display: flex;
     align-items: center;

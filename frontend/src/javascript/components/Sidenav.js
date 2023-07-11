@@ -1,4 +1,4 @@
-import styles from "../../css/sidenav.module.css"
+import "../../css/PageLayout.css"
 import { NavLink } from "react-router-dom";
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
@@ -15,19 +15,19 @@ export default function Sidenav() {
     }
     const { logout } = useAuth();
   return (
-    <div className={open?styles.sidenav:styles.sidenavClosed}>
-        <button className={styles.menuBtn} onClick={toggleOpen}>
+    <div class={open ? 'sidenav' : 'sidenavClosed'}>
+        <button class={'menuBtn'} onClick={toggleOpen}>
             {open? <KeyboardDoubleArrowLeftIcon />: <KeyboardDoubleArrowRightIcon />}
         </button>
         {navData.map(item =>{
-            return <NavLink key={item.id} className={styles.sideitem} to={item.link}>
+            return <NavLink key={item.id} id={'sideitem'} to={item.link}>
             {item.icon}
-            <span className={open ? styles.linkTextVisible : styles.linkTextHidden}>{item.text}</span>
+            <span class={open ? 'linkTextVisible' : 'linkTextHidden'}>{item.text}</span>
         </NavLink>
         })}
-        <div className={styles.logoutButtonContainer}>
-            <button className={styles.logoutButton} onClick={logout}>
-                <LogoutIcon/> <span className={styles.linkTextVisible}>{open ? 'Logout' : null}</span>
+        <div class={'logoutButtonContainer'}>
+            <button class={'logoutButton'} onClick={logout}>
+                <LogoutIcon/> <span class={'linkTextVisible'}>{open ? 'Logout' : null}</span>
                 <br/>
                 <br/>
             </button>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
-import styles from "../../css/mealDisplay.css"
+import "../../css/mealDisplay.css";
 import { RestartAlt } from '@mui/icons-material';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -216,7 +216,7 @@ const MealDisplay = () => {
   }
 
   return (
-    <>
+    <div id='mealDisplayContainer'>
       <div>
         <h1 className='mainHeading'>Duke Meals</h1>
         {alert && <Alert message={alert.message} type={alert.type} />}
@@ -270,7 +270,7 @@ const MealDisplay = () => {
       <div className='submitButton'>
         <Button variant="outline-primary" onClick = {() => sendData()}>Add Meal</Button>
       </div>
-    </>
+    </div>
   );
 };
 

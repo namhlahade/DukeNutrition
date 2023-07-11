@@ -1,17 +1,92 @@
-
-#grid-container {
-    display: grid;
-    grid-template-columns: minmax(15%) 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas:
-      "sidebar content";
-    height: 100vh;
+:root {
+    --sidenav-max-width: 200px;
   }
   
+#grid-container {
+    display: grid;
+    grid-template-columns: minmax(var(--sidenav-max-width)) 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "sidebar content";
+    height: 100vh;
+}
 
 .contentPane {
-    /* max-width: 85%;
-    height: 100%;
-    padding-left: 4%;
-    overflow-x: hiddens; */
+    grid-area: content;
+}
+
+.sidenav {
+    width: var(--sidenav-max-width);
+    transition: width 0.3s ease-in-out;
+    background-color: rgb(10, 25, 41);
+    padding-top: 28px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidenavClosed {
+    width: var(--sidenav-max-width);
+    transition: width 0.3s ease-in-out;
+    background-color: rgb(10, 25, 41);
+    padding-top: 28px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    --sidenav-max-width: 60px;
+}
+
+#sideitem {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #B2BAC2;
+    text-decoration: none;
+    overflow: hidden;
+}
+#sideitem:hover {
+    background-color: #1542731c;
+
+}
+.linkTextVisible {
+    padding-left: 16px;
+    visibility: visible;
+}
+
+.linkTextHidden {
+    padding-left: 16px;
+    visibility: hidden;
+}
+
+.menuBtn {
+    align-self: center;
+    align-self: flex-start;  
+    justify-self: flex-end;
+    color: #B2BAC2;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding-left: 20px;
+}
+
+.logoutButton{
+    align-self: center;
+    align-self: flex-start;  
+    justify-self: flex-end;
+    position: flex;
+    color: #B2BAC2;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding-left: 20px;
+}
+
+.logoutButtonContainer{
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #B2BAC2;
+    text-decoration: none;
+    overflow: hidden;
 }
