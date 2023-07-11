@@ -23,6 +23,7 @@ const MealDisplay = () => {
   const [meal, setMeal] = useState({}); // This is the meal that is being built and added to the database
   const [mealCounterData, setMealCounterData] = useState({});
   const [alert, setAlert] = useState(null);
+  const [mealCalsMacs, setMealCalsMacs] = useState({});
   const handleAddMeal = useDash().handleAddMeal;
 
   useEffect(() => {
@@ -170,10 +171,8 @@ const MealDisplay = () => {
 
     console.log("Meal being sent to API:");
     console.log(mealSend);
-    handleAddMeal({meal:meal[restaurant], restaurant: restaurant}); 
-    console.log('sent meal to dashboard history');
     setAlert({ type: 'success', message: 'Meal Added!' });
-
+    let calsAndMacs = {};
     const fetchCalsAndMacs = async () => {
 
       try {
@@ -184,10 +183,11 @@ const MealDisplay = () => {
         },
         body: JSON.stringify(mealSend),
         })
-        const calsAndMacs = await response.json();
-        console.log(calsAndMacs)
+        calsAndMacs = await response.json();
+        console.log(calsAndMacs);
         setMeal({});
-
+        setMealCalsMacs(calsAndMacs);
+        console.log("mealCalsMacs:" + mealCalsMacs);
         const tempMeal = { ...mealCounterData }
         for (var restaurant in tempMeal){
           for (var type in tempMeal[restaurant]){
@@ -199,6 +199,10 @@ const MealDisplay = () => {
 
         console.log(tempMeal);
         setMealCounterData(tempMeal)
+        // placed inside async function to ensure that calsAndMacs is updated before handleAddMeal is called
+        handleAddMeal({meal:meal[restaurant], restaurant: restaurant, calsAndMacs: calsAndMacs}); 
+        console.log('sent meal to dashboard history');
+        console.log("mealCalsMacs: " + calsAndMacs);
       }
       catch(error) {
         console.log('Error Creating Meal:', error);

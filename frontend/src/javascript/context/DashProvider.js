@@ -33,8 +33,39 @@ export const DashProvider = ({ children }) => {
     setMealCards(mealCardsLocalStorage);
   }, []);
 
+  function formatIngredients(meal) {
+    const ingredientList = {};
+  
+    for (const ingredientType in meal) {
+      const ingredients = meal[ingredientType];
+      const formattedIngredients = [];
+  
+      const ingredientCount = ingredients.length;
+      const ingredientOccurrences = {};
+  
+      // Count the occurrences of each ingredient
+      for (let i = 0; i < ingredientCount; i++) {
+        const ingredient = ingredients[i];
+        ingredientOccurrences[ingredient] = (ingredientOccurrences[ingredient] || 0) + 1;
+      }
+  
+      // Format each ingredient occurrence
+      for (const ingredient in ingredientOccurrences) {
+        const occurrenceCount = ingredientOccurrences[ingredient];
+        const formattedIngredient = `${ingredient} (${occurrenceCount})`;
+        formattedIngredients.push(formattedIngredient);
+      }
+  
+      // Assign the formatted ingredients to the ingredientList object
+      ingredientList[ingredientType] = formattedIngredients;
+    }
+  
+    return ingredientList;
+  }
+  
+
   // Function to handle adding a meal to the dashboard history
-  const handleAddMeal = ({meal, restaurant}) => {
+  const handleAddMeal = ({meal, restaurant, calsAndMacs}) => {
     if (meal && restaurant) {
       console.log(meal);
       const today = new Date();
@@ -54,21 +85,7 @@ export const DashProvider = ({ children }) => {
       console.log("restaurant: " + restaurant);
   
       // Iterate over properties and assign values to variables
-      const ingredientList = {};
-      for (const [itemType, itemArray] of Object.entries(meal)) {
-        if (Array.isArray(itemArray)) {
-          var itemCounter = 0;
-          for (let i = 0; i < itemArray.length; i++) {
-            const ingredientKey = `${itemType}_${itemArray[i]}`;
-            if (ingredientKey in ingredientList) {
-              itemCounter++;
-            } else {
-              itemCounter = 1;
-            }
-          }
-          ingredientList[itemType] = `${itemType.charAt(0).toUpperCase() + itemType.slice(1)}: ${itemArray[itemArray.length - 1]} (${itemCounter})`;
-        }
-      }
+      const ingredientList = formatIngredients(meal);
       
       console.log(JSON.stringify(ingredientList));
     
@@ -79,6 +96,7 @@ export const DashProvider = ({ children }) => {
         date,
         time,
         ingredientList,
+        calsAndMacs
       };
 
       console.log(newCard);

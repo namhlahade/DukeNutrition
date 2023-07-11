@@ -10,14 +10,11 @@
     flex-flow: column; 
     justify-content: center;
     align-items: center;
+    overflow: clip;
 }
 
 #dateTime{
     color: rgba(0, 0, 0, 0.54);
-}
-
-#ingredientList{
-    text-align: left;
 }
 
 #cardHeaderDiv{
@@ -44,8 +41,28 @@
     justify-content: space-evenly;
     align-items: left;
     width: 100%;
+    overflow: clip;
+}
+
+#ingredientList{
+    text-align: left;
+    color: rgba(0, 0, 0, 0.54);
+    font: 1em sans-serif;
 }
 
 #verticalLine{
   border-left: 1px solid rgba(0, 0, 0, 0.54);
+}
+
+#macroCardList{
+    overflow: auto;
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.scrollable{
+    overflow: auto;
+    height: 100px;
 }

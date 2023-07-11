@@ -31,7 +31,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export function MealCard({mealID, restaurant, date, time, ingredientList}) {
+export function MealCard({mealID, restaurant, date, time, ingredientList, calsAndMacs}) {
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -82,13 +82,17 @@ export function MealCard({mealID, restaurant, date, time, ingredientList}) {
     }
   }
 
-  if(restaurant && date && ingredientList){
-    const ingredients = Object.values(ingredientList);
-    console.log(ingredients);
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  if(restaurant && date && ingredientList && calsAndMacs){;
+    console.log(ingredientList);
     console.log("restaurant: " + restaurant);
 
     return (
       <Card class={'mealCard'} id={mealID}>
+        <br/>
         <div id='cardHeaderDiv'>
           <IconButton>
               <Reorder />
@@ -104,6 +108,7 @@ export function MealCard({mealID, restaurant, date, time, ingredientList}) {
             <Delete/>
           </IconButton>
         </div>
+        <br/>
         <CardMedia
           component="img"
           height="150"
@@ -111,27 +116,37 @@ export function MealCard({mealID, restaurant, date, time, ingredientList}) {
           alt={restaurant}
           class='cardImage'
         />
+        <br/>
+        <br/>
         <div id='cardContent' subheader={date} >
-          <Typography id='ingredientList' variant="body2" color="text.secondary" component="ul">
-            {ingredients.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
+          <div class="scrollable">
+          <div id='ingredientList' variant="body2" color="text.secondary" component="ul">
+            {Object.entries(ingredientList).map(([ingredientType, ingredients]) => (
+              <div key={ingredientType}>
+                <span><strong>{capitalizeFirstLetter(ingredientType)}</strong></span>
+                <ul>
+                  {Array.isArray(ingredients) ? (
+                    ingredients.map((ingredient, index) => (
+                      <span><li key={index}>{ingredient}</li></span>
+                    ))
+                  ) : (
+                    <span><li>{ingredients}</li></span>
+                  )}
+                </ul>
+              </div>
             ))}
-          </Typography>
-          <vl id="verticalLine"></vl>
+          </div>
+          </div>
+          
+          <ul id='macroCardList'>
+            {Object.entries(calsAndMacs).map(([key, value]) => (
+              <li key={key} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span><strong>{capitalizeFirstLetter(key)}:</strong></span>
+                <span style={{ marginLeft: '0.5em' }}>{key === 'calories' ? value : `${value}g`}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <CardActions disableSpacing>
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
       </Card>
     );
   }

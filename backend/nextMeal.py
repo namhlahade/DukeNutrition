@@ -177,7 +177,7 @@ def selectMeal():
     print(result[0], result[1], result[2], result[3], result[4])
     print("It works!")
 
-    return jsonify({f"message": f"Successfully added meal with mealid: {mealid} to user: {userid}"}), 200
+    return jsonify({'calories': result[1], 'protein': result[2], 'carbs': result[3], 'fat': result[4]}), 200
 
 
 class DukeMeal():
