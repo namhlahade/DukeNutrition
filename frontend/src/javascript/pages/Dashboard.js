@@ -61,7 +61,15 @@ export const Dashboard = () => {
         <h1>Previous Meals</h1>
         <div id="mealCardList">
           {mealCards?.map((card, index) => (
-            <MealCard mealID={card.mealID} restaurant={card.restaurant} date={card.date} time={card.time} ingredientList={card.ingredientList} calsAndMacs={card.calsAndMacs}/>
+            <MealCard
+              key={index}
+              mealID={mealCards[mealCards.length - 1 - index].mealID}
+              restaurant={mealCards[mealCards.length - 1 - index].restaurant}
+              date={mealCards[mealCards.length - 1 - index].date}
+              time={mealCards[mealCards.length - 1 - index].time}
+              ingredientList={mealCards[mealCards.length - 1 - index].ingredientList}
+              calsAndMacs={mealCards[mealCards.length - 1 - index].calsAndMacs}
+            />
           ))}
         </div>
         <Button id="showMoreButton">Show More</Button>
