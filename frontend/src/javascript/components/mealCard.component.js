@@ -20,22 +20,8 @@ import { Reorder } from '@mui/icons-material';
 import { useEffect, useState } from "react";
 import '../../css/mealCard.css'
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
-
 export function MealCard({mealID, restaurant, date, time, ingredientList, calsAndMacs}) {
   const [expanded, setExpanded] = React.useState(false);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
   const [isDeleted, setIsDeleted] = useState(false);
 
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -69,12 +55,15 @@ export function MealCard({mealID, restaurant, date, time, ingredientList, calsAn
 
   const chooseRestaurantImage = (restaurant) => {
     if(restaurant === "Pitchforks"){
+      console.log("pitchforksImage");
       return require('../../resources/images/pitchforks_label.png');
     }
     else if(restaurant === "Bella_Union"){
+      console.log("bellaUnionImage");
       return require('../../resources/images/bella_union_label.png');
     }
     else if(restaurant === "Ginger_and_Soy"){
+      console.log("gingerAndSoyImage");
       return require('../../resources/images/ginger_and_soy_label.png');
     }
     else{
@@ -85,8 +74,7 @@ export function MealCard({mealID, restaurant, date, time, ingredientList, calsAn
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-
-  if(restaurant && date && ingredientList && calsAndMacs){;
+  if(restaurant && date && ingredientList && calsAndMacs){
     console.log(ingredientList);
     console.log("restaurant: " + restaurant);
 
@@ -120,22 +108,22 @@ export function MealCard({mealID, restaurant, date, time, ingredientList, calsAn
         <br/>
         <div id='cardContent' subheader={date} >
           <div class="scrollable">
-          <div id='ingredientList' variant="body2" color="text.secondary" component="ul">
-            {Object.entries(ingredientList).map(([ingredientType, ingredients]) => (
-              <div key={ingredientType}>
-                <span><strong>{capitalizeFirstLetter(ingredientType)}</strong></span>
-                <ul>
-                  {Array.isArray(ingredients) ? (
-                    ingredients.map((ingredient, index) => (
-                      <span><li key={index}>{ingredient}</li></span>
-                    ))
-                  ) : (
-                    <span><li>{ingredients}</li></span>
-                  )}
-                </ul>
-              </div>
-            ))}
-          </div>
+            <div id='ingredientList' variant="body2" color="text.secondary" component="ul">
+              {Object.entries(ingredientList).map(([ingredientType, ingredients]) => (
+                <div key={ingredientType}>
+                  <span><strong>{capitalizeFirstLetter(ingredientType)}</strong></span>
+                  <ul>
+                    {Array.isArray(ingredients) ? (
+                      ingredients.map((ingredient, index) => (
+                        <span><li key={index}>{ingredient}</li></span>
+                      ))
+                    ) : (
+                      <span><li>{ingredients}</li></span>
+                    )}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
           
           <ul id='macroCardList'>
@@ -149,5 +137,7 @@ export function MealCard({mealID, restaurant, date, time, ingredientList, calsAn
         </div>
       </Card>
     );
+  } else{
+    console.log("Meal Card not displayed in dash");
   }
 }

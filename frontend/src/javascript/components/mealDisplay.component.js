@@ -138,9 +138,9 @@ const MealDisplay = () => {
       setAlert({ type: 'danger', message: 'Your Meal is Empty!' });
       return;
     }
-    var restaurant = Object.keys(meal)[0];
-    const mealOptions = Object.keys(meal[restaurant])
-    const allMealOptions = Object.keys(restaurantData[restaurant])
+    var restaurantChosen = Object.keys(meal)[0];
+    const mealOptions = Object.keys(meal[restaurantChosen])
+    const allMealOptions = Object.keys(restaurantData[restaurantChosen])
     var mealOptionsSet = new Set()
 
     for (var key in mealOptions){
@@ -150,7 +150,7 @@ const MealDisplay = () => {
       const tempMeal = {... meal };
       for (var typeOption in allMealOptions){
         if (!mealOptionsSet.has(typeOption)){
-          tempMeal[restaurant][allMealOptions[typeOption]] = [];
+          tempMeal[restaurantChosen][allMealOptions[typeOption]] = [];
         }
       }
       setMeal(tempMeal);
@@ -186,8 +186,6 @@ const MealDisplay = () => {
         calsAndMacs = await response.json();
         console.log(calsAndMacs);
         setMeal({});
-        setMealCalsMacs(calsAndMacs);
-        console.log("mealCalsMacs:" + mealCalsMacs);
         const tempMeal = { ...mealCounterData }
         for (var restaurant in tempMeal){
           for (var type in tempMeal[restaurant]){
@@ -200,7 +198,7 @@ const MealDisplay = () => {
         console.log(tempMeal);
         setMealCounterData(tempMeal)
         // placed inside async function to ensure that calsAndMacs is updated before handleAddMeal is called
-        handleAddMeal({meal:meal[restaurant], restaurant: restaurant, calsAndMacs: calsAndMacs}); 
+        handleAddMeal({meal:meal[restaurantChosen], restaurant: restaurantChosen, calsAndMacs: calsAndMacs}); 
         console.log('sent meal to dashboard history');
         console.log("mealCalsMacs: " + calsAndMacs);
       }

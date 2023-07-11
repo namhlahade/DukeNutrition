@@ -66,7 +66,10 @@ export const DashProvider = ({ children }) => {
 
   // Function to handle adding a meal to the dashboard history
   const handleAddMeal = ({meal, restaurant, calsAndMacs}) => {
-    if (meal && restaurant) {
+    console.log(meal);
+    console.log(restaurant);
+    console.log(calsAndMacs);
+    if (meal && restaurant && calsAndMacs) {
       console.log(meal);
       const today = new Date();
       const dd = String(today.getDate()).padStart(2, '0');
