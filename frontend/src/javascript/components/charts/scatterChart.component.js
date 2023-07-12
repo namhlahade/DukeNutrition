@@ -129,6 +129,9 @@ export const ScatterChart = () => {
   const [scatterDataRestaurants, setCalsAndMacsKeys] = useState([]);
   const [calsAndMacsValues, setCalsAndMacsValues] = useState([]);
   const [datasets, setDatasets] = useState([]);
+  const [macroX, setMacroX] = useState("Calories");
+  const [macroY, setMacroY] = useState("Fat (g)");
+  const [data, setData] = useState({});
 
   function selectedMacro(macronutrientX, macronutrientY, mealData) {
     const scatterData = [];
@@ -144,25 +147,51 @@ export const ScatterChart = () => {
     return scatterData;
   }
 
+  const handleMacroXChange = (newMacroX) => {
+    // Update macroX state
+    setMacroX(newMacroX);
+  
+    // Update scatterplot data based on the newMacroX value
+    const updatedDatasets = datasets.map((dataset) => {
+      const updatedData = selectedMacro(newMacroX.toLowerCase().split(' ')[0], macroY.toLowerCase().split(' ')[0], data[dataset.label] || {});
+      return { ...dataset, data: updatedData };
+    });
+  
+    setDatasets(updatedDatasets);
+  };
+  const handleMacroYChange = (newMacroY) => {
+    // Update macroX state
+    setMacroY(newMacroY);
+  
+    // Update scatterplot data based on the newMacroX value
+    const updatedDatasets = datasets.map((dataset) => {
+      const updatedData = selectedMacro(macroX.toLowerCase().split(' ')[0], newMacroY.toLowerCase().split(' ')[0], data[dataset.label] || {});
+      console.log(dataset.label);
+      return { ...dataset, data: updatedData };
+    });
+  
+    setDatasets(updatedDatasets);
+  };
+
   const populateScatterData = (scatterData) => {
-    const restaurants = Object.keys(scatterData);
-    const calsAndMacs = Object.values(scatterData);
-      // Loop over the keys of scatterData object
+  
     Object.keys(scatterData).forEach((key, index) => {
       const label = key.replace(/_/g, ' ');
-      const datasetExists = datasets.some(dataset => dataset.label === label);
-      if (!datasetExists) {
+      const existingDatasetIndex = datasets.findIndex(datasett => datasett.label === label);
+      if (existingDatasetIndex === -1) {
+        console.log(label);
         const dataset = {
           label: label,
-          data: selectedMacro('calories', 'protein', scatterData[key]),
+          data: selectedMacro(macroX.toLowerCase().split(' ')[0], macroY.toLowerCase().split(' ')[0], scatterData[key]),
           borderColor: Object.keys(Utils.CHART_COLORS)[index],
           backgroundColor: Utils.transparentize(Object.keys(Utils.CHART_COLORS)[index], 0.5),
         };
-        setDatasets((datasets) => [...datasets, dataset]);
+        setDatasets(prevDatasets => [...prevDatasets, dataset]);
       }
     });
   };
-
+  
+  
   const fetchScatterData = async () => {
     const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
   
@@ -179,6 +208,7 @@ export const ScatterChart = () => {
       console.log(scatterData);
       console.log(Utils.bubbles(NUMBER_CFG));
       populateScatterData(scatterData);
+      setData(scatterData);
     } catch (error) {
       console.log('Error: ', error);
     }
@@ -221,8 +251,8 @@ export const ScatterChart = () => {
       {barChart}
       <br />
       <div id="dropDownContainer">
-        <DropDownComponent title = {"X-Axis Macro"} menuItems={["Calories", "Carbs (g)", "Protein (g)", "Fat (g)"]}/>
-        <DropDownComponent title = {"Y-Axis Macro"} menuItems={["Fat (g)", "Protein (g)", "Carbs (g)", "Calories"]}/>
+        <DropDownComponent title = {"X-Axis Macro"} menuItems={["Calories", "Carbs (g)", "Protein (g)", "Fat (g)"]} onChange={handleMacroXChange}/>
+        <DropDownComponent title = {"Y-Axis Macro"} menuItems={["Fat (g)", "Protein (g)", "Carbs (g)", "Calories"]} onChange={handleMacroYChange}/>
       </div>
     </div>
   );  

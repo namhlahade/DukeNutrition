@@ -12,6 +12,8 @@
 
 .contentPane {
     grid-area: content;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .sidenav {

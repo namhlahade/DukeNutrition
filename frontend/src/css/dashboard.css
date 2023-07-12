@@ -15,13 +15,14 @@
 }
 
 #chartContainer{
-    width: 75%;
+    width: 100%;
     overflow-x: hidden;
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
     padding: 20px;
     margin: 20px;
+    transition: all 0.3s ease-in-out;
 }
 
 #chartSelectors{
@@ -76,4 +77,13 @@ h1{
 #mealCardContainer{
     width: calc(33% - 20px);
     border: 1px solid blue;
+}
+
+.fade-transition {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+  }
+  
+.fade-transition.show {
+opacity: 1;
 }

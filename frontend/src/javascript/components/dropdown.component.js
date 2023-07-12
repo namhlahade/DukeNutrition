@@ -4,12 +4,15 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { on } from 'events';
 
-export function DropDownComponent({title, menuItems}) {
+export function DropDownComponent({title, menuItems, onChange}) {
   const [age, setAge] = React.useState(menuItems[0]);
 
   const handleChange = (event) => {
     setAge(event.target.value);
+    onChange(event.target.value);
+    console.log(event.target.value);
   };
 
   return (

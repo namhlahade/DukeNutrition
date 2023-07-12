@@ -25,8 +25,8 @@
 }
 
 #chart-action {
-    transition: background .25s,border-color .25s;
     background: rgba(40,44,52,.05);
+    transition: background .25s,border-color .25s;
     border: 1px solid transparent;
     border-radius: 6px;
     color: #3080d0;

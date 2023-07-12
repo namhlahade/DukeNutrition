@@ -31,28 +31,39 @@ export const Dashboard = () => {
       <div id='parentContainer'>
         <div id="topPane">
           <div id='chartContainer'>
-          <div id="chartSelectors">
-            <label className="chartSelector">
-              <input className="chartSelector" type="radio" value="Line" onClick={() => handleChartClick('Line')} />
-              Line
-            </label>
-            <label className="chartSelector">
-              <input className="chartSelector" type="radio" value="Pie" onClick={() => handleChartClick('Pie')} />
-              Pie
-            </label>
-            <label className="chartSelector">
-              <input className="chartSelector" type="radio" value="Bar" onClick={() => handleChartClick('Bar')} />
-              Bar
-            </label>
-            <label className="chartSelector" >
-              <input className="chartSelector" type="radio" value="Scatter" onClick={() => handleChartClick('Scatter')} />
-              Scatter
-            </label>
-          </div>
-            {selectedChart === 'Line' && <LineChart />}
-            {selectedChart === 'Pie' && <PieChart />}
-            {selectedChart === 'Bar' && <BarChart />}
-            {selectedChart === 'Scatter' && <ScatterChart />}
+            <div id="chartSelectors">
+              <label className="chartSelector">
+                <input className="chartSelector" type="radio" value="Line" onClick={() => handleChartClick('Line')} />
+                Line
+              </label>
+              <label className="chartSelector">
+                <input className="chartSelector" type="radio" value="Pie" onClick={() => handleChartClick('Pie')} />
+                Pie
+              </label>
+              <label className="chartSelector">
+                <input className="chartSelector" type="radio" value="Bar" onClick={() => handleChartClick('Bar')} />
+                Bar
+              </label>
+              <label className="chartSelector" >
+                <input className="chartSelector" type="radio" value="Scatter" onClick={() => handleChartClick('Scatter')} />
+                Scatter
+              </label>
+            </div>
+            <div className={`fade-transition ${selectedChart === 'Line' ? 'show' : ''}`}>
+              {selectedChart === 'Line' && <LineChart />}
+            </div>
+
+            <div className={`fade-transition ${selectedChart === 'Pie' ? 'show' : ''}`}>
+              {selectedChart === 'Pie' && <PieChart />}
+            </div>
+
+            <div className={`fade-transition ${selectedChart === 'Bar' ? 'show' : ''}`}>
+              {selectedChart === 'Bar' && <BarChart />}
+            </div>
+
+            <div className={`fade-transition ${selectedChart === 'Scatter' ? 'show' : ''}`}>
+              {selectedChart === 'Scatter' && <ScatterChart />}
+            </div>
           </div>
           <NextMealCard />
         </div>
