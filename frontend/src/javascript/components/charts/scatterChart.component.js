@@ -153,7 +153,8 @@ export const ScatterChart = () => {
   
     // Update scatterplot data based on the newMacroX value
     const updatedDatasets = datasets.map((dataset) => {
-      const updatedData = selectedMacro(newMacroX.toLowerCase().split(' ')[0], macroY.toLowerCase().split(' ')[0], data[dataset.label] || {});
+      const label = dataset.label.replace(/ /g, '_');
+      const updatedData = selectedMacro(newMacroX.toLowerCase().split(' ')[0], macroY.toLowerCase().split(' ')[0], data[label] || {});
       return { ...dataset, data: updatedData };
     });
   
@@ -164,13 +165,16 @@ export const ScatterChart = () => {
     setMacroY(newMacroY);
   
     // Update scatterplot data based on the newMacroX value
+    console.log(datasets);
     const updatedDatasets = datasets.map((dataset) => {
-      const updatedData = selectedMacro(macroX.toLowerCase().split(' ')[0], newMacroY.toLowerCase().split(' ')[0], data[dataset.label] || {});
+      const label = dataset.label.replace(/ /g, '_');
+      const updatedData = selectedMacro(macroX.toLowerCase().split(' ')[0], newMacroY.toLowerCase().split(' ')[0], data[label] || {});
       console.log(dataset.label);
       return { ...dataset, data: updatedData };
     });
   
     setDatasets(updatedDatasets);
+    console.log(datasets);
   };
 
   const populateScatterData = (scatterData) => {
@@ -209,6 +213,7 @@ export const ScatterChart = () => {
       console.log(Utils.bubbles(NUMBER_CFG));
       populateScatterData(scatterData);
       setData(scatterData);
+
     } catch (error) {
       console.log('Error: ', error);
     }
@@ -221,7 +226,7 @@ export const ScatterChart = () => {
   }, []);
 
 
-  const barChart = true ? (
+  const scatterChart =(
     <Chart
       type="scatter"
       config={{
@@ -243,12 +248,12 @@ export const ScatterChart = () => {
           datasets: datasets
         }}
     />
-  ) : null;
+  );
   // call fetchBarStats() here before exporting BarChart()
 
   return (
     <div id='chart-id'>
-      {barChart}
+      {scatterChart}
       <br />
       <div id="dropDownContainer">
         <DropDownComponent title = {"X-Axis Macro"} menuItems={["Calories", "Carbs (g)", "Protein (g)", "Fat (g)"]} onChange={handleMacroXChange}/>
