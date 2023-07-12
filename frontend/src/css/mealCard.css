@@ -58,6 +58,12 @@
     overflow: auto;
     list-style: none;
     color: rgba(0, 0, 0, 0.54);
+}
+
+#nextMacroCardList{
+    overflow: auto;
+    list-style: none;
+    color: rgba(0, 0, 0, 0.54);
     width: 75%;
 
 }

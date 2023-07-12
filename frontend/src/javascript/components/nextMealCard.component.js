@@ -133,7 +133,7 @@ export function NextMealCard() {
             </div>
           </div>
           <div id="nextMealMacroListContainer">
-          <ul id='macroCardList'>
+          <ul id='nextMacroCardList'>
             {nextMeal && nextMeal['macros'] && (Object.entries(nextMeal['macros'])?.map(([key, value]) => (
               <li key={key} style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span><strong>{capitalizeFirstLetter(key)}:</strong></span>
