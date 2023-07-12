@@ -100,3 +100,19 @@
     border: none;
     color: rgb(0, 0, 0, 0.54);
 }
+
+#nextMealMacroListContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#cardContentSuggestMeal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}

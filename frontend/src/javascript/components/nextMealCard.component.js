@@ -132,6 +132,7 @@ export function NextMealCard() {
               )))}
             </div>
           </div>
+          <div id="nextMealMacroListContainer">
           <ul id='macroCardList'>
             {nextMeal && nextMeal['macros'] && (Object.entries(nextMeal['macros'])?.map(([key, value]) => (
               <li key={key} style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -140,6 +141,7 @@ export function NextMealCard() {
               </li>
             )))}
           </ul>
+          </div>
           <div id='restarauntButtons'>
             <br/>
             {restaurantsList && restaurantsList.map((restaurant, index) => (
