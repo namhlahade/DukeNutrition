@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, request
 from flask import Blueprint, jsonify
 from datetime import date
 from datetime import datetime, timedelta
+import random
 
 
 dashboard_bp = Blueprint('dashboard', __name__)
@@ -257,3 +258,86 @@ def getScatterPlotData():
 
     # Return the restaurant meals as a JSON response
     return jsonify(restaurantMeals)
+
+
+@dashboard_bp.route('/getPieChartData', methods=['POST'])
+def getPieChartData():
+    data = request.get_json()
+    userid = data.get("userid")
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+
+    query = cursor.execute(
+        "SELECT restaurant, COUNT(*) AS occurrence FROM User_Meal WHERE user_id = ? GROUP BY restaurant",
+        (userid,)
+    )
+    rows = cursor.fetchall()
+
+    restaurant_occurrences = {}
+    for row in rows:
+        restaurant_name = row[0]
+        occurrence_count = row[1]
+        restaurant_occurrences[restaurant_name] = occurrence_count
+
+    cursor.close()
+    connection.close()
+
+    return jsonify(restaurant_occurrences)
+
+
+@dashboard_bp.route('/getNextSuggestedMeal', methods=['POST'])
+def getNextSuggestedMeal():
+    data = request.get_json()
+    user_id = data.get("userid")
+    restaurant = data.get("restaurant")
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT calorie_tgt, protein_tgt, carb_tgt, fat_tgt FROM User_pref WHERE user_id = ?", (user_id,))
+    user_pref = cursor.fetchone()
+    if user_pref is None:
+        return jsonify(error="User preferences not found"), 404
+
+    calorie_tgt, protein_tgt, carb_tgt, fat_tgt = user_pref
+    print(isinstance(restaurant, str))
+    print(restaurant)
+    # Execute the query
+    cursor.execute(
+        "SELECT Name, Type, Calories_Cal, Fat_g, Carbs_g, Protein_g FROM Meals WHERE restaurant = ?",
+        (restaurant,))
+
+    meals = cursor.fetchall()
+    matching_meals = []
+
+    for meal in meals:
+        if all(isinstance(value, (int, float)) for value in meal[2:]):
+            if meal[2] <= calorie_tgt and meal[3] <= fat_tgt and meal[4] <= carb_tgt and meal[5] <= protein_tgt:
+                matching_meals.append(meal)
+
+    if not matching_meals:
+        return jsonify(error="No matching meals found"), 404
+
+    result_meal = random.choice(matching_meals)
+    macros = {"Calories": result_meal[2], "Fat": result_meal[3],
+              "Carbs": result_meal[4], "Protein": result_meal[5]}
+    meal_details = {result_meal[1]: result_meal[0]}
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(meal_details=meal_details, macros=macros)
+
+
+@dashboard_bp.route('/getRestaurantsList', methods=['POST'])
+def getRestaurantsList():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    cursor.execute("select distinct Restaurant FROM Meals")
+    restaurants = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return restaurants

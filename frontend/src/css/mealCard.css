@@ -66,3 +66,37 @@
     overflow: auto;
     height: 100px;
 }
+
+#nextMealCard{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 1em 0 1em;
+
+}
+#cardHeading{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0 1em 0 1em;
+    color: rgb(00, 0, 0, 0.54);
+}
+
+#restarauntButtons{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+#restaurantButton{
+    border: none;
+    color: rgb(0, 0, 0, 0.54);
+}

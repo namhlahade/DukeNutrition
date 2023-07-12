@@ -69,7 +69,7 @@ export const Dashboard = () => {
         </div>
         <br />
         <br />
-        <h1>Previous Meals</h1>
+        <h1 style={{color: "rgb(0, 0, 0, 0.54"}}>Previous Meals</h1>
         <div id="mealCardList">
           {mealCards?.map((card, index) => (
             <MealCard

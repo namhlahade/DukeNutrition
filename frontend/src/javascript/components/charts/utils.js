@@ -150,6 +150,7 @@ export const CHART_COLORS = {
   plum: 'rgb(221, 160, 221)',
 };
 
+
 const NAMED_COLORS = [
   CHART_COLORS.red,
   CHART_COLORS.orange,

@@ -85,5 +85,5 @@ h1{
   }
   
 .fade-transition.show {
-opacity: 1;
+    opacity: 1;
 }
