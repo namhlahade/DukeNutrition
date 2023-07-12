@@ -125,13 +125,29 @@ export function transparentize(value, opacity) {
 }
 
 export const CHART_COLORS = {
-  red: 'rgb(255, 99, 132)',
-  orange: 'rgb(255, 159, 64)',
-  yellow: 'rgb(255, 205, 86)',
-  green: 'rgb(75, 192, 192)',
-  blue: 'rgb(54, 162, 235)',
+  coral: 'rgb(255, 127, 80)',
+  gold: 'rgb(255, 215, 0)',
   purple: 'rgb(153, 102, 255)',
-  grey: 'rgb(201, 203, 207)'
+  orange: 'rgb(255, 159, 64)',
+  blue: 'rgb(54, 162, 235)',
+  grey: 'rgb(201, 203, 207)',
+  pink: 'rgb(255, 192, 203)',
+  red: 'rgb(255, 99, 132)',
+  green: 'rgb(75, 192, 192)',
+  lime: 'rgb(50, 205, 50)',
+  cyan: 'rgb(0, 255, 255)',
+  teal: 'rgb(0, 128, 128)',
+  indigo: 'rgb(75, 0, 130)',
+  salmon: 'rgb(250, 128, 114)',
+  gold: 'rgb(255, 215, 0)',
+  lavender: 'rgb(230, 230, 250)',
+  maroon: 'rgb(128, 0, 0)',
+  olive: 'rgb(128, 128, 0)',
+  navy: 'rgb(0, 0, 128)',
+  turquoise: 'rgb(64, 224, 208)',
+  violet: 'rgb(238, 130, 238)',
+  chocolate: 'rgb(210, 105, 30)',
+  plum: 'rgb(221, 160, 221)',
 };
 
 const NAMED_COLORS = [

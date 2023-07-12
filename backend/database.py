@@ -52,6 +52,7 @@ cursor.close'''
     connection.commit()'''
 
 # Close the cursor and the database connection
+cursor.execute("DELETE FROM User_Meal")
 connection.commit()
 
 

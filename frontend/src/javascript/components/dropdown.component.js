@@ -6,15 +6,15 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export function DropDownComponent({title, menuItems}) {
-  const [age, setAge] = React.useState('');
+  const [age, setAge] = React.useState(menuItems[0]);
 
   const handleChange = (event) => {
     setAge(event.target.value);
   };
 
   return (
-    <Box sx={{ minWidth: 130 }}>
-      <FormControl sx={{ minWidth: 130 }}>
+    <Box sx={{ minWidth: 130 } }>
+      <FormControl sx={{ minWidth: 140 }}>
         <InputLabel id="demo-simple-select-label">{title}</InputLabel>
         <Select
           labelId="demo-simple-select-label"

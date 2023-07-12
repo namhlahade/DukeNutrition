@@ -160,9 +160,9 @@ def selectMeal():
     meal_date = date.today()  # Current date
 
     # Update the query and parameters to include the `meal_date` column
-    query = "INSERT INTO User_Meal VALUES (?,?,?,?,?,?,?,?,?,?)"
+    query = "INSERT INTO User_Meal VALUES (?,?,?,?,?,?,?,?,?,?,?)"
     parameters = (userMealid, userid, prefid, mealid,
-                  result[0], result[1], result[2], result[3], result[4], meal_date)
+                  result[0], result[1], result[2], result[3], result[4], meal_date, restaurant_name)
     db.execute(query, parameters)
 
     db.commit()

@@ -178,14 +178,6 @@ export const BarChart = () => {
   return (
     <div id='chart-id'>
       {barChart}
-      <br />
-      <div id={'chart-actions-row'}>
-        {/* {actions?.map((action, index) => (
-          <Button id='chart-action' key={index} onClick={() => action.handler(document.getElementById('barChart'))}>
-            {action.name}
-          </Button>
-        ))} */}
-      </ div>
     </div>
   );  
 };
