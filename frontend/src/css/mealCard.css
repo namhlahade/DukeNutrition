@@ -57,9 +57,9 @@
 #macroCardList{
     overflow: auto;
     list-style: none;
-    padding: 0;
-    text-align: left;
     color: rgba(0, 0, 0, 0.54);
+    width: 75%;
+
 }
 
 .scrollable{
@@ -74,7 +74,6 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    padding: 0 1em 0 1em;
 
 }
 #cardHeading{
