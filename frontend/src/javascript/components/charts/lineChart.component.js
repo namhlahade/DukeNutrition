@@ -1,68 +1,77 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Chart as ChartJS, registerables} from 'chart.js';
 import {Chart} from 'react-chartjs-2';
 
 import {DropDownComponent} from '../dropdown.component';
+import { useState } from 'react';
 import * as Utils from './utils';
 import "../../../css/chart.css"
 
-ChartJS.register(...registerables);
+export const LineChart = () => {
 
-let start = new Date(),
-  end = new Date();
+  ChartJS.register(...registerables);
 
-start.setDate(start.getDate() - 7); // set to 'now' minus 7 days.
-start.setHours(0, 0, 0, 0); // set to midnight.
+  const [timePeriod, setTimePeriod] = useState(7);
+  const [macro, setMacro] = useState("Calories");
+  const [chartData, setChartData] = useState({});
 
-const options = {
-  scales: {
-    xAxes: [
-      {
-        type: "time",
-        time: {
-          min: start,
-          max: end,
-          unit: "day",
+  let start = new Date(),
+    end = new Date();
+
+
+  const updateTimePeriod = (days) => {
+    setTimePeriod(days);
+  };
+
+  const updateMacro = (macro) => {
+    setMacro(macro);
+  };
+
+  const fetchLineChartData = async () => {
+    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/dashboard/getLineChartData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      },
-    ],
-  },
-};
+        body: JSON.stringify({ userid: userid, timePeriod: timePeriod, macro: macro }),
+      });
+  
+      const fetchedData = await response.json();
+      setChartData(fetchedData);
+      console.log(fetchedData);
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    } catch (error) {
+      console.log('Error: ', error);
+    }
 
-const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Actual',
-      data: labels.map(() => Math.floor(Math.random() * 2000 - 1000)),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Goal',
-      data: labels.map(() => Math.floor(Math.random() * 2000 - 1000)),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      borderDash: [10,5]
-    },
-  ],
-};
+  };
 
-export function LineChart() {
+  useEffect(() => {
+    fetchLineChartData();
+  }, [timePeriod, macro]);
+
   return (
-    <div>
-      <Chart
-        type="line"
-        options={options}
-        data={data}
+  <div>
+    {chartData.labels && chartData.datasets && (
+      <Chart type="line" data={chartData} />
+    )}
+    <br />
+    <div id="dropDownContainer">
+      <DropDownComponent
+        title="Time Period"
+        menuItems={[7, 30, 180, 365]}
+        onChange={updateTimePeriod}
       />
-      <br />
-      <div id="dropDownContainer">
-        <DropDownComponent title = {"Time Period"} menuItems={[7, 30, 180, 365]}/>
-        <DropDownComponent title = {"Macro"} menuItems={["Calories", "Carbs", "Protein", "Fat"]}/>
-      </div>
+      <DropDownComponent
+        title="Macro"
+        menuItems={["Calories", "Carbs (g)", "Protein (g)", "Fat (g)"]}
+        onChange={updateMacro}
+      />
     </div>
+  </div>
+
   );  
 }

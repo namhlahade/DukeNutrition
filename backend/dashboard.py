@@ -2,7 +2,8 @@ import sqlite3
 from flask import Blueprint, jsonify, request
 from flask import Blueprint, jsonify
 from datetime import date
-from datetime import datetime, timedelta
+from datetime import datetime as datetime2, timedelta
+import datetime
 import random
 
 
@@ -153,7 +154,7 @@ def thisWeeksStats():
     userid = data.get("userid")
     # time_period = data.get("time_period")
 
-    current_date = datetime.now()
+    current_date = datetime2.now()
 
     start_date = current_date - timedelta(days=6)
 
@@ -341,3 +342,96 @@ def getRestaurantsList():
     conn.close()
 
     return restaurants
+
+
+@dashboard_bp.route('/getLineChartData', methods=['POST'])
+def getLineChartData():
+    data = request.get_json()
+    user_id = data.get("userid")
+    time_period = data.get("timePeriod")
+    macro = data.get("macro")
+
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+
+    # Retrieve the macro target for the specified user
+    cursor.execute(
+        "SELECT {}_tgt FROM User_Pref WHERE user_id = ?".format(
+            macro_formatted(macro)),
+        (user_id,)
+    )
+    macro_target = cursor.fetchone()[0]  # Fetch the macro target value
+
+    # Determine the date range based on the selected time period
+    today = datetime.date.today()
+    start_date = today - datetime.timedelta(days=time_period)
+    end_date = today
+
+    # Retrieve the data from the User_Meal table for the specified user, macro, and date range
+    query = """
+        SELECT meal_date, {} 
+        FROM User_Meal 
+        WHERE user_id = ? 
+            AND meal_date >= ? 
+            AND meal_date <= ?
+    """.format(macro_formatted_usermeal_table(macro))
+    cursor.execute(query, (user_id, start_date, end_date))
+    rows = cursor.fetchall()
+
+    # Extract the dates and macro values from the retrieved data
+    dates = [row[0] for row in rows]
+    macro_values = [row[1] for row in rows]
+
+    cursor.close()
+    connection.close()
+
+    # Prepare the data in the desired format for the chart
+
+    actual_data = {
+        "labels": dates,
+        "datasets": [
+            {
+                "label": 'Actual',
+                "data": macro_values,
+                "fill": False,
+                "borderColor": "rgb(255, 99, 132)",
+                "backgroundColor": "rgba(255, 99, 132, 0.5)",
+            },
+            {
+                "label": 'Goal',
+                "data": [macro_target] * len(dates),
+                "fill": False,
+                "borderColor": "rgb(53, 162, 235)",
+                "backgroundColor": "rgba(53, 162, 235, 0.5)",
+                "borderDash": [10, 5]
+            }
+        ]
+    }
+
+    return jsonify(actual_data)
+
+
+def macro_formatted(macro):
+    if macro == "Calories":
+        return "calorie"
+    elif macro == "Fat (g)":
+        return "fat"
+    elif macro == "Carbs (g)":
+        return "carb"
+    elif macro == "Protein (g)":
+        return "protein"
+    else:
+        return None
+
+
+def macro_formatted_usermeal_table(macro):
+    if macro == "Calories":
+        return "calories"
+    elif macro == "Fat (g)":
+        return "fat"
+    elif macro == "Carbs (g)":
+        return "carbs"
+    elif macro == "Protein (g)":
+        return "protein"
+    else:
+        return None
