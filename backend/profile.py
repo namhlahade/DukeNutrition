@@ -12,7 +12,9 @@ def get_db():
 @profile_bp.route('/userInfo', methods=['POST'])
 def userInfo():
     data = request.get_json()
-    userid = data.get('userid')
+    #userid = data.get('userid')
+
+    userid = "348e271d-5500-4e3d-99ac-39f584f5a3fe"
 
     if not userid:
         print("Why am I not working")

@@ -1,125 +1,177 @@
-import React, { Component, useState, useEffect }  from 'react';
-import { useCallback } from 'react';
-
-// Default V2 theme
-import '../../css/survey.css';
-// Modern theme
-// import 'survey-core/modern.min.css';
-import { Model } from 'survey-core';
-import { Survey } from 'survey-react-ui';
-
-const surveyJson = {
-  elements: [{
-    name: "userid",
-    title: "Username:",
-    type: "text"
-  },
-  {
-    name: "calories",
-    title: "Enter Calories:",
-    type: "text"
-  }, 
-  {
-    name: "protein",
-    title: "Enter Protein:",
-    type: "text"
-  },
-  {
-    name: "carbs",
-    title: "Enter Carbs:",
-    type: "text"
-  },
-  {
-    name: "fat",
-    title: "Enter Fat:",
-    type: "text"
-  },
-  {
-    name: "mealsPerDay",
-    title: "Enter Meals Per Day:",
-    type: "text"
-  }]
-};
-
-const surveyParams = new Set(["userid", "calories", "protein", "carbs", "fat", "mealsPerDay"]);
-
+import React, { useState, useEffect } from 'react';
+import '../../css/userSurvey.css';
+import Alert from '../components/Alert';
 
 const UserInfoSurvey = () => {
-  const [userPreference, setUserPreference] = useState({});
+  const [responses, setResponses] = useState({});
+  const [flag, setFlag] = useState(0);
+  const [alert, setAlert] = useState(null);
+
 
   useEffect(() => {
-    console.log("userPreferneceChange:");
-    console.log(userPreference);
-    //console.log(Object.keys(userPreference).length)
-    console.log(surveyParams.size)
-  },[userPreference]);
+    console.log("Updated Responses Variable")
+    console.log(responses);
+  }, [flag]);
 
-  const handleSubmit = (data) => {
-    // Send an HTTP POST request to the backend API endpoint
-    console.log("This is the data:");
-    console.log(data);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Input being sent to API for userInfoSurvey:")
+    console.log(responses);
 
-    if (Object.keys(data).length != surveyParams.size){
-      alert("Fill all the fields");
+    const sendUserData = async () => {
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/authentication/collectUserInfo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(responses),
+        })
+        const calsAndMacs = await response.json();
+        console.log(calsAndMacs);
+        setAlert({ type: 'success', message: 'User Info Added!' });
+      }
+      catch(error) {
+        console.log('Error Creating Meal:', error);
+        setAlert({ type: 'danger', message: 'Error in Adding User Info!' });
+      }
+    }
+    
+
+
+    let responseLength = Object.keys(responses).length
+    if (responseLength < 5){
+      setAlert({ type: 'danger', message: 'Fill out all the Questions!' });
       return;
     }
 
-    setUserPreference(data)
-    fetch('http://127.0.0.1:5000/authentication/collectUserInfo', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        // Handle the response from the backend
-        if (result.error) {
-          alert("Failure");
-        } else {
-          alert("Success");
-        }
-      })
-      .catch((error) => {
-        // Handle any errors that occurred during the request
-        console.error('Error:', error);
-      });
+    const responseCopy = { ...responses }
+    for (var question in responseCopy){
+      if (responseCopy[question] == ""){
+        setAlert({ type: 'danger', message: 'Fill out all the Questions!' });
+        return;
+      }
+    }
+
+    if (isNaN(responses["calories"])){
+      setAlert({ type: 'danger', message: 'Calories must be a number!' });
+      return;
+    }
+
+    if (isNaN(responses["protein"])){
+      setAlert({ type: 'danger', message: 'Protein must be a number!' });
+      return;
+    }
+
+    if (isNaN(responses["carbs"])){
+      setAlert({ type: 'danger', message: 'Carbs must be a number!' });
+      return;
+    }
+
+    if (isNaN(responses["fat"])){
+      setAlert({ type: 'danger', message: 'Fat must be a number!' });
+      return;
+    }
+
+    if (isNaN(responses["mealsPerDay"])){
+      setAlert({ type: 'danger', message: 'Meals per Day must be a number!' });
+      return;
+    }
+
+    sendUserData();
+
   };
 
-  const Alert = ({ message, type }) => {
-    return <div className={`alert alert-${type}`}>{message}</div>;
+  const handleChange = (event, questionIndex) => {
+    const { value } = event.target;
+    setResponses((prevResponses) => {
+      const updatedResponses = {...prevResponses};
+      updatedResponses[questionIndex] = value;
+      return updatedResponses;
+    });
   };
 
-
-  const survey = new Model(surveyJson);
-  const alertResults = useCallback((sender) => {
-    const results = JSON.stringify(sender.data);
-    handleSubmit(sender.data);
-  }, []);
-
-  survey.onComplete.add(alertResults);
-  survey.onComplete.add(Alert);
+  const handleBlur = (event, questionIndex) => {
+    const { value } = event.target;
+    setResponses((prevResponses) => {
+      const updatedResponses = {...prevResponses};
+      updatedResponses[questionIndex] = value;
+      return updatedResponses;
+    });
+    setFlag(flag + 1)
+  };
 
   return (
     <div>
-        <Survey model={survey} />
-        {alert && <Alert message={alert.message} type={alert.type} />}
+      <h1>Survey</h1>
+      {alert && <Alert message={alert.message} type={alert.type} />}
+      <form onSubmit={handleSubmit}>
+        <div className="question-container">
+          <label className="question-label">
+            Enter Calories:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["calories"] || ''}
+              onChange={(event) => handleChange(event, "calories")}
+              onBlur={(event) => handleBlur(event, "calories")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+            Enter Protein:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["protein"] || ''}
+              onChange={(event) => handleChange(event, "protein")}
+              onBlur={(event) => handleBlur(event, "protein")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+            Enter Carbs:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["carbs"] || ''}
+              onChange={(event) => handleChange(event, "carbs")}
+              onBlur={(event) => handleBlur(event, "carbs")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+            Enter Fat:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["fat"] || ''}
+              onChange={(event) => handleChange(event, "fat")}
+              onBlur={(event) => handleBlur(event, "fat")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+            Enter Meals per Day:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["mealsPerDay"] || ''}
+              onChange={(event) => handleChange(event, "mealsPerDay")}
+              onBlur={(event) => handleBlur(event, "mealsPerDay")}
+            />
+          </label>
+        </div>
+        {/* Add more questions as needed */}
+        <button type="submit" className="submit-button">Submit</button>
+      </form>
     </div>
   );
-}
-
-// function saveSurveyResults(url, json) {
-//   const request = new XMLHttpRequest();
-//   request.open('POST', url);
-//   request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-//   request.addEventListener('load', () => {
-//     // Handle "load"
-//   });
-//   request.addEventListener('error', () => {
-//     // Handle "error"
-//   });
-//   request.send(JSON.stringify(json));
-// }
+};
 
 export default UserInfoSurvey;
