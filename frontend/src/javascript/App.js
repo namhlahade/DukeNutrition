@@ -59,7 +59,7 @@ function App() {
             <Route path="/duke-net-nutrition/user-preferences" element={<UserInfoSurvey />} />
           </Route>
           <Route element={<ProtectRoutes />}>
-            <Route path="/duke-net-nutrition/profile" element={<Profile />} />
+            <Route path="/duke-net-nutrition/profile" element={<ProfileChange />} />
           </Route>
         </Route>
         {/* catch all */}

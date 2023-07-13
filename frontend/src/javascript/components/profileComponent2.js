@@ -1,12 +1,181 @@
-import React, { useState, useEffect }  from 'react';
-import { useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import '../../css/userSurvey.css';
+import Alert from '../components/Alert';
 
-// Default V2 theme
-import '../../css/survey.css';
-// Modern theme
-// import 'survey-core/modern.min.css';
-import { Model } from 'survey-core';
-import { Survey } from 'survey-react-ui';
+const ProfileChange = () => {
+  const [responses, setResponses] = useState({});
+  const [flag, setFlag] = useState(0);
+  const [alert, setAlert] = useState(null);
+
+
+  useEffect(() => {
+    console.log("Updated Responses Variable")
+    console.log(responses);
+  }, [flag]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Input being sent to API for userInfoSurvey:")
+    console.log(responses);
+
+    const sendUserData = async () => {
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/profile/userInfo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(responses),
+        })
+        const calsAndMacs = await response.json();
+        console.log(calsAndMacs);
+        setAlert({ type: 'success', message: 'User Info Updating!' });
+      }
+      catch(error) {
+        console.log('Error Creating Meal:', error);
+        setAlert({ type: 'danger', message: 'Error in Updating User Info!' });
+      }
+    }
+    
+
+
+    let responseLength = Object.keys(responses).length
+    if (responseLength === 0){
+      setAlert({ type: 'danger', message: 'Fill out at least 1 field!' });
+      return;
+    }
+
+    const responseCopy = { ...responses }
+    for (var question in responseCopy){
+      if (responseCopy[question] == ""){
+        delete responseCopy[question];
+      }
+    }
+
+    setResponses(responseCopy);
+    setFlag(flag + 1);
+
+    sendUserData();
+
+  };
+
+  const handleChange = (event, questionIndex) => {
+    const { value } = event.target;
+    setResponses((prevResponses) => {
+      const updatedResponses = {...prevResponses};
+      updatedResponses[questionIndex] = value;
+      return updatedResponses;
+    });
+  };
+
+  const handleBlur = (event, questionIndex) => {
+    const { value } = event.target;
+    setResponses((prevResponses) => {
+      const updatedResponses = {...prevResponses};
+      updatedResponses[questionIndex] = value;
+      return updatedResponses;
+    });
+    setFlag(flag + 1)
+  };
+
+  return (
+    <div>
+      <h1>Profile Change</h1>
+      {alert && <Alert message={alert.message} type={alert.type} />}
+      <form onSubmit={handleSubmit}>
+        <div className="question-container">
+          <label className="question-label">
+            Enter New Username:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["newUsername"] || ''}
+              onChange={(event) => handleChange(event, "newUsername")}
+              onBlur={(event) => handleBlur(event, "newUsername")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+            Enter New Password:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["newPassword"] || ''}
+              onChange={(event) => handleChange(event, "newPassword")}
+              onBlur={(event) => handleBlur(event, "newPassword")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+          Enter New Calories:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["newCalories"] || ''}
+              onChange={(event) => handleChange(event, "newCalories")}
+              onBlur={(event) => handleBlur(event, "newCalories")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+            Enter New Protein:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["newProtein"] || ''}
+              onChange={(event) => handleChange(event, "newProtein")}
+              onBlur={(event) => handleBlur(event, "newProtein")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+            Enter New Carbs:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["newCarbs"] || ''}
+              onChange={(event) => handleChange(event, "newCarbs")}
+              onBlur={(event) => handleBlur(event, "newCarbs")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+            Enter New Fat:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["newFat"] || ''}
+              onChange={(event) => handleChange(event, "newFat")}
+              onBlur={(event) => handleBlur(event, "newFat")}
+            />
+          </label>
+        </div>
+        <div className="question-container">
+          <label className="question-label">
+            Enter New Number of Meals per Day:
+            <input
+              className="question-input"
+              type="text"
+              value={responses["newNum_meals"] || ''}
+              onChange={(event) => handleChange(event, "newNum_meals")}
+              onBlur={(event) => handleBlur(event, "newNum_meals")}
+            />
+          </label>
+        </div>
+        {/* Add more questions as needed */}
+        <button type="submit" className="submit-button">Submit</button>
+      </form>
+    </div>
+  );
+};
+
+export default ProfileChange;
 
 const surveyJson = {
   elements: [{
@@ -45,74 +214,3 @@ const surveyJson = {
     type: "text"
   }]
 };
-
-const ProfileChange = () => {
-    const [profileChangeInput, setProfileChangeInput] = useState(null);
-    const [alert, setAlert] = useState(null);
-
-    useEffect(() => {
-        console.log("Input being sent to profile change API");
-        console.log(profileChangeInput);
-    }, [profileChangeInput]);    
-
-    const handleSubmit = (data) => {
-        console.log("data recieved from hitting submit button")
-        console.log(data)
-        const tempProfile = { ...data }
-        console.log("tempData variable information")
-        console.log(tempProfile)
-        tempProfile["userid"] = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
-        setProfileChangeInput(tempProfile);
-        console.log("Immediate Change");
-        console.log(profileChangeInput)
-
-        fetch('http://127.0.0.1:5000/profile/userInfo', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(profileChangeInput),
-          })
-            .then((response) => response.json())
-            .then((result) => {
-              // Handle the response from the backend
-              if (result.error) {
-                setAlert({ type: 'danger', message: result.error });
-              } else {
-                setAlert({ type: 'success', message: result.message });
-                // redirectToHomeContent(true);
-              }
-            })
-            .catch((error) => {
-              // Handle any errors that occurred during the request
-              console.error('Error:', error);
-            });
-        
-    };
-
-  const Alert = ({ message, type }) => {
-    return <div className={`alert alert-${type}`}>{message}</div>;
-  };
-
-
-  const survey = new Model(surveyJson);
-  const alertResults = useCallback((sender) => {
-    const results = JSON.stringify(sender.data);
-    handleSubmit(sender.data);
-  }, []);
-
-  survey.onComplete.add(alertResults);
-  survey.onComplete.add(Alert);
-
-  return (
-    <div>
-        <div>
-            <h3>Fill out any amount of fields</h3>
-        </div>
-        <Survey model={survey} />
-        {alert && <Alert message={alert.message} type={alert.type} />}
-    </div>
-  );
-}
-
-export default ProfileChange;
