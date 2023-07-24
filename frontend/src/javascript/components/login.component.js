@@ -16,7 +16,7 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevents default form submission behavior
-    login({ username, password, alert });
+    login({ username, password, setAlert });
   };
 
 return (

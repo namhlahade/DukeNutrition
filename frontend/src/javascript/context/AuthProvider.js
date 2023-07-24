@@ -8,12 +8,11 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [cookies, setCookies, removeCookie] = useCookies();
-    const [alert, setAlert] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
-    const login = async ({ username, password, alert}) => {
+    const login = async ({ username, password, setAlert}) => {
         fetch('http://127.0.0.1:5000/authentication/login', {
             method: 'POST',
             headers: {
