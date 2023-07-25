@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../../css/userSurvey.css';
 import {Alert} from './Alert.component';
+import { AuthenticationController } from '../controller/AuthenticationController';
+import { useAuth } from '../context/AuthProvider';
 
 const ProfileChange = () => {
   const [responses, setResponses] = useState({});
   const [flag, setFlag] = useState(0);
   const [alert, setAlert] = useState(null);
+  const authenticationController = new AuthenticationController();
+  const cookies = useAuth().cookies;
 
 
   useEffect(() => {
@@ -19,7 +23,8 @@ const ProfileChange = () => {
     console.log(responses);
 
     const sendUserData = async () => {
-
+      const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
+      responses["userid"] = userid;
       try {
         const response = await fetch('http://127.0.0.1:5000/profile/userInfo', {
         method: 'POST',

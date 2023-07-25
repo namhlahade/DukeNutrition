@@ -29,7 +29,7 @@ def userInfo():
         username = data.get('username')
         cursor.execute(
             'update User_Table set username = ? where user_id = ?', (username, userid))
-        cursor.commit()
+        db.commit()
 
         query = cursor.execute(
             "select * from User_Table where user_id = ?", (userid,))
@@ -44,7 +44,7 @@ def userInfo():
         password_hash = generate_password_hash(password)
         cursor.execute('update User_Table set password = ? where user_id = ?',
                        (password_hash, userid))
-        cursor.commit()
+        db.commit()
 
         query = cursor.execute(
             "select * from User_Table where user_id = ?", (userid,))
@@ -58,7 +58,7 @@ def userInfo():
         calories = data.get('newCalories')
         cursor.execute(
             'update User_Pref set calorie_tgt = ? where user_id = ?', (calories, userid))
-        cursor.commit()
+        db.commit()
 
         query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))
@@ -72,7 +72,7 @@ def userInfo():
         protein = data.get("newProtein")
         cursor.execute(
             'update User_Pref set protein_tgt = ? where user_id = ?', (protein, userid))
-        cursor.commit()
+        db.commit()
 
         query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))
@@ -86,7 +86,7 @@ def userInfo():
         carbs = data.get("newCarbs")
         cursor.execute(
             'update User_Pref set carb_tgt = ? where user_id = ?', (carbs, userid))
-        cursor.commit()
+        db.commit()
 
         query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))
@@ -101,7 +101,7 @@ def userInfo():
         print(fat)
         cursor.execute(
             'update User_Pref set fat_tgt = ? where user_id = ?', (fat, userid))
-        cursor.commit()
+        db.commit()
 
         query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))
@@ -115,7 +115,7 @@ def userInfo():
         numMeals = data.get("newNum_meals")
         cursor.execute(
             'update User_Pref set meal_per_day = ? where user_id = ?', (numMeals, userid))
-        cursor.commit()
+        db.commit()
 
         query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))

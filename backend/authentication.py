@@ -64,7 +64,7 @@ def signup():
     userId = str(uuid.uuid4())
     cursor.execute("insert into User_Table values (?,?,?,?)",
                    (userId, username, email, password_hash))
-    cursor.commit()
+    db.commit()
     cursor.close()
     return jsonify({'message': 'User created successfully.'}), 201
 
@@ -99,7 +99,7 @@ def login():
         'SELECT user_id FROM User_Table WHERE username = ?', (username,)).fetchone()[0]
     cursor.execute('INSERT INTO sessions (session_token, user_id) VALUES (?, ?)',
                    (session_token, user_id))
-    cursor.commit()
+    db.commit()
     cursor.close()
     return jsonify({'success': 'Logged in successfully.',
                     'role': 2001,
@@ -144,7 +144,7 @@ def collectUserInfo():
     prefId = str(uuid.uuid4())
     cursor.execute("insert into User_Pref values (?,?,?,?,?,?,?)",
                    (prefId, userid, calories, protein, carbs, fat, mealsPerDay))
-    cursor.commit()
+    db.commit()
     cursor.close()
     query = cursor.execute(
         "select * from User_Pref where user_id = ?", (userid,))
@@ -183,7 +183,7 @@ def deleteUser():
     query = cursor.execute(
         "delete from User_Meal where user_id = ?", (userid,))
 
-    cursor.commit()
+    db.commit()
 
     query = cursor.execute(
         "select * from User_Table where user_id = ?", (userid,))

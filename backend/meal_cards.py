@@ -26,7 +26,7 @@ def addMealCardToDatabase():
     # Make sure to use the correct SQL syntax for the insert query
     cursor.execute('INSERT INTO user_meal_cards (user_id, meal_card_id, meal_card) VALUES (?, ?, ?)',
                    (user_id, meal_card_id, meal_card_json))
-    cursor.commit()
+    db.commit()
     cursor.close()
     return jsonify({'success': 'Meal Card Added'}), 200
 
@@ -53,6 +53,6 @@ def deleteMealCard():
     meal_card_id = data.get('meal_card_id')
     cursor.execute('delete meal_card from user_meal_cards where user_id = ? and meal_card_id = ?',
                    (user_id, meal_card_id))
-    cursor.commit()
+    db.commit()
     cursor.close()
     return jsonify({'success': 'Meal Card Deleted'}), 200
