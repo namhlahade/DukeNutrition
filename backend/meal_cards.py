@@ -51,7 +51,7 @@ def deleteMealCard():
     data = request.get_json()
     user_id = data.get('user_id')
     meal_card_id = data.get('meal_card_id')
-    cursor.execute('delete meal_card from user_meal_cards where user_id = ? and meal_card_id = ?',
+    cursor.execute('DELETE FROM user_meal_cards WHERE user_id = ? AND meal_card_id = ?',
                    (user_id, meal_card_id))
     db.commit()
     cursor.close()

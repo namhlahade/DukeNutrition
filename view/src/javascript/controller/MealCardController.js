@@ -23,7 +23,7 @@ export class MealCardController {
   async deleteMealCard({mealCard, userId, mealCardId}) {
     try {
       const response = await fetch('http://127.0.0.1:5000/meal-cards/deleteMealCard', {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
