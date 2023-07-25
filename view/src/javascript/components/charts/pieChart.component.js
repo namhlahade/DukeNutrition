@@ -3,7 +3,8 @@ import {Chart as ChartJS, registerables} from 'chart.js';
 import {Chart} from 'react-chartjs-2';
 import { useEffect } from 'react';
 import LoadingSpinner from '../LoadingSpinner';
-
+import { AuthenticationController } from '../../controller/AuthenticationController';
+import { useAuth } from '../../context/AuthProvider';
 import { Button } from 'react-bootstrap';
 import * as Utils from './utils';
 import "../../../css/chart.css"
@@ -13,6 +14,8 @@ ChartJS.register(...registerables);
 export const PieChart = () => {
   const [pieData, setPieData] = useState({});
   const [pieColors, setPieColors] = useState([]);
+  const authenticationController = new AuthenticationController();
+  const cookies = useAuth().cookies;
 
   function generateRandomColors(fetchedData) {
     const colorKeys = Object.keys(Utils.CHART_COLORS);
@@ -27,7 +30,7 @@ export const PieChart = () => {
   }
 
   const fetchPieData = async () => {
-    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+    const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
   
     try {
       const response = await fetch('http://127.0.0.1:5000/dashboard/getPieChartData', {

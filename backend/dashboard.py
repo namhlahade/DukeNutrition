@@ -276,7 +276,7 @@ def getPieChartData():
         "SELECT restaurant, COUNT(*) AS occurrence FROM User_Meal WHERE user_id = ? GROUP BY restaurant",
         (userid,)
     )
-    rows = cursor.fetchall()
+    rows = query.fetchall()
 
     restaurant_occurrences = {}
     for row in rows:

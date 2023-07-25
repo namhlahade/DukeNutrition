@@ -3,6 +3,8 @@ import {Chart as ChartJS, registerables} from 'chart.js';
 import {Chart} from 'react-chartjs-2';
 import { useEffect, useState } from 'react';
 import { DropDownComponent } from '../dropdown.component';
+import { AuthenticationController } from '../../controller/AuthenticationController';
+import { useAuth } from '../../context/AuthProvider';
 
 import { Button } from 'react-bootstrap';
 import * as Utils from './utils';
@@ -20,6 +22,8 @@ export const ScatterChart = () => {
   const [macroX, setMacroX] = useState("Calories");
   const [macroY, setMacroY] = useState("Fat (g)");
   const [data, setData] = useState({});
+  const authenticationController = new AuthenticationController();
+  const cookies = useAuth().cookies;
 
   function selectedMacro(macronutrientX, macronutrientY, mealData) {
     const scatterData = [];
@@ -85,7 +89,7 @@ export const ScatterChart = () => {
   
   
   const fetchScatterData = async () => {
-    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+    const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
   
     try {
       const response = await fetch('http://127.0.0.1:5000/dashboard/getScatterPlotData', {

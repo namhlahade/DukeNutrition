@@ -1,7 +1,8 @@
 import React from 'react';
 import {Chart as ChartJS, registerables} from 'chart.js';
 import {Chart} from 'react-chartjs-2';
-
+import { AuthenticationController } from '../../controller/AuthenticationController';
+import { useAuth } from '../../context/AuthProvider';
 import {DropDownComponent} from '../dropdown.component';
 import * as Utils from './utils';
 import { Button } from 'react-bootstrap';
@@ -83,9 +84,11 @@ export const BarChart = () => {
   const [calsAndMacsKeys, setCalsAndMacsKeys] = useState([]);
   const [calsAndMacsValues, setCalsAndMacsValues] = useState([]);
   const [targetCalsAndMacsValues, setTargetCalsAndMacs] = useState([]);
+  const authenticationController = new AuthenticationController();
+  const cookies = useAuth().cookies;
 
   const fetchActualWeeklyMacros = async () => {
-    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+    const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
   
     try {
       const response = await fetch('http://127.0.0.1:5000/dashboard/thisWeeksStats', {
@@ -109,7 +112,7 @@ export const BarChart = () => {
 
 
   const fetchTargetWeeklyMacros = async () => {
-    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+    const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
   
     try {
       const response = await fetch('http://127.0.0.1:5000/dashboard/thisWeeksTargets', {

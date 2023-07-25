@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import {Chart as ChartJS, registerables} from 'chart.js';
 import {Chart} from 'react-chartjs-2';
-
+import { AuthenticationController } from '../../controller/AuthenticationController';
+import { useAuth } from '../../context/AuthProvider';
 import {DropDownComponent} from '../dropdown.component';
 import { useState } from 'react';
 import * as Utils from './utils';
@@ -14,6 +15,8 @@ export const LineChart = () => {
   const [timePeriod, setTimePeriod] = useState(7);
   const [macro, setMacro] = useState("Calories");
   const [chartData, setChartData] = useState({});
+  const authenticationController = new AuthenticationController();
+  const cookies = useAuth().cookies;
 
   let start = new Date(),
     end = new Date();
@@ -28,7 +31,7 @@ export const LineChart = () => {
   };
 
   const fetchLineChartData = async () => {
-    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+    const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
 
     try {
       const response = await fetch('http://127.0.0.1:5000/dashboard/getLineChartData', {
