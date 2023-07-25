@@ -6,16 +6,18 @@ import CardMedia from '@mui/material/CardMedia';
 import {Button} from '@mui/material';
 import { useEffect, useState } from "react";
 import '../../css/mealCard.css'
+import { AuthenticationController } from '../controller/AuthenticationController';
 
 export function NextMealCard() {
   const [nextMeal, setNextMeal] = useState({});
   const [restaurantsList, setRestaurantsList] = useState([]);
   const [restaurant, setRestaurant] = useState(["Pitchforks"]);
+  const authenticationController = new AuthenticationController();
 
   ////////////////////////////////////////////////////////////////////////////////////////
 
   const fetchNextMeal = async () => {
-    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+    const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
   
     try {
       const response = await fetch('http://127.0.0.1:5000/dashboard/getNextSuggestedMeal', {
@@ -42,7 +44,7 @@ export function NextMealCard() {
 
 
   const fetchRestaurantsList = async () => {
-    const userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+    const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
   
     try {
       const response = await fetch('http://127.0.0.1:5000/dashboard/getRestaurantsList', {

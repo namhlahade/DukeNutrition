@@ -66,8 +66,7 @@ def allRestaurants():
 @nextMeal_bp.route('/selectMeal', methods=['POST'])
 def selectMeal():
     data = request.get_json()
-    # userid = data.get('userid')
-    userid = '86a75215-6fb8-4d9e-8d89-960a71288ff6'
+    userid = data.get('userid')
     print(f"This is userid: {userid}")
 
     if userid is None:

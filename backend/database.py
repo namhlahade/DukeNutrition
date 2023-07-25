@@ -52,9 +52,13 @@ cursor.close'''
     connection.commit()'''
 
 # Close the cursor and the database connection
-cursor.execute("DELETE FROM User_Meal")
+# cursor.execute('''
+#     CREATE TABLE IF NOT EXISTS sessions (
+#         session_token TEXT PRIMARY KEY,
+#         user_id INTEGER
+#         )
+#     ''')
 connection.commit()
-
 
 cursor.close()
 

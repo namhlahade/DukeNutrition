@@ -12,8 +12,10 @@ from config import ACCESS_TOKEN
 useridentification = None
 authentication_bp = Blueprint('authentication', __name__)
 
+
 def getUserIdentification():
     return useridentification
+
 
 def get_db():
     db = sqlite3.connect('database.db')
@@ -21,6 +23,8 @@ def get_db():
 
 # Just takes in the username, password, and email and stores into the database
 # This route allows the user to sign up if they have not created an account. If all the parts of the form are filled out, the email isn't already used, and the passwords match, then the user is added to the database.
+
+
 @authentication_bp.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -37,7 +41,8 @@ def signup():
 
     db = get_db()
 
-    emails = db.execute('select email from User_Table where email = ?', (email,))
+    emails = db.execute(
+        'select email from User_Table where email = ?', (email,))
     allemails = emails.fetchall()
 
     if len(allemails) != 0:
@@ -45,7 +50,8 @@ def signup():
         print(allemails)
         return jsonify({'error': 'Email already used.'}), 400
 
-    user = db.execute('select username from User_Table where username = ?', (username,))
+    user = db.execute(
+        'select username from User_Table where username = ?', (username,))
     allusers = user.fetchall()
 
     if len(allusers) != 0:
@@ -55,12 +61,15 @@ def signup():
 
     password_hash = generate_password_hash(password)
     userId = str(uuid.uuid4())
-    db.execute("insert into User_Table values (?,?,?,?)", (userId, username, email, password_hash))
+    db.execute("insert into User_Table values (?,?,?,?)",
+               (userId, username, email, password_hash))
     db.commit()
 
     return jsonify({'message': 'User created successfully.'}), 201
 
 # Allow user to log in. To do this, we check if they filled out everything. We also check if the username and it's corresponding password match that of the database, then we can say it was successfully logged in
+
+
 @authentication_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -71,29 +80,36 @@ def login():
         return jsonify({'error': 'All fields are required.'}), 400
 
     db = get_db()
-    query = db.execute("select * from User_Table where username = ?", (username,))
+    query = db.execute(
+        "select * from User_Table where username = ?", (username,))
     user = query.fetchone()
 
     if user is None:
         return jsonify({'error': 'Invalid username.'}), 401
-    
+
     # user[3] is the password in the user tuple
     if not check_password_hash(user[3], password):
         return jsonify({'error': 'Invalid password.'}), 401
-    
-    access_token = encode_auth_token(username)
 
-    return jsonify({'message': 'Logged in successfully.',
+    session_token = encode_auth_token(username)
+    # Store the session token and the associated userId in the database
+    user_id = db.execute(
+        'SELECT user_id FROM users WHERE username = ?', (username,)).fetchone()[0]
+    db.execute('INSERT INTO sessions (session_token, user_id) VALUES (?, ?)',
+               (session_token, user_id))
+    db.commit()
+    return jsonify({'success': 'Logged in successfully.',
                     'role': 2001,
-                    'accessToken': access_token
+                    'accessToken': session_token
                     }), 200
 
-# THIS IS THE SURVEY 
+# THIS IS THE SURVEY
+
+
 @authentication_bp.route('/collectUserInfo', methods=['POST'])
 def collectUserInfo():
     data = request.get_json()
-    #userid = data.get("userid")
-    userid = "86a75215-6fb8-4d9e-8d89-960a71288ff6"
+    userid = data.get("userid")
     calories = data.get("calories")
     protein = data.get("protein")
     carbs = data.get("carbs")
@@ -110,7 +126,6 @@ def collectUserInfo():
     query = db.execute("select * from User_Table where user_id = ?", (userid,))
     users = query.fetchall()
 
-
     if len(userPref) != 0 and len(users) != 0:
         print("User preferences already created")
         print(users[0])
@@ -119,9 +134,10 @@ def collectUserInfo():
     if len(userPref) == 0 and len(users) == 0:
         print("User Account has not been created")
         return jsonify({'error': 'User has not created an account.'}), 400
-    
+
     prefId = str(uuid.uuid4())
-    db.execute("insert into User_Pref values (?,?,?,?,?,?,?)", (prefId, userid, calories, protein, carbs, fat, mealsPerDay))
+    db.execute("insert into User_Pref values (?,?,?,?,?,?,?)",
+               (prefId, userid, calories, protein, carbs, fat, mealsPerDay))
     db.commit()
 
     query = db.execute("select * from User_Pref where user_id = ?", (userid,))
@@ -129,22 +145,6 @@ def collectUserInfo():
     print(userPref)
 
     return jsonify({'message': f'Preferences added to user: {userid} successfully.'}), 201
-
-@authentication_bp.route('/getUserId', methods=['POST'])
-def getUserId():
-    data = request.get_json()
-    username = data.get("username")
-
-    db = get_db()
-    query = db.execute("select * from User_Table where username = ?", (username,))
-    user = query.fetchone()
-
-    db.close()
-
-    if user is None:
-        return jsonify({'error': 'User does not exist'}), 404
-    
-    return jsonify({'userid': user[0]})
 
 
 @authentication_bp.route('/deleteUser', methods=['POST'])
@@ -154,9 +154,10 @@ def deleteUser():
     password = data.get("password")
     email = data.get("email")
     userid = data.get("userid")
-    
+
     db = get_db()
-    query = db.execute("select * from User_Table where username = ?", (username,))
+    query = db.execute(
+        "select * from User_Table where username = ?", (username,))
     user = query.fetchone()
 
     if user is None:
@@ -164,10 +165,10 @@ def deleteUser():
 
     if not check_password_hash(user[3], password):
         return jsonify({'error': 'Invalid password.'}), 401
-    
+
     if email != user[2]:
         return jsonify({'error': 'Emails do not match'})
-    
+
     query = db.execute("delete from User_Table where user_id = ?", (userid,))
     query = db.execute("delete from User_Pref where user_id = ?", (userid,))
     query = db.execute("delete from User_Meal where user_id = ?", (userid,))
@@ -176,27 +177,25 @@ def deleteUser():
 
     query = db.execute("select * from User_Table where user_id = ?", (userid,))
     user = query.fetchone()
-    
+
     if user is None:
         print(f"User: {userid} doesn't exist on User_Table")
-    
+
     query = db.execute("select * from User_Pref where user_id = ?", (userid,))
     user = query.fetchone()
-    
+
     if user is None:
         print(f"User: {userid} doesn't exist on User_Pref")
-    
+
     query = db.execute("select * from User_Meal where user_id = ?", (userid,))
     user = query.fetchall()
-    
+
     if len(user) == 0:
         print(f"User: {userid} doesn't exist on User_Meal")
-    
 
     db.close()
 
     return jsonify({"message": "User has been deleted."})
-
 
 
 def encode_auth_token(username):
@@ -217,8 +216,8 @@ def encode_auth_token(username):
         )
     except Exception as e:
         return e
-    
-@staticmethod
+
+
 def decode_auth_token(auth_token):
     """
     Decodes the auth token
@@ -233,4 +232,19 @@ def decode_auth_token(auth_token):
     except jwt.InvalidTokenError:
         return 'Invalid token. Please log in again.'
 
-    
+
+@authentication_bp.route('/getUserId', methods=['POST'])
+def get_user_id():
+    data = request.get_json()
+    session_token = data.get('token')
+    db = get_db()
+    if session_token:
+        cursor = db.execute(
+            'SELECT user_id FROM sessions WHERE session_token = ?', (session_token,))
+        result = cursor.fetchone()
+        print('the result is: ', result)
+        if result is not None:
+            user_id = result[0]
+            return jsonify({"userId": user_id})
+
+    return jsonify({"error": "Unauthorized"}), 401

@@ -10,6 +10,7 @@ import LoadingSpinner from '../components/LoadingSpinner.js';
 import { SurveyError } from 'survey-core';
 import Alert from './Alert';
 import {useDash} from '../context/DashProvider.js';
+import { AuthenticationController } from '../controller/AuthenticationController';
 
 const TypeOfMeal = {
   "Pitchforks": "add_item",
@@ -25,6 +26,7 @@ const MealDisplay = () => {
   const [alert, setAlert] = useState(null);
   const [mealCalsMacs, setMealCalsMacs] = useState({});
   const handleAddMeal = useDash().handleAddMeal;
+  const authenticationController = new AuthenticationController();
 
   useEffect(() => {
     console.log("mealCounterData: ")
@@ -152,7 +154,7 @@ const MealDisplay = () => {
 
   };
 
-  const sendData = () => {
+  const sendData = async () => {
     console.log("Add Meal Button pressed.")
     if (Object.keys(meal).length === 0){
       setAlert({ type: 'danger', message: 'Your Meal is Empty!' });
@@ -187,7 +189,7 @@ const MealDisplay = () => {
       }
     }
 
-    mealSend["userid"] = "86a75215-6fb8-4d9e-8d89-960a71288ff6";
+    mealSend["userid"] = await authenticationController.getUserId(cookies).then((userId) => {return userId});
 
     console.log("Meal being sent to API:");
     console.log(mealSend);
