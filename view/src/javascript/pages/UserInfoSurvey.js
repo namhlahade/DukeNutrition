@@ -107,7 +107,7 @@ const UserInfoSurvey = () => {
   };
 
   return (
-    <div>
+    <div id={"userSurveyContainer"}>
       <h1>Survey</h1>
       {alert && <Alert message={alert.message} type={alert.type} />}
       <form onSubmit={handleSubmit}>

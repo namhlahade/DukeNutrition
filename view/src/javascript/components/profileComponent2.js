@@ -85,7 +85,7 @@ const ProfileChange = () => {
   };
 
   return (
-    <div>
+    <div id={"profileContainer"}>
       <h1>Profile Change</h1>
       {alert && <Alert message={alert.message} type={alert.type} />}
       <form onSubmit={handleSubmit}>

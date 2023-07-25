@@ -45,3 +45,12 @@ h1 {
 .submit-button:hover {
   background-color: #00539B;
 }  
+
+#profileContainer{
+  width: 1000px;  /*jank but it looks nice on the screen sorry namh lol*/
+  height: 1100px;
+}
+
+#userSurveyContainer{
+  width: 1000px;  /*jank but it looks nice on the screen sorry namh lol*/
+}

@@ -58,6 +58,10 @@ export const MealCard = ({ mealID, restaurant, date, time, ingredientList, calsA
       console.log("gingerAndSoyImage");
       return require('../../resources/images/ginger_and_soy_label.png');
     }
+    else if(restaurant === "My_Fitness_Pal"){
+      console.log("MyFitnessPalImage");
+      return require('../../resources/images/my-fitness-pal-logo.png');
+    }
     else{
       return;
     }
