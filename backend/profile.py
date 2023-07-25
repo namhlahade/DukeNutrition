@@ -22,15 +22,16 @@ def userInfo():
         return jsonify({'error': 'Need userid to change profile'}), 400
 
     db = get_db()
+    cursor = db.cursor()
 
     if "newUsername" in data:
         print("Username was chosen")
         username = data.get('username')
-        db.execute(
+        cursor.execute(
             'update User_Table set username = ? where user_id = ?', (username, userid))
-        db.commit()
+        cursor.commit()
 
-        query = db.execute(
+        query = cursor.execute(
             "select * from User_Table where user_id = ?", (userid,))
         userPref = query.fetchall()
         print(userPref)
@@ -41,11 +42,11 @@ def userInfo():
         print("Password was chosen")
         password = data.get('newPassword')
         password_hash = generate_password_hash(password)
-        db.execute('update User_Table set password = ? where user_id = ?',
-                   (password_hash, userid))
-        db.commit()
+        cursor.execute('update User_Table set password = ? where user_id = ?',
+                       (password_hash, userid))
+        cursor.commit()
 
-        query = db.execute(
+        query = cursor.execute(
             "select * from User_Table where user_id = ?", (userid,))
         userPref = query.fetchall()
         print(userPref)
@@ -55,11 +56,11 @@ def userInfo():
     if 'newCalories' in data:
         print("Calories were chosen")
         calories = data.get('newCalories')
-        db.execute(
+        cursor.execute(
             'update User_Pref set calorie_tgt = ? where user_id = ?', (calories, userid))
-        db.commit()
+        cursor.commit()
 
-        query = db.execute(
+        query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))
         userPref = query.fetchall()
         print(userPref)
@@ -69,11 +70,11 @@ def userInfo():
     if 'newProtein' in data:
         print("Protein was chosen")
         protein = data.get("newProtein")
-        db.execute(
+        cursor.execute(
             'update User_Pref set protein_tgt = ? where user_id = ?', (protein, userid))
-        db.commit()
+        cursor.commit()
 
-        query = db.execute(
+        query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))
         userPref = query.fetchall()
         print(userPref)
@@ -83,11 +84,11 @@ def userInfo():
     if 'newCarbs' in data:
         print("Carbs was chosen")
         carbs = data.get("newCarbs")
-        db.execute(
+        cursor.execute(
             'update User_Pref set carb_tgt = ? where user_id = ?', (carbs, userid))
-        db.commit()
+        cursor.commit()
 
-        query = db.execute(
+        query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))
         userPref = query.fetchall()
         print(userPref)
@@ -98,11 +99,11 @@ def userInfo():
         print("Fat was chosen")
         fat = data.get("newFat")
         print(fat)
-        db.execute(
+        cursor.execute(
             'update User_Pref set fat_tgt = ? where user_id = ?', (fat, userid))
-        db.commit()
+        cursor.commit()
 
-        query = db.execute(
+        query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))
         userPref = query.fetchall()
         print(userPref)
@@ -112,15 +113,15 @@ def userInfo():
     if 'newNum_meals' in data:
         print("Number of meals was chosen")
         numMeals = data.get("newNum_meals")
-        db.execute(
+        cursor.execute(
             'update User_Pref set meal_per_day = ? where user_id = ?', (numMeals, userid))
-        db.commit()
+        cursor.commit()
 
-        query = db.execute(
+        query = cursor.execute(
             "select * from User_Pref where user_id = ?", (userid,))
         userPref = query.fetchall()
         print(userPref)
 
         return jsonify({'message': 'Number of meals change was successful.'}), 200
 
-    db.close()
+    cursor.close()

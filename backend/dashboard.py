@@ -23,14 +23,15 @@ def overallTodaysStats():
     userid = data.get("userid")
 
     db = get_db()
-
-    query = db.execute("select * from User_Table where user_id = ?", (userid,))
+    cursor = db.cursor()
+    query = cursor.execute(
+        "select * from User_Table where user_id = ?", (userid,))
     user = query.fetchone()
 
     if user is None:
         return jsonify({'error': 'User not found'}), 404
 
-    query = db.execute(
+    query = cursor.execute(
         "select calorie_tgt, protein_tgt, carb_tgt, fat_tgt from User_Pref where user_id = ?", (userid,))
     targets = query.fetchone()
 
@@ -41,8 +42,8 @@ def overallTodaysStats():
 
     # return jsonify({"message": "Test works out so far!"})
 
-    query = db.execute("select * from User_Meal where user_id = ? and meal_date = ?",
-                       (userid, date.today().isoformat(),))
+    query = cursor.execute("select * from User_Meal where user_id = ? and meal_date = ?",
+                           (userid, date.today().isoformat(),))
     todaysMeals = query.fetchall()
 
     print(f"Today's meals for user: {userid}")
@@ -55,7 +56,7 @@ def overallTodaysStats():
         carbs += meal[7]
         fat += meal[8]
 
-    db.close()
+    cursor.close()
 
     return jsonify({
         'caloriesToday': calories,
@@ -165,13 +166,14 @@ def thisWeeksStats():
         meal_date.append(date.strftime('%Y-%m-%d'))\
 
     db = get_db()
+    cursor = db.cursor()
     calories = 0
     protein = 0
     carbs = 0
     fats = 0
 
     for date in meal_date:
-        query = db.execute(
+        query = cursor.execute(
             "select * from User_Meal where meal_date = ? and user_id = ?", (date, userid,))
         results = query.fetchall()
 
@@ -184,7 +186,7 @@ def thisWeeksStats():
             carbs += meal[7]
             fats += meal[8]
 
-    db.close()
+    cursor.close()
 
     return jsonify({
         'Calories': calories/7,
@@ -200,14 +202,15 @@ def thisWeeksTargets():
     userid = data.get("userid")
 
     db = get_db()
-
-    query = db.execute("select * from User_Table where user_id = ?", (userid,))
+    cursor = db.cursor()
+    query = cursor.execute(
+        "select * from User_Table where user_id = ?", (userid,))
     user = query.fetchone()
 
     if user is None:
         return jsonify({'error': 'User not found'}), 404
 
-    query = db.execute(
+    query = cursor.execute(
         "select calorie_tgt, protein_tgt, carb_tgt, fat_tgt from User_Pref where user_id = ?", (userid,))
     targets = query.fetchone()
 
@@ -226,9 +229,10 @@ def getScatterPlotData():
     data = request.get_json()
     userid = data.get("userid")
     db = get_db()
+    cursor = db.cursor()
 
     # Query to fetch meals from different restaurants
-    query = db.execute(
+    query = cursor.execute(
         "select * from User_Meal where user_id = ?",
         (userid,)
     )
