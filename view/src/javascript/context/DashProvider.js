@@ -33,10 +33,31 @@ export const DashProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Retrieve meal cards from local storage when component initializes
-    const mealCardsLocalStorage = JSON.parse(localStorage.getItem('mealCards')) || [];
-    setMealCards(mealCardsLocalStorage);
-  }, []);
+    // Define an async function inside useEffect to use await
+    const fetchData = async () => {
+      try {
+        // Create instances of the controllers
+        const mealCardController = new MealCardController();
+        const authenticationController = new AuthenticationController();
+
+        // Get the user ID using the authentication controller
+        const userId = await authenticationController.getUserId(cookies);
+
+        // Fetch meal cards using the controller
+        const fetchedData = await mealCardController.getMealCards({ userId: userId });
+
+        console.log("fetchedData: ", fetchedData);
+        // Assuming fetchedData is an array of meal cards, set the state
+        setMealCards(fetchedData);
+
+      } catch (error) {
+        console.log('Error: ', error);
+      }
+    };
+
+    // Call the fetchData function
+    fetchData();
+  }, [cookies]);
 
   function formatIngredients(meal) {
     const ingredientList = {};
@@ -120,7 +141,7 @@ export const DashProvider = ({ children }) => {
 
     // Update the mealCards state with the new meal card
     setMealCards([...mealCards, newCard]);
-    };
+  };
   };
 
   return (

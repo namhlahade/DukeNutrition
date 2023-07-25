@@ -31,17 +31,18 @@ def addMealCardToDatabase():
     return jsonify({'success': 'Meal Card Added'}), 200
 
 
-@mealcards_bp.route('/getMealCards', methods=['GET'])
+@mealcards_bp.route('/getMealCards', methods=['POST'])
 def getMealCards():
     db = get_db()
     cursor = db.cursor()
     data = request.get_json()
     user_id = data.get('user_id')
-    meal_card = cursor.execute(
-        'select meal_card from user_meal_cards where user_id = ?', (user_id,))
-    meal_card = meal_card.fetchall()
+    meal_cards = cursor.execute(
+        'SELECT meal_card FROM user_meal_cards WHERE user_id = ?', (user_id,))
+    meal_cards_json = [json.loads(meal_card[0])
+                       for meal_card in meal_cards.fetchall()]
     cursor.close()
-    return jsonify({'meal_card': meal_card}), 200
+    return jsonify(meal_cards_json), 200
 
 
 @mealcards_bp.route('/deleteMealCard', methods=['DELETE'])
