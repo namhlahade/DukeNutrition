@@ -1,6 +1,6 @@
 env/
 
-/frontend/src/javascript/.env
+/view/node_modules
 
 # dependencies
 /node_modules

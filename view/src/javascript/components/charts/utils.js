@@ -1,7 +1,7 @@
 import colorLib from '@kurkle/color';
 import {DateTime} from 'luxon';
 import 'chartjs-adapter-luxon';
-import {valueOrDefault} from '../../../../node_modules/chart.js/dist/helpers.js';
+import {valueOrDefault} from '../../../../../view/node_modules/chart.js/dist/helpers.js';
 
 // Adapted from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
 var _seed = Date.now();

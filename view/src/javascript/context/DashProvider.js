@@ -7,12 +7,17 @@ import { Button } from '@mui/material';
 import { useState } from "react";
 import { createContext, useContext } from 'react';
 import { useEffect } from 'react';
+import { AuthenticationController } from '../controller/AuthenticationController';
+import { MealCardController } from '../controller/MealCardController';
+import { useAuth } from '../context/AuthProvider';
 
 const DashContext = createContext();
 
 export const DashProvider = ({ children }) => {
   const [mealCards, setMealCards] = useState([]);
-
+  const authenticationController = new AuthenticationController();
+  const mealCardController = new MealCardController();
+  const cookies = useAuth().cookies;
   const generateRandomId = () => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const idLength = 8;
@@ -65,11 +70,12 @@ export const DashProvider = ({ children }) => {
   
 
   // Function to handle adding a meal to the dashboard history
-  const handleAddMeal = ({meal, restaurant, calsAndMacs}) => {
+  const handleAddMeal = async ({ meal, restaurant, calsAndMacs}) => {
+    const userId = await authenticationController.getUserId(cookies).then((userId) => {return userId});
     console.log(meal);
     console.log(restaurant);
     console.log(calsAndMacs);
-    if (meal && restaurant && calsAndMacs) {
+    if (userId && meal && restaurant && calsAndMacs) {
       console.log(meal);
       const today = new Date();
       const dd = String(today.getDate()).padStart(2, '0');
@@ -103,14 +109,18 @@ export const DashProvider = ({ children }) => {
       };
 
       console.log(newCard);
+      // Call the addMealCard method from the controller to add the meal card on the server
+    const response = await mealCardController.addMealCard({
+      mealCard: newCard,
+      userId: userId,
+      mealCardId: mealID
+    });
 
-      setMealCards([...mealCards, newCard]);
+    console.log(response); // Optional: Log the response from the server
 
-      // Store the meal card in local storage
-      const mealCardsLocalStorage = JSON.parse(localStorage.getItem('mealCards')) || [];
-      mealCardsLocalStorage.push(newCard);
-      localStorage.setItem('mealCards', JSON.stringify(mealCardsLocalStorage));
-    }
+    // Update the mealCards state with the new meal card
+    setMealCards([...mealCards, newCard]);
+    };
   };
 
   return (
@@ -118,7 +128,8 @@ export const DashProvider = ({ children }) => {
       {children}
     </DashContext.Provider>
   );
-};
+
+}
 
 export const useDash = () => {
   return useContext(DashContext);

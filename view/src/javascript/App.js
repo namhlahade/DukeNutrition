@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginForm from './components/login.component';
 import SignUpForm from './components/signup.component';
-import Profile from './components/profile.component.tsx';
 import ProfileChange from './components/profileComponent2';
 import {Dashboard} from './pages/Dashboard';
 import MealDisplay from './components/mealDisplay.component';

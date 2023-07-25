@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Alert from './Alert';
+import {Alert} from './Alert.component';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');

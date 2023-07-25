@@ -58,6 +58,14 @@ cursor.close'''
 #         user_id INTEGER
 #         )
 #     ''')
+# cursor.execute('''drop table if exists user_meal_cards''')
+# cursor.execute('''
+#     CREATE TABLE user_meal_cards (
+#         user_id TEXT,
+#         meal_card JSON,
+#         meal_card_id TEXT PRIMARY KEY
+#         )
+#     ''')
 connection.commit()
 
 cursor.close()

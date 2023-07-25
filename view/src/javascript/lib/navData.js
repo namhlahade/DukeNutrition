@@ -1,8 +1,8 @@
 import React, { Component }  from 'react';
-import DashboardIcon from '../../../node_modules/@mui/icons-material/Dashboard';
-import MealIcon from '../../../node_modules/@mui/icons-material/Restaurant';
-import SurveyIcon from '../../../node_modules/@mui/icons-material/Assignment';
-import ProfileIcon from '../../../node_modules/@mui/icons-material/AccountCircle';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import MealIcon from '@mui/icons-material/Restaurant';
+import SurveyIcon from '@mui/icons-material/Assignment';
+import ProfileIcon from '@mui/icons-material/AccountCircle';
 
 export const navData = [
     {

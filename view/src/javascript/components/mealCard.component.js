@@ -18,37 +18,29 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {Delete} from '@mui/icons-material';
 import { Reorder } from '@mui/icons-material';
 import { useEffect, useState } from "react";
+import { AuthenticationController } from '../controller/AuthenticationController';
+import {MealCardController} from '../controller/MealCardController';
+import { useAuth } from '../context/AuthProvider';
 import '../../css/mealCard.css'
 
-export function MealCard({mealID, restaurant, date, time, ingredientList, calsAndMacs}) {
-  const [expanded, setExpanded] = React.useState(false);
+export const MealCard = ({ mealID, restaurant, date, time, ingredientList, calsAndMacs }) => {
+  const [expanded, setExpanded] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const cookies = useAuth().cookies;
 
-  ////////////////////////////////////////////////////////////////////////////////////////
+  const mealCardController = new MealCardController();
+  const authenticationController = new AuthenticationController();
 
-  const deleteCard = () => {
+  const deleteCard = async () => {
+    // Call the deleteMealCard method from the controller to delete the meal card on the server
+    const userId = await authenticationController.getUserId(cookies).then((userId) => {return userId});
+    await mealCardController.deleteMealCard({ mealCard: mealID, userId: userId, mealCardId: mealID });
     setIsDeleted(true);
   };
 
-  useEffect(() => {
-    const deletedCardIds = JSON.parse(localStorage.getItem("deletedCardIds")) || [];
-    if (deletedCardIds.includes(mealID)) {
-      setIsDeleted(true);
-    }
-  }, [mealID]);
+  // Rest of your component code...
 
-  useEffect(() => {
-    const deletedCardIds = JSON.parse(localStorage.getItem("deletedCardIds")) || [];
-    if (isDeleted) {
-      localStorage.setItem("deletedCardIds", JSON.stringify([...deletedCardIds, mealID]));
-    } else {
-      localStorage.setItem(
-        "deletedCardIds",
-        JSON.stringify(deletedCardIds.filter((id) => id !== mealID))
-      );
-    }
-  }, [mealID, isDeleted]);
-
+  // If the meal card is deleted, don't render it
   if (isDeleted) {
     return null;
   }

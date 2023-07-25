@@ -6,11 +6,12 @@ import { RestartAlt } from '@mui/icons-material';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import LoadingSpinner from '../components/LoadingSpinner.js';
+import LoadingSpinner from './LoadingSpinner.js';
 import { SurveyError } from 'survey-core';
-import Alert from './Alert';
+import {Alert} from './Alert.component';
 import {useDash} from '../context/DashProvider.js';
 import { AuthenticationController } from '../controller/AuthenticationController';
+import { useAuth } from '../context/AuthProvider';
 
 const TypeOfMeal = {
   "Pitchforks": "add_item",
@@ -27,6 +28,7 @@ const MealDisplay = () => {
   const [mealCalsMacs, setMealCalsMacs] = useState({});
   const handleAddMeal = useDash().handleAddMeal;
   const authenticationController = new AuthenticationController();
+  const cookies = useAuth().cookies;
 
   useEffect(() => {
     console.log("mealCounterData: ")

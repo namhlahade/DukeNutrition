@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../css/userSurvey.css';
-import Alert from '../components/Alert';
+import {Alert} from './Alert.component';
 
 const ProfileChange = () => {
   const [responses, setResponses] = useState({});

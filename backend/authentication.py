@@ -40,8 +40,9 @@ def signup():
         return jsonify({'error': 'Passwords do not match.'}), 400
 
     db = get_db()
+    cursor = db.cursor()
 
-    emails = db.execute(
+    emails = cursor.execute(
         'select email from User_Table where email = ?', (email,))
     allemails = emails.fetchall()
 
@@ -50,7 +51,7 @@ def signup():
         print(allemails)
         return jsonify({'error': 'Email already used.'}), 400
 
-    user = db.execute(
+    user = cursor.execute(
         'select username from User_Table where username = ?', (username,))
     allusers = user.fetchall()
 
@@ -61,10 +62,10 @@ def signup():
 
     password_hash = generate_password_hash(password)
     userId = str(uuid.uuid4())
-    db.execute("insert into User_Table values (?,?,?,?)",
-               (userId, username, email, password_hash))
-    db.commit()
-
+    cursor.execute("insert into User_Table values (?,?,?,?)",
+                   (userId, username, email, password_hash))
+    cursor.commit()
+    cursor.close()
     return jsonify({'message': 'User created successfully.'}), 201
 
 # Allow user to log in. To do this, we check if they filled out everything. We also check if the username and it's corresponding password match that of the database, then we can say it was successfully logged in
@@ -80,7 +81,8 @@ def login():
         return jsonify({'error': 'All fields are required.'}), 400
 
     db = get_db()
-    query = db.execute(
+    cursor = db.cursor()
+    query = cursor.execute(
         "select * from User_Table where username = ?", (username,))
     user = query.fetchone()
 
@@ -93,11 +95,12 @@ def login():
 
     session_token = encode_auth_token(username)
     # Store the session token and the associated userId in the database
-    user_id = db.execute(
-        'SELECT user_id FROM users WHERE username = ?', (username,)).fetchone()[0]
-    db.execute('INSERT INTO sessions (session_token, user_id) VALUES (?, ?)',
-               (session_token, user_id))
-    db.commit()
+    user_id = cursor.execute(
+        'SELECT user_id FROM User_Table WHERE username = ?', (username,)).fetchone()[0]
+    cursor.execute('INSERT INTO sessions (session_token, user_id) VALUES (?, ?)',
+                   (session_token, user_id))
+    cursor.commit()
+    cursor.close()
     return jsonify({'success': 'Logged in successfully.',
                     'role': 2001,
                     'accessToken': session_token
@@ -116,14 +119,17 @@ def collectUserInfo():
     fat = data.get("fat")
     mealsPerDay = data.get("mealsPerDay")
 
-    if not (userid and calories and protein and carbs and fat and mealsPerDay):
+    if not (calories and protein and carbs and fat and mealsPerDay):
         print("All questions need to be answered")
         return jsonify({'error': 'All questions need to be answered'})
 
     db = get_db()
-    query = db.execute("select * from User_Pref where user_id = ?", (userid,))
+    cursor = db.cursor()
+    query = cursor.execute(
+        "select * from User_Pref where user_id = ?", (userid,))
     userPref = query.fetchall()
-    query = db.execute("select * from User_Table where user_id = ?", (userid,))
+    query = cursor.execute(
+        "select * from User_Table where user_id = ?", (userid,))
     users = query.fetchall()
 
     if len(userPref) != 0 and len(users) != 0:
@@ -136,14 +142,14 @@ def collectUserInfo():
         return jsonify({'error': 'User has not created an account.'}), 400
 
     prefId = str(uuid.uuid4())
-    db.execute("insert into User_Pref values (?,?,?,?,?,?,?)",
-               (prefId, userid, calories, protein, carbs, fat, mealsPerDay))
-    db.commit()
-
-    query = db.execute("select * from User_Pref where user_id = ?", (userid,))
+    cursor.execute("insert into User_Pref values (?,?,?,?,?,?,?)",
+                   (prefId, userid, calories, protein, carbs, fat, mealsPerDay))
+    cursor.commit()
+    cursor.close()
+    query = cursor.execute(
+        "select * from User_Pref where user_id = ?", (userid,))
     userPref = query.fetchall()
     print(userPref)
-
     return jsonify({'message': f'Preferences added to user: {userid} successfully.'}), 201
 
 
@@ -156,7 +162,8 @@ def deleteUser():
     userid = data.get("userid")
 
     db = get_db()
-    query = db.execute(
+    cursor = db.cursor()
+    query = cursor.execute(
         "select * from User_Table where username = ?", (username,))
     user = query.fetchone()
 
@@ -169,31 +176,37 @@ def deleteUser():
     if email != user[2]:
         return jsonify({'error': 'Emails do not match'})
 
-    query = db.execute("delete from User_Table where user_id = ?", (userid,))
-    query = db.execute("delete from User_Pref where user_id = ?", (userid,))
-    query = db.execute("delete from User_Meal where user_id = ?", (userid,))
+    query = cursor.execute(
+        "delete from User_Table where user_id = ?", (userid,))
+    query = cursor.execute(
+        "delete from User_Pref where user_id = ?", (userid,))
+    query = cursor.execute(
+        "delete from User_Meal where user_id = ?", (userid,))
 
-    db.commit()
+    cursor.commit()
 
-    query = db.execute("select * from User_Table where user_id = ?", (userid,))
+    query = cursor.execute(
+        "select * from User_Table where user_id = ?", (userid,))
     user = query.fetchone()
 
     if user is None:
         print(f"User: {userid} doesn't exist on User_Table")
 
-    query = db.execute("select * from User_Pref where user_id = ?", (userid,))
+    query = cursor.execute(
+        "select * from User_Pref where user_id = ?", (userid,))
     user = query.fetchone()
 
     if user is None:
         print(f"User: {userid} doesn't exist on User_Pref")
 
-    query = db.execute("select * from User_Meal where user_id = ?", (userid,))
+    query = cursor.execute(
+        "select * from User_Meal where user_id = ?", (userid,))
     user = query.fetchall()
 
     if len(user) == 0:
         print(f"User: {userid} doesn't exist on User_Meal")
 
-    db.close()
+    cursor.close()
 
     return jsonify({"message": "User has been deleted."})
 
@@ -238,13 +251,15 @@ def get_user_id():
     data = request.get_json()
     session_token = data.get('token')
     db = get_db()
+    cursor = db.cursor()
     if session_token:
-        cursor = db.execute(
+        cursor2 = cursor.execute(
             'SELECT user_id FROM sessions WHERE session_token = ?', (session_token,))
-        result = cursor.fetchone()
+        result = cursor2.fetchone()
         print('the result is: ', result)
         if result is not None:
             user_id = result[0]
             return jsonify({"userId": user_id})
 
+    cursor.close()
     return jsonify({"error": "Unauthorized"}), 401

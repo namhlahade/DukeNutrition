@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../../css/userSurvey.css';
-import Alert from '../components/Alert';
+import {Alert} from '../components/Alert.component';
+import { AuthenticationController } from '../controller/AuthenticationController';
+import { useAuth } from '../context/AuthProvider';
 
 const UserInfoSurvey = () => {
   const [responses, setResponses] = useState({});
   const [flag, setFlag] = useState(0);
   const [alert, setAlert] = useState(null);
-
+  const authenticationController = new AuthenticationController();
+  const cookies = useAuth().cookies;
 
   useEffect(() => {
     console.log("Updated Responses Variable")
@@ -19,7 +22,8 @@ const UserInfoSurvey = () => {
     console.log(responses);
 
     const sendUserData = async () => {
-
+      responses["userid"] = await authenticationController.getUserId(cookies).then((userId) => {return userId});
+      console.log("userid: " + responses["userid"]);
       try {
         const response = await fetch('http://127.0.0.1:5000/authentication/collectUserInfo', {
         method: 'POST',

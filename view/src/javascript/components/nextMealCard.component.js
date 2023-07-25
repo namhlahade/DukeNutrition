@@ -7,36 +7,48 @@ import {Button} from '@mui/material';
 import { useEffect, useState } from "react";
 import '../../css/mealCard.css'
 import { AuthenticationController } from '../controller/AuthenticationController';
+import { useAuth } from '../context/AuthProvider';
+import { Alert } from './Alert.component';
 
 export function NextMealCard() {
   const [nextMeal, setNextMeal] = useState({});
   const [restaurantsList, setRestaurantsList] = useState([]);
   const [restaurant, setRestaurant] = useState(["Pitchforks"]);
+  const [alert, setAlert] = useState({ message: '', type: '' });
   const authenticationController = new AuthenticationController();
+  const cookies = useAuth().cookies;
 
   ////////////////////////////////////////////////////////////////////////////////////////
 
-  const fetchNextMeal = async () => {
-    const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
+  const fetchNextMeal = () => {
+    authenticationController.getUserId(cookies)
+      .then((userId) => {
+        const userid = userId;
   
-    try {
-      const response = await fetch('http://127.0.0.1:5000/dashboard/getNextSuggestedMeal', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userid: userid, restaurant: restaurant[0] }),
+        return fetch('http://127.0.0.1:5000/dashboard/getNextSuggestedMeal', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userid: userid, restaurant: restaurant[0] }),
+        });
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((fetchedData) => {
+        setNextMeal(fetchedData);
+        console.log(fetchedData['meal_details']);
+        console.log(fetchedData['macros']);
+      })
+      .catch((error) => {
+        console.log('Error: ', error);
+        setAlert({ message: error.message, type: 'danger' });
       });
-  
-      const fetchedData = await response.json();
-      setNextMeal(fetchedData);
-      console.log(fetchedData['meal_details']);
-      console.log(fetchedData['macros']);
-
-    } catch (error) {
-      console.log('Error: ', error);
-    }
-  };
+  };  
 
   useEffect(() => {
     fetchNextMeal();
@@ -106,6 +118,7 @@ export function NextMealCard() {
           <span><h2>Meal<br/>Suggestion</h2></span>
         </div>
         <br/>
+        {alert && <Alert message={alert.message} type={alert.type}/>}
         <CardMedia
           component="img"
           height="135"
