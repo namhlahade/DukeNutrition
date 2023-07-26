@@ -1,23 +1,25 @@
 :root {
-    --sidenav-max-width: 200px;
-  }
-  
-#grid-container {
-    display: grid;
-    grid-template-columns: minmax(var(--sidenav-max-width)) 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas: "sidebar content";
-    height: 100vh;
+    --sidenav-column-width: 200px; /* Set the sidenav width */
 }
 
+#grid-container {
+    display: grid;
+    grid-template-columns: var(--sidenav-column-width) 1fr; /* Use 1fr to make the content pane occupy the remaining space */
+    grid-template-areas: "sidebar content";
+    height: 100vh;
+    transition: grid-template-columns 0.3s ease-in-out; /* Add transition for smooth resizing */
+}
+  
 .contentPane {
     grid-area: content;
     overflow-y: auto;
     overflow-x: hidden;
+    width: 100%;
+    transition: margin-left 0.3s ease-in-out; /* Add transition for smooth resizing */
 }
-
+  
 .sidenav {
-    width: var(--sidenav-max-width);
+    width: 200px; /* Set the sidenav width to the width variable */
     transition: width 0.3s ease-in-out;
     background-color: rgb(10, 25, 41);
     padding-top: 28px;
@@ -25,16 +27,15 @@
     display: flex;
     flex-direction: column;
 }
-
+  
 .sidenavClosed {
-    width: var(--sidenav-max-width);
+    width: 60px; /* Set the sidenav width to the minimum width */
     transition: width 0.3s ease-in-out;
     background-color: rgb(10, 25, 41);
     padding-top: 28px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    --sidenav-max-width: 60px;
 }
 
 #sideitem {
@@ -46,6 +47,7 @@
     text-decoration: none;
     overflow: hidden;
 }
+
 #sideitem:hover {
     background-color: #1542731c;
 

@@ -3,7 +3,7 @@ h1 {
 }
 
 .question-container {
-  max-width: 50%;
+  max-width: 30%;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ddd;
@@ -47,10 +47,10 @@ h1 {
 }  
 
 #profileContainer{
-  width: 1000px;  /*jank but it looks nice on the screen sorry namh lol*/
+  width: 100%;
   height: 1100px;
 }
 
 #userSurveyContainer{
-  width: 1000px;  /*jank but it looks nice on the screen sorry namh lol*/
+  width: 100%;
 }
