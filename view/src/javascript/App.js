@@ -6,10 +6,11 @@ import ProfileChange from './components/profileComponent2';
 import {Dashboard} from './pages/Dashboard';
 import MealDisplay from './components/mealDisplay.component';
 import UserInfoSurvey from "./pages/UserInfoSurvey";
-import Unauthorized from './components/Unauthorized';
+import {UnauthorizedPage} from './pages/UnauthorizedPage';
 import { ProtectRoutes } from './hooks/protectRoutes';
 import PageLayout from './components/PageLayout.component';
-import './../css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const ROLES = {
   'User': 2001,
@@ -46,7 +47,10 @@ function App() {
             path="/duke-net-nutrition/sign-up"
             element={<SignUpForm />}
           />
-          <Route path="/duke-net-nutrition/unauthorized" element={<Unauthorized />} />
+        <Route 
+          path="*" 
+          element={<UnauthorizedPage />} 
+        />
         <Route element={<PageLayout />} >
           <Route path="/duke-net-nutrition/create-meal" element={<MealDisplay />} />
 
