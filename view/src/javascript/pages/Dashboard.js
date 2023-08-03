@@ -83,7 +83,7 @@ export const Dashboard = () => {
             />
           ))}
         </div>
-        <Button id="showMoreButton">Show More</Button>
+        {/* <Button id="showMoreButton">Show More</Button> */}
       </div>
     </>
   );
