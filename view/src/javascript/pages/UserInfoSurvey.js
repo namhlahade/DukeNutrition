@@ -3,6 +3,7 @@ import '../../css/userSurvey.css';
 import {Alert} from '../components/Alert.component';
 import { AuthenticationController } from '../controller/AuthenticationController';
 import { useAuth } from '../context/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 const UserInfoSurvey = () => {
   const [responses, setResponses] = useState({});
@@ -10,6 +11,7 @@ const UserInfoSurvey = () => {
   const [alert, setAlert] = useState(null);
   const authenticationController = new AuthenticationController();
   const cookies = useAuth().cookies;
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("Updated Responses Variable")
@@ -35,6 +37,7 @@ const UserInfoSurvey = () => {
         const calsAndMacs = await response.json();
         console.log(calsAndMacs);
         setAlert({ type: 'success', message: 'User Info Added!' });
+        navigate('/duke-net-nutrition/dashboard')
       }
       catch(error) {
         console.log('Error Creating Meal:', error);

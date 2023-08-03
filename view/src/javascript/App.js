@@ -51,19 +51,14 @@ function App() {
           path="*" 
           element={<UnauthorizedPage />} 
         />
-        <Route element={<PageLayout />} >
-          <Route path="/duke-net-nutrition/create-meal" element={<MealDisplay />} />
-
-          {/* we want to protect these routes */}
-          <Route element={<ProtectRoutes />}>
-            <Route path="/duke-net-nutrition/dashboard" element={<Dashboard />} />
-          </Route>
-          <Route element={<ProtectRoutes />}>
+         {/* we want to protect these routes */}
+        <Route element={<ProtectRoutes />}>
             <Route path="/duke-net-nutrition/user-preferences" element={<UserInfoSurvey />} />
-          </Route>
-          <Route element={<ProtectRoutes />}>
-            <Route path="/duke-net-nutrition/profile" element={<ProfileChange />} />
-          </Route>
+            <Route element={<PageLayout />} >
+              <Route path="/duke-net-nutrition/dashboard" element={<Dashboard />} />
+              <Route path="/duke-net-nutrition/profile" element={<ProfileChange />} />
+              <Route path="/duke-net-nutrition/create-meal" element={<MealDisplay />} />
+            </Route>
         </Route>
         {/* catch all */}
         {/* <Route path="*" element={<Missing />} /> */}

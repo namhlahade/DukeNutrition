@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {Alert} from './Alert.component';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../context/AuthProvider";
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -7,6 +9,8 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [alert, setAlert] = useState(null);
+  const navigate = useNavigate();
+  const addCookie = useAuth().addCookie;
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevents default form submission behavior
@@ -35,6 +39,9 @@ const SignUp = () => {
         } else {
           setAlert({ type: 'success', message: result.message });
           // redirectToHomeContent(true);
+          addCookie('token', result.accessToken, {maxAge:86400}); // your token, expiration time in seconds (1 day)
+          addCookie('name', username, {maxAge:86400}); // optional data
+          navigate('/duke-net-nutrition/user-preferences')
         }
       })
       .catch((error) => {

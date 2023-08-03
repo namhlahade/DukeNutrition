@@ -1,6 +1,5 @@
 import sqlite3
 from flask_httpauth import HTTPBasicAuth
-import basic_auth
 from flask import Blueprint, jsonify, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
@@ -64,9 +63,17 @@ def signup():
     userId = str(uuid.uuid4())
     cursor.execute("insert into User_Table values (?,?,?,?)",
                    (userId, username, email, password_hash))
+
+    session_token = encode_auth_token(username)
+    # Store the session token and the associated userId in the database
+    user_id = cursor.execute(
+        'SELECT user_id FROM User_Table WHERE username = ?', (username,)).fetchone()[0]
+    cursor.execute('INSERT INTO sessions (session_token, user_id) VALUES (?, ?)',
+                   (session_token, user_id))
+
     db.commit()
     cursor.close()
-    return jsonify({'message': 'User created successfully.'}), 201
+    return jsonify({'message': 'User created successfully.', 'accessToken': session_token}), 201
 
 # Allow user to log in. To do this, we check if they filled out everything. We also check if the username and it's corresponding password match that of the database, then we can say it was successfully logged in
 
@@ -144,12 +151,11 @@ def collectUserInfo():
     prefId = str(uuid.uuid4())
     cursor.execute("insert into User_Pref values (?,?,?,?,?,?,?)",
                    (prefId, userid, calories, protein, carbs, fat, mealsPerDay))
-    db.commit()
-    cursor.close()
     query = cursor.execute(
         "select * from User_Pref where user_id = ?", (userid,))
     userPref = query.fetchall()
-    print(userPref)
+    db.commit()
+    cursor.close()
     return jsonify({'message': f'Preferences added to user: {userid} successfully.'}), 201
 
 

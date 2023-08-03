@@ -12,6 +12,10 @@ export const UserProvider = ({ children }) => {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
+    const addCookie = (name, value, options) => {
+        setCookies(name, value, options);
+    };
+
     const login = async ({ username, password, setAlert}) => {
         fetch('http://127.0.0.1:5000/authentication/login', {
             method: 'POST',
@@ -52,7 +56,8 @@ export const UserProvider = ({ children }) => {
         () => ({
             cookies,
             login,
-            logout
+            logout,
+            addCookie
         }),
         [cookies]
     );
