@@ -87,11 +87,11 @@ export const BarChart = () => {
   const authenticationController = new AuthenticationController();
   const cookies = useAuth().cookies;
 
-  const fetchActualWeeklyMacros = async () => {
+  const fetchTodaysMacros = async () => {
     const userid = await authenticationController.getUserId(cookies).then((userId) => {return userId});
   
     try {
-      const response = await fetch('http://127.0.0.1:5000/dashboard/thisWeeksStats', {
+      const response = await fetch('http://127.0.0.1:5000/dashboard/todaysStats', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export const BarChart = () => {
 
 
   useEffect(() => {
-    fetchActualWeeklyMacros();
+    fetchTodaysMacros();
   }, []);
 
   useEffect(() => {
@@ -161,7 +161,7 @@ export const BarChart = () => {
         labels: calsAndMacsKeys,
         datasets: [
           {
-            label: 'Daily Average (Past 7 Days)',
+            label: 'Todays Stats',
             data: calsAndMacsValues,
             borderColor: Utils.CHART_COLORS.red,
             backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),

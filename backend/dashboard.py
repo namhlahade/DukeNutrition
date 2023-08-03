@@ -103,7 +103,7 @@ def stattttttttts():
     userid = data.get("userid")
     time_period = data.get("time_period")
 
-    current_date = datetime.now()
+    current_date = datetime2.now()
 
     start_date = current_date - timedelta(days=6)
 
@@ -149,50 +149,40 @@ def stattttttttts():
     }), 200
 
 
-@dashboard_bp.route('/thisWeeksStats', methods=['POST'])
-def thisWeeksStats():
+@dashboard_bp.route('/todaysStats', methods=['POST'])
+def get_todays_stats():
     data = request.get_json()
     userid = data.get("userid")
     # time_period = data.get("time_period")
 
-    current_date = datetime2.now()
-
-    start_date = current_date - timedelta(days=6)
-
-    dates = [(start_date + timedelta(days=d)).date() for d in range(7)]
-    meal_date = []
-    # Print the dates
-    for date in dates:
-        meal_date.append(date.strftime('%Y-%m-%d'))\
+    current_date_time = datetime2.now()
+    current_date = current_date_time.date()
 
     db = get_db()
     cursor = db.cursor()
+    query = cursor.execute(
+        "select * from User_Meal where meal_date = ? and user_id = ?", (current_date, userid,))
+    results = query.fetchall()
+    print(results)
+
     calories = 0
     protein = 0
     carbs = 0
     fats = 0
 
-    for date in meal_date:
-        query = cursor.execute(
-            "select * from User_Meal where meal_date = ? and user_id = ?", (date, userid,))
-        results = query.fetchall()
-
-        for row in results:
-            print(row)
-
-        for meal in results:
-            calories += meal[5]
-            protein += meal[6]
-            carbs += meal[7]
-            fats += meal[8]
+    for result in results:
+        calories += result[5]
+        protein += result[6]
+        carbs += result[7]
+        fats += result[8]
 
     cursor.close()
 
     return jsonify({
-        'Calories': calories/7,
-        'Protein (g)': protein/7,
-        'Carbs (g)': carbs/7,
-        'Fat (g)': fats/7
+        'Calories': calories,
+        'Protein (g)': protein,
+        'Carbs (g)': carbs,
+        'Fat (g)': fats
     }), 200
 
 
