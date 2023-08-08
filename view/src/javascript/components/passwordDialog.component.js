@@ -10,13 +10,18 @@ import { IconButton } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {useState } from 'react';
-import { container } from "webpack";
+import { AuthenticationController } from '../controller/AuthenticationController';
+import { useAuth } from "../context/AuthProvider";
+import { Alert } from './Alert.component';
 
 
 export const PasswordDialog = ({setVisibility, onSubmit, style}) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const [passwordEntered, setPasswordEntered] = useState('');
+  const [alert, setAlert] = useState({ type: '', message: '' });
+  const cookies = useAuth().cookies;
+  const authenticationController = new AuthenticationController();
 
   const submitButton = {
     backgroundColor: 'transparent',
@@ -57,16 +62,46 @@ const containerStyle = {
 };
 
 const submitChanges = async () => {
-  await onSubmit(passwordEntered);
+  await verifyPassword(passwordEntered);
 }
 
 const cancelChanges = () => {
   setVisibility(false);
 }
 
+
+const verifyPassword = async (passwordAttempt) => {
+  const userid = await authenticationController.getUserId(cookies).then((userId) => { return userId; });
+  console.log(passwordAttempt);
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/profile/verifyPassword`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({password: passwordAttempt, userid: userid}),
+    });
+    const result = await response.json();
+    console.log(result);
+    if(result.error == null){
+      setAlert({ type: 'success', message: 'Password Verified!' });
+      setVisibility(false);
+      await onSubmit();
+    } else{
+      setAlert({ type: 'danger', message: result.error });
+    }
+    return result;
+  } catch (error) {
+    setAlert({ type: 'danger', message: error.message });
+  }
+};
+
+
+
   return (
     <div style={style}>
       <div style={containerStyle}>
+      {alert && <Alert type={alert.type} message={alert.message} />}
         <h1 style={textStyle}>Verify Password</h1>
         <FormControl  variant="outlined">
               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>

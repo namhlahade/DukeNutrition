@@ -24,6 +24,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { PasswordDialog } from './passwordDialog.component';
 import styled, { keyframes } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const outerContainer = {
   display: 'flex',
@@ -117,21 +118,23 @@ export  const Profile = () => {
   const authenticationController = new AuthenticationController();
   const cookies = useAuth().cookies;
   const [responses, setResponses] = useState({});
-  const [verifyPasswordData, setVerifyPasswordData] = useState({});
   const [passwordDialog, setPasswordDialog] = useState(false);
-  const [verified, setVerified] = useState(false);
+  const [afterVerificationAction, setAfterVerificationAction] = useState(null);
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   useEffect(() => {
     getProfile();
-  }, []);
+    console.log(afterVerificationAction);
+    console.log(isEditing)
+  }, [afterVerificationAction]);
 
   const submitChanges = async () => {
     console.log(responses);
       responses["userid"] = await authenticationController.getUserId(cookies).then((userId) => { return userId; });
       try {
-        const response = await fetch(`http:////127.0.0.1:5000/user-info/updateUserInfo`, {
+        const response = await fetch(`http://127.0.0.1:5000/profile/updateProfile`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -172,34 +175,13 @@ export  const Profile = () => {
   };
 
   const editProfile = async () => {
+    setAfterVerificationAction(enableEditing);
     setPasswordDialog(true);
   };
 
-  const verifyPassword = async (passwordAttempt) => {
-    const userid = await authenticationController.getUserId(cookies).then((userId) => { return userId; });
-    console.log(passwordAttempt);
-    try {
-      const response = await fetch(`http://127.0.0.1:5000/profile/verifyPassword`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({password: passwordAttempt, userid: userid}),
-      });
-      const result = await response.json();
-      console.log(result);
-      if(result.error == null){
-        setAlert({ type: 'success', message: 'Password Verified!' });
-        setPasswordDialog(false);
-        setIsEditing(true);
-        setVerified(true);
-      } else{
-        setAlert({ type: 'danger', message: result.error });
-      }
-      return result;
-    } catch (error) {
-      setAlert({ type: 'danger', message: error.message });
-    }
+  const enableEditing = async () => {
+    setIsEditing(true);
+    setAlert(null);
   };
 
   const cancelChanges = () => {
@@ -207,21 +189,27 @@ export  const Profile = () => {
     setAlert(null);
   };
 
+  const pressedDelete = async () => {
+    setAfterVerificationAction(deleteAccount);
+    setPasswordDialog(true);
+  };
+
   const deleteAccount = async () => {
-    responses["userid"] = await authenticationController.getUserId(cookies).then((userId) => { return userId; });
+    console.log("deleting account");
+    const userId = await authenticationController.getUserId(cookies).then((userId) => { return userId; });
     try {
       const response = await fetch(`http://127.0.0.1:5000/profile/deleteProfile`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(responses),
+        body: JSON.stringify(userId),
       });
       const result = await response.json();
       console.log(result);
       if(result.error == null){
         setAlert({ type: 'success', message: 'Profile Deleted!' });
-        window.location.href = '/duke-net-nutrition/sign-in';
+        navigate('/duke-net-nutrition/sign-in');
       } else{
         setAlert({ type: 'danger', message: result.error });
       }
@@ -233,7 +221,7 @@ export  const Profile = () => {
 
   return (
     <div style={stackPane}>
-     {passwordDialog && <PasswordDialog style={passwordStyle} setVisibility={setPasswordDialog} onSubmit={verifyPassword}/>}
+     {passwordDialog && <PasswordDialog style={passwordStyle} setVisibility={setPasswordDialog} onSubmit={afterVerificationAction}/>}
       <div style={outerContainer}>
         {alert && <Alert type={alert?.type} message={alert?.message} />}
         {isEditing
@@ -250,18 +238,25 @@ export  const Profile = () => {
             <OutlinedInput
               id="outlined-adornment-amount"
               label="Email"
+              onChange={(e) => setResponses({ ...responses, email: e.target.value })}
             />
           </FormControl>
           <div style={usernamePasswordRow}>
-            <TextField
-              label="Username"
-              id="outlined-start-adornment"
-            />
+            <FormControl variant={"outlined"}>
+            <InputLabel htmlFor="outlined-adornment-amount">Username</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-username"
+                label="Username"
+                type='text'
+                onChange={(e) => setResponses({ ...responses, username: e.target.value })}
+              />
+            </FormControl>
             <FormControl  variant="outlined">
               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
+                onChange={(e) => setResponses({ ...responses, password: e.target.value })}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -344,7 +339,7 @@ export  const Profile = () => {
             <Button style={editButton} type="submit" color="primary" variant="contained" onClick={editProfile}>
               <EditIcon/>Edit Profile
             </Button>
-            <Button style={deleteButton} type='button' color='error' variant="contained" onClick={deleteAccount}>
+            <Button style={deleteButton} type='button' color='error' variant="contained" onClick={pressedDelete}>
               <DeleteIcon/>Delete Account
             </Button>
           </div>
