@@ -27,7 +27,7 @@ const UserInfoSurvey = () => {
       responses["userid"] = await authenticationController.getUserId(cookies).then((userId) => {return userId});
       console.log("userid: " + responses["userid"]);
       try {
-        const response = await fetch('http://127.0.0.1:5000/authentication/collectUserInfo', {
+        const response = await fetch('http://127.0.0.1:5000/user-info/collectUserInfo', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

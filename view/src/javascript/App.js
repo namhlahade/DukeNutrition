@@ -5,7 +5,7 @@ import SignUpForm from './components/signup.component';
 import ProfileChange from './components/profileComponent2';
 import {Dashboard} from './pages/Dashboard';
 import MealDisplay from './components/mealDisplay.component';
-import UserInfoSurvey from "./pages/UserInfoSurvey";
+import {ReadOnlyUserInfo} from "./pages/ReadOnlyInfoSurvey";
 import {UnauthorizedPage} from './pages/UnauthorizedPage';
 import { ProtectRoutes } from './hooks/protectRoutes';
 import PageLayout from './components/PageLayout.component';
@@ -53,11 +53,11 @@ function App() {
         />
          {/* we want to protect these routes */}
         <Route element={<ProtectRoutes />}>
-            <Route path="/duke-net-nutrition/user-preferences" element={<UserInfoSurvey />} />
             <Route element={<PageLayout />} >
               <Route path="/duke-net-nutrition/dashboard" element={<Dashboard />} />
-              <Route path="/duke-net-nutrition/profile" element={<ProfileChange />} />
               <Route path="/duke-net-nutrition/create-meal" element={<MealDisplay />} />
+              <Route path="/duke-net-nutrition/user-preferences" element={<ReadOnlyUserInfo />} />
+              <Route path="/duke-net-nutrition/profile" element={<ProfileChange />} />
             </Route>
         </Route>
         {/* catch all */}
