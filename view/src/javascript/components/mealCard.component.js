@@ -47,20 +47,16 @@ export const MealCard = ({ mealID, restaurant, date, time, ingredientList, calsA
 
   const chooseRestaurantImage = (restaurant) => {
     if(restaurant === "Pitchforks"){
-      console.log("pitchforksImage");
       return require('../../resources/images/pitchforks_label.png');
     }
     else if(restaurant === "Bella_Union"){
-      console.log("bellaUnionImage");
       return require('../../resources/images/bella_union_label.png');
     }
     else if(restaurant === "Ginger_and_Soy"){
-      console.log("gingerAndSoyImage");
       return require('../../resources/images/ginger_and_soy_label.png');
     }
-    else if(restaurant === "My_Fitness_Pal"){
-      console.log("MyFitnessPalImage");
-      return require('../../resources/images/my-fitness-pal-logo.png');
+    else if(restaurant === "nutrionix"){
+      return require('../../resources/images/nutrionix_label.png');
     }
     else{
       return;

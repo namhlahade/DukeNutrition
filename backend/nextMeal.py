@@ -88,9 +88,9 @@ def addingMeal():
 
     userMealid = str(uuid.uuid4())
     current_date = date.today()
-
-    query = db.execute("insert into User_Meal values (?,?,?,?,?,?,?,?,?,?)", (userMealid, userid,
-                       prefid, mealid, mealName, mealCals, mealProt, mealCarbs, mealFat, current_date.isoformat()))
+    restaurant = "nutritionix"
+    query = db.execute("insert into User_Meal values (?,?,?,?,?,?,?,?,?,?,?)", (userMealid, userid,
+                       prefid, mealid, mealName, mealCals, mealProt, mealCarbs, mealFat, current_date.isoformat(), restaurant))
 
     db.commit()
     query = db.execute("select * from User_Meal where user_id = ?", (userid,))

@@ -187,7 +187,7 @@ const MealDisplay = () => {
     const submitReturn = {}
   
     axios.post(url, payload, { headers: headers })
-      .then(response => {
+      .then(async response => {
         const data = response.data;
         console.log("This is the non duke return data");
         console.log(data["foods"][0].nf_calories);
@@ -196,7 +196,7 @@ const MealDisplay = () => {
         submitReturn["protein"] = Math.round(data["foods"][0].nf_protein)
         submitReturn["carbs"] = Math.round(data["foods"][0].nf_total_carbohydrate)
         submitReturn["fats"] = Math.round(data["foods"][0].nf_total_fat)
-        submitReturn["userid"] = 
+        submitReturn["userid"] = await authenticationController.getUserId(cookies).then((userId) => {return userId});
 
         console.log("Submitting this to api")
         console.log(submitReturn)
