@@ -41,13 +41,13 @@ const deleteButton = {
   color: '#ff4569',
   border: '2px solid #ff4569',
   borderRadius: '10px',
+  marginLeft: '10px',
 };
 
 const buttonRow = {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
-  width: '55%'
 }
 
 const containerStyle = {

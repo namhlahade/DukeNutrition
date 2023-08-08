@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
-import { Button } from '@mui/material';
-import "../../css/mealDisplay.css";
+import Button from 'react-bootstrap/Button';
+import "../../css/mealDisplay.css"
 import { RestartAlt } from '@mui/icons-material';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import LoadingSpinner from './LoadingSpinner.js';
+import LoadingSpinner from '../components/LoadingSpinner.js';
 import { SurveyError } from 'survey-core';
-import {Alert} from './Alert.component';
+import Alert from './Alert';
 import {useDash} from '../context/DashProvider.js';
-import { AuthenticationController } from '../controller/AuthenticationController';
-import { useAuth } from '../context/AuthProvider';
-import ClearIcon from '@mui/icons-material/Clear';
-import SubmitIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
+
 
 const TypeOfMeal = {
   "Pitchforks": "add_item",
@@ -28,17 +25,24 @@ const MealDisplay = () => {
   const [meal, setMeal] = useState({}); // This is the meal that is being built and added to the database
   const [mealCounterData, setMealCounterData] = useState({});
   const [alert, setAlert] = useState(null);
-  const [mealCalsMacs, setMealCalsMacs] = useState({});
-  const handleAddMeal = useDash().handleAddMeal;
-  const authenticationController = new AuthenticationController();
-  const cookies = useAuth().cookies;
   const [nonDukeMeal, setNonDukeMeal] = useState("")
   const [flag, setFlag] = useState(0);
+  const handleAddMeal = useDash().handleAddMeal;
 
+  useEffect(() => {
+    console.log("Updated nonDukeMeal Variable")
+    console.log(nonDukeMeal);
+  }, [flag]);
+  
   useEffect(() => {
     console.log("mealCounterData: ")
     console.log(mealCounterData);
-  },[mealCounterData, flag]);
+  },[mealCounterData]);
+
+  useEffect(() => {
+    console.log("meal: ")
+    console.log(meal);
+  },[meal]);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -161,7 +165,6 @@ const MealDisplay = () => {
 
   };
 
-
   const addNonDukeData = () => {
     console.log("Non Duke Meal Button pressed");
     if (nonDukeMeal.length === 0){
@@ -231,18 +234,17 @@ const MealDisplay = () => {
         console.error("Error fetching data:", error);
       });
 
-  };
+  }
 
-
-  const sendData = async () => {
+  const sendData = () => {
     console.log("Add Meal Button pressed.")
     if (Object.keys(meal).length === 0){
       setAlert({ type: 'danger', message: 'Your Meal is Empty!' });
       return;
     }
-    var restaurantChosen = Object.keys(meal)[0];
-    const mealOptions = Object.keys(meal[restaurantChosen])
-    const allMealOptions = Object.keys(restaurantData[restaurantChosen])
+    var restaurant = Object.keys(meal)[0];
+    const mealOptions = Object.keys(meal[restaurant])
+    const allMealOptions = Object.keys(restaurantData[restaurant])
     var mealOptionsSet = new Set()
 
     for (var key in mealOptions){
@@ -252,13 +254,14 @@ const MealDisplay = () => {
       const tempMeal = {... meal };
       for (var typeOption in allMealOptions){
         if (!mealOptionsSet.has(typeOption)){
-          tempMeal[restaurantChosen][allMealOptions[typeOption]] = [];
+          tempMeal[restaurant][allMealOptions[typeOption]] = [];
         }
       }
       setMeal(tempMeal);
     }
     console.log("updated meal variable after pressing Add Meal Button")
     console.log(meal)
+    //handleAddMeal({meal}); 
     
     const mealSend = {}
     for (const [restaurant, restaurantData] of Object.entries(meal)){
@@ -269,12 +272,11 @@ const MealDisplay = () => {
       }
     }
 
-    mealSend["userid"] = await authenticationController.getUserId(cookies).then((userId) => {return userId});
+    mealSend["userid"] = "348e271d-5500-4e3d-99ac-39f584f5a3fe";
 
     console.log("Meal being sent to API:");
     console.log(mealSend);
-    setAlert({ type: 'success', message: 'Meal Added!' });
-    let calsAndMacs = {};
+
     const fetchCalsAndMacs = async () => {
 
       try {
@@ -285,9 +287,10 @@ const MealDisplay = () => {
         },
         body: JSON.stringify(mealSend),
         })
-        calsAndMacs = await response.json();
-        console.log(calsAndMacs);
+        const calsAndMacs = await response.json();
+        console.log(calsAndMacs)
         setMeal({});
+
         const tempMeal = { ...mealCounterData }
         for (var restaurant in tempMeal){
           for (var type in tempMeal[restaurant]){
@@ -299,10 +302,9 @@ const MealDisplay = () => {
 
         console.log(tempMeal);
         setMealCounterData(tempMeal)
-        // placed inside async function to ensure that calsAndMacs is updated before handleAddMeal is called
-        handleAddMeal({meal:meal[restaurantChosen], restaurant: restaurantChosen, calsAndMacs: calsAndMacs}); 
+        setAlert({ type: 'success', message: 'Meal Added!' });
+        handleAddMeal({restaurant: mealSend["restaurant"], mealType: mealSend["meal_type"]}); // 
         console.log('sent meal to dashboard history');
-        console.log("mealCalsMacs: " + calsAndMacs);
       }
       catch(error) {
         console.log('Error Creating Meal:', error);
@@ -329,17 +331,27 @@ const MealDisplay = () => {
   }
 
   return (
-    <div id="outerContainer">
-      <div >
-        <br/>
-      {alert && <Alert message={alert.message} type={alert.type} />}
-      </div>
-    <div id='mealDisplayContainer'>
+    <>
       <div>
         <h1 className='mainHeading'>Duke Meals</h1>
-        <br/>
+        {alert && <Alert message={alert.message} type={alert.type} />}
       </div>
       <div>
+            <form>
+              <div className="question-container">
+                <label className="question-label">
+                  Enter a Non-Duke Food:
+                  <input
+                    className="question-input"
+                    type="text"
+                    value={nonDukeMeal || ''}
+                    onChange={(event) => handleChange(event)}
+                    onBlur={(event) => handleBlur(event)}
+                  />
+                </label>
+                <Button variant="outline-primary" onClick = {() => addNonDukeData()}>Submit Food</Button>
+              </div>
+            </form>
       <div className="custom-accordion">
         <Accordion>
           {Object.entries(restaurantData).map(([restaurant, nestedData]) => (
@@ -385,37 +397,14 @@ const MealDisplay = () => {
         </Accordion>
       </div>
       </div>
-      <>
-      <br/>
-        <Button id={"addMealButton"} type="button" color="primary" variant="contained" onClick = {() => sendData()}>
-          <SubmitIcon/>Add Meal
-        </Button>
-        <br/>
-        <Button id={"clearButton"} type="button" color="primary" variant="contained"  onClick = {() => clearMeal()}>
-          <ClearIcon/>Clear
-        </Button>
-      <br/>
-      </>
-    </div>
-    <div id='mealDisplayContainer'>
-      <br/>
-          <label className="question-label">
-            Enter a Non-Duke Food:
-            <input
-              className="question-input"
-              type="text"
-              value={nonDukeMeal || ''}
-              onChange={(event) => handleChange(event)}
-              onBlur={(event) => handleBlur(event)}
-            />
-          </label>
-          <br/>
-          <Button id={"addMealButton"} type="button" color="primary" variant="contained" onClick = {() => addNonDukeData()}>
-            <SubmitIcon/>Add Meal
-          </Button>
-          <br/>
-    </div>
-    </div>
+      <div className='submitButton'>
+        <Button variant="outline-primary" onClick = {() => sendData()}>Add Meal</Button>
+      </div>
+      <div className='submitButton'>
+        <Button variant="outline-primary" onClick = {() => clearMeal()}>Clear</Button>
+      </div>
+
+    </>
   );
 };
 

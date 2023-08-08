@@ -63,6 +63,50 @@ def allRestaurants():
     return jsonify(restaurants), 200
 
 
+@nextMeal_bp.route('/addMeal', methods=['POST'])
+def addingMeal():
+    data = request.get_json()
+    userid = data.get("userid")
+    mealName = data.get("name")
+    mealCals = data.get("calories")
+    mealProt = data.get("protein")
+    mealCarbs = data.get("carbs")
+    mealFat = data.get("fats")
+
+    mealid = mealName
+
+    db = get_db()
+
+    query = db.execute("select * from User_Pref where user_id = ?", (userid,))
+    row = query.fetchone()
+
+    if row is None:
+        return jsonify({f"error": "No user preference was created."}), 400
+
+    prefid = row[0]
+    print(f"Pref Id: {prefid}")
+
+    userMealid = str(uuid.uuid4())
+    current_date = date.today()
+
+    query = db.execute("insert into User_Meal values (?,?,?,?,?,?,?,?,?,?)", (userMealid, userid,
+                       prefid, mealid, mealName, mealCals, mealProt, mealCarbs, mealFat, current_date.isoformat()))
+
+    db.commit()
+    query = db.execute("select * from User_Meal where user_id = ?", (userid,))
+
+    allMeals = query.fetchall()
+    print(f"All the meals by user: {userid}")
+    print(allMeals)
+
+    db.close()
+    print("Meal Statistics:")
+    print(mealName, mealCals, mealProt, mealCarbs, mealFat)
+    print("It works!")
+
+    return jsonify({f"message": f"Successfully added meal with mealid: {mealid} to user: {userid}"}), 200
+
+
 @nextMeal_bp.route('/selectMeal', methods=['POST'])
 def selectMeal():
     data = request.get_json()
