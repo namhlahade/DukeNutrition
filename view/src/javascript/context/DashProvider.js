@@ -59,31 +59,35 @@ export const DashProvider = ({ children }) => {
     fetchData();
   }, [cookies]);
 
-  function formatIngredients(meal) {
+  function formatIngredients(meal, restaurant) {
+    console.log(meal);
     const ingredientList = {};
-  
-    for (const ingredientType in meal) {
-      const ingredients = meal[ingredientType];
-      const formattedIngredients = [];
-  
-      const ingredientCount = ingredients.length;
-      const ingredientOccurrences = {};
-  
-      // Count the occurrences of each ingredient
-      for (let i = 0; i < ingredientCount; i++) {
-        const ingredient = ingredients[i];
-        ingredientOccurrences[ingredient] = (ingredientOccurrences[ingredient] || 0) + 1;
+    if(restaurant !== "Nutrionix"){
+      for (const ingredientType in meal) {
+        const ingredients = meal[ingredientType];
+        const formattedIngredients = [];
+    
+        const ingredientCount = ingredients.length;
+        const ingredientOccurrences = {};
+    
+        // Count the occurrences of each ingredient
+        for (let i = 0; i < ingredientCount; i++) {
+          const ingredient = ingredients[i];
+          ingredientOccurrences[ingredient] = (ingredientOccurrences[ingredient] || 0) + 1;
+        }
+    
+        // Format each ingredient occurrence
+        for (const ingredient in ingredientOccurrences) {
+          const occurrenceCount = ingredientOccurrences[ingredient];
+          const formattedIngredient = `${ingredient} (${occurrenceCount})`;
+          formattedIngredients.push(formattedIngredient);
+        }
+    
+        // Assign the formatted ingredients to the ingredientList object
+        ingredientList[ingredientType] = formattedIngredients;
       }
-  
-      // Format each ingredient occurrence
-      for (const ingredient in ingredientOccurrences) {
-        const occurrenceCount = ingredientOccurrences[ingredient];
-        const formattedIngredient = `${ingredient} (${occurrenceCount})`;
-        formattedIngredients.push(formattedIngredient);
-      }
-  
-      // Assign the formatted ingredients to the ingredientList object
-      ingredientList[ingredientType] = formattedIngredients;
+    } else{
+      ingredientList['Meal'] = meal['meal'];
     }
   
     return ingredientList;
@@ -115,7 +119,7 @@ export const DashProvider = ({ children }) => {
       console.log("restaurant: " + restaurant);
   
       // Iterate over properties and assign values to variables
-      const ingredientList = formatIngredients(meal);
+      const ingredientList = formatIngredients(meal, restaurant);
       
       console.log(JSON.stringify(ingredientList));
     

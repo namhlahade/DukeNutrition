@@ -197,7 +197,7 @@ const MealDisplay = () => {
         submitReturn["carbs"] = Math.round(data["foods"][0].nf_total_carbohydrate)
         submitReturn["fats"] = Math.round(data["foods"][0].nf_total_fat)
         submitReturn["userid"] = await authenticationController.getUserId(cookies).then((userId) => {return userId});
-
+        
         console.log("Submitting this to api")
         console.log(submitReturn)
 
@@ -218,6 +218,8 @@ const MealDisplay = () => {
             setAlert({ type: 'success', message: 'Meal Added!' });
             //handleAddMeal({restaurant: mealSend["restaurant"], mealType: mealSend["meal_type"]}); // 
             //console.log('sent meal to dashboard history');
+            handleAddMeal({meal: {meal: submitReturn["name"]}, restaurant: "Nutrionix", calsAndMacs: {Calories: submitReturn["calories"], Protein: submitReturn["protein"], Carbs: submitReturn["carbs"], Fat: submitReturn["fats"]}}); 
+            console.log('sent meal to dashboard history');
           }
           catch(error) {
             console.log('Error Creating Meal:', error);

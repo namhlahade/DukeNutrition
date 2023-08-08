@@ -36,7 +36,9 @@ export const MealCard = ({ mealID, restaurant, date, time, ingredientList, calsA
     const userId = await authenticationController.getUserId(cookies).then((userId) => {return userId});
     await mealCardController.deleteMealCard({ mealCard: mealID, userId: userId, mealCardId: mealID });
     setIsDeleted(true);
+    window.location.reload(); // Refresh the page
   };
+
 
   // Rest of your component code...
 
@@ -55,7 +57,7 @@ export const MealCard = ({ mealID, restaurant, date, time, ingredientList, calsA
     else if(restaurant === "Ginger_and_Soy"){
       return require('../../resources/images/ginger_and_soy_label.png');
     }
-    else if(restaurant === "nutrionix"){
+    else if(restaurant === "Nutrionix"){
       return require('../../resources/images/nutrionix_label.png');
     }
     else{
