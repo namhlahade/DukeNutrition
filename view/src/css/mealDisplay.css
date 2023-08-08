@@ -1,7 +1,22 @@
-#mealDisplayContainer{
-  width: 100%;
+#outerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
+#mealDisplayContainer{
+  margin-top: 5%;
+  align-content: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  width: 75%;
+}
 
 .custom-checkbox {
     display: flex;
@@ -26,6 +41,9 @@
 .mainHeading {
   text-align: center;
   padding: 10px;
+  color: rgb(10,25,41);
+  font-size: 36px;
+  font-weight: bold;
 }
 
 .portion-btn {
@@ -80,14 +98,8 @@ td {
   text-align: center;
 }
 
-.submitButton {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
 .custom-accordion {
-  width: 50%;
+  width: 500px;
   margin: 0 auto; /* Center the accordion horizontally */
 }
 
@@ -181,4 +193,19 @@ span {cursor:pointer; }
 
   .minus-button--small {
     font-size: 8px;
+  }
+
+  #addMealButton {
+    background-color: transparent;
+    color: rgb(10, 25, 41);
+    border: 2px solid rgb(10, 25, 41);
+    border-radius: 10px;
+  }
+  
+  /* Cancel Button */
+  #clearButton {
+    background-color: transparent;
+    color: #ff4569;
+    border: 2px solid #ff4569;
+    border-radius: 10px;
   }

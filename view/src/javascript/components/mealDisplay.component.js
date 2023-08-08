@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
-import Button from 'react-bootstrap/Button';
+import { Button } from '@mui/material';
 import "../../css/mealDisplay.css";
 import { RestartAlt } from '@mui/icons-material';
 import Container from 'react-bootstrap/Container';
@@ -12,6 +12,8 @@ import {Alert} from './Alert.component';
 import {useDash} from '../context/DashProvider.js';
 import { AuthenticationController } from '../controller/AuthenticationController';
 import { useAuth } from '../context/AuthProvider';
+import ClearIcon from '@mui/icons-material/Clear';
+import SubmitIcon from '@mui/icons-material/CheckCircle';
 
 const TypeOfMeal = {
   "Pitchforks": "add_item",
@@ -240,10 +242,12 @@ const MealDisplay = () => {
   }
 
   return (
+    <div id="outerContainer">
     <div id='mealDisplayContainer'>
       <div>
         <h1 className='mainHeading'>Duke Meals</h1>
         {alert && <Alert message={alert.message} type={alert.type} />}
+        <br/>
       </div>
       <div>
       <div className="custom-accordion">
@@ -291,12 +295,18 @@ const MealDisplay = () => {
         </Accordion>
       </div>
       </div>
-      <div className='submitButton'>
-        <Button variant="outline-primary" onClick = {() => sendData()}>Add Meal</Button>
-      </div>
-      <div className='submitButton'>
-        <Button variant="outline-primary" onClick = {() => clearMeal()}>Clear</Button>
-      </div>
+      <>
+      <br/>
+        <Button id={"addMealButton"} type="button" color="primary" variant="contained" onClick = {() => sendData()}>
+          <SubmitIcon/>Add Meal
+        </Button>
+        <br/>
+        <Button id={"clearButton"} type="button" color="primary" variant="contained"  onClick = {() => clearMeal()}>
+          <ClearIcon/>Clear
+        </Button>
+      <br/>
+      </>
+    </div>
     </div>
   );
 };
