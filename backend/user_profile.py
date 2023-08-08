@@ -114,5 +114,6 @@ def deleteProfile():
         db.commit()
 
         cursor.close()
+        return jsonify({'message': 'Profile deleted.'}), 200
     except Exception as e:
         return jsonify({'error': f'{e}'}), 400

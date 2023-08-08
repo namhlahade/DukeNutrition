@@ -11,6 +11,7 @@ import { ProtectRoutes } from './hooks/protectRoutes';
 import PageLayout from './components/PageLayout.component';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserInfoSurvey from './pages/UserInfoSurvey';
+import { ProfileDeleted } from './pages/ProfileDeleted';
 
 
 const ROLES = {
@@ -52,6 +53,7 @@ function App() {
           path="*" 
           element={<UnauthorizedPage />} 
         />
+        <Route path="duke-net-nutrition/profile-deleted" element={<ProfileDeleted />} />
          {/* we want to protect these routes */}
         <Route element={<ProtectRoutes />}>
           <Route path="/duke-net-nutrition/user-preferences-survey" element={<UserInfoSurvey />} />

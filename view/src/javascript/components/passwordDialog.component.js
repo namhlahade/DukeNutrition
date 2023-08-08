@@ -15,7 +15,7 @@ import { useAuth } from "../context/AuthProvider";
 import { Alert } from './Alert.component';
 
 
-export const PasswordDialog = ({setVisibility, onSubmit, style}) => {
+export const PasswordDialog = ({setVisibility, setVerified, style}) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const [passwordEntered, setPasswordEntered] = useState('');
@@ -84,9 +84,10 @@ const verifyPassword = async (passwordAttempt) => {
     const result = await response.json();
     console.log(result);
     if(result.error == null){
+      console.log("Password Verified87!");
       setAlert({ type: 'success', message: 'Password Verified!' });
       setVisibility(false);
-      await onSubmit();
+      setVerified(true);
     } else{
       setAlert({ type: 'danger', message: result.error });
     }

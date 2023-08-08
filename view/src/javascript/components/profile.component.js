@@ -119,16 +119,21 @@ export  const Profile = () => {
   const cookies = useAuth().cookies;
   const [responses, setResponses] = useState({});
   const [passwordDialog, setPasswordDialog] = useState(false);
-  const [afterVerificationAction, setAfterVerificationAction] = useState(null);
+  const [verified, setVerified] = useState(false);
+  const [deletedPressed, setDeletedPressed] = useState(false);
   const navigate = useNavigate();
+  const logout = useAuth().logout;
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   useEffect(() => {
     getProfile();
-    console.log(afterVerificationAction);
-    console.log(isEditing)
-  }, [afterVerificationAction]);
+    if(isEditing){ // isEditing is true after password is verified, so isEditing is effectively verification
+      if(deletedPressed){
+        deleteAccount();
+      }
+    }
+  }, [passwordDialog]);
 
   const submitChanges = async () => {
     console.log(responses);
@@ -175,13 +180,7 @@ export  const Profile = () => {
   };
 
   const editProfile = async () => {
-    setAfterVerificationAction(enableEditing);
     setPasswordDialog(true);
-  };
-
-  const enableEditing = async () => {
-    setIsEditing(true);
-    setAlert(null);
   };
 
   const cancelChanges = () => {
@@ -190,7 +189,7 @@ export  const Profile = () => {
   };
 
   const pressedDelete = async () => {
-    setAfterVerificationAction(deleteAccount);
+    setDeletedPressed(true);
     setPasswordDialog(true);
   };
 
@@ -203,13 +202,16 @@ export  const Profile = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userId),
+        body: JSON.stringify({userid: userId}),
       });
       const result = await response.json();
       console.log(result);
       if(result.error == null){
         setAlert({ type: 'success', message: 'Profile Deleted!' });
-        navigate('/duke-net-nutrition/sign-in');
+        setTimeout(() => {
+          logout();
+          navigate('/duke-net-nutrition/profile-deleted');
+        }, 1000); 
       } else{
         setAlert({ type: 'danger', message: result.error });
       }
@@ -221,7 +223,7 @@ export  const Profile = () => {
 
   return (
     <div style={stackPane}>
-     {passwordDialog && <PasswordDialog style={passwordStyle} setVisibility={setPasswordDialog} onSubmit={afterVerificationAction}/>}
+     {passwordDialog && <PasswordDialog style={passwordStyle} setVisibility={setPasswordDialog} setVerified={setIsEditing}/>}
       <div style={outerContainer}>
         {alert && <Alert type={alert?.type} message={alert?.message} />}
         {isEditing

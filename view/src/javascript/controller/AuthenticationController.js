@@ -1,5 +1,7 @@
 
+
 export class AuthenticationController {
+
   async getUserId(cookies) {
     try {
       // Fetch the userId from the backend using the 'sessionToken' cookie
@@ -20,7 +22,7 @@ export class AuthenticationController {
         return data.userId;
       } else {
         // If the response is not okay, handle the error and throw it
-        throw new Error('Unauthorized');
+        console.log('Failed to get user id');
       }
     } catch (error) {
       // Handle errors, such as unauthorized access or network issues
