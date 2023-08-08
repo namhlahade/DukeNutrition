@@ -41,7 +41,7 @@ const SignUp = () => {
           // redirectToHomeContent(true);
           addCookie('token', result.accessToken, {maxAge:86400}); // your token, expiration time in seconds (1 day)
           addCookie('name', username, {maxAge:86400}); // optional data
-          navigate('/duke-net-nutrition/user-preferences')
+          navigate('/duke-net-nutrition/user-preferences-survey')
         }
       })
       .catch((error) => {

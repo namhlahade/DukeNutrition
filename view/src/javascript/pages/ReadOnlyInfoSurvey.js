@@ -101,9 +101,13 @@ export const ReadOnlyUserInfo = () => {
         });
         const result = await response.json();
         console.log(result);
-        await getUserData();
-        setAlert({ type: 'success', message: 'User Info Updated!' });
-        setIsEditing(false);
+        if(result.error == null){
+          setIsEditing(false);
+          await getUserData();
+          setAlert({ type: 'success', message: 'User Info Updated!' });
+        } else{
+          setAlert({ type: 'danger', message: result.error });
+        }
       } catch (error) {
         console.log(error);
         setAlert({ type: 'danger', message: 'Error in Updating User Info!' });
@@ -136,6 +140,7 @@ export const ReadOnlyUserInfo = () => {
 
   const cancelChanges = () => {
     setIsEditing(false);
+    setAlert(null);
   };
 
   return (

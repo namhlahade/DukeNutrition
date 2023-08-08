@@ -111,12 +111,12 @@ const UserInfoSurvey = () => {
 
   return (
     <div id={"userSurveyContainer"}>
-      <h1>Survey</h1>
+      <h1>Daily Target Survey</h1>
       {alert && <Alert message={alert.message} type={alert.type} />}
       <form onSubmit={handleSubmit}>
         <div className="question-container">
           <label className="question-label">
-            Enter Calories:
+            Enter Target Daily Calories:
             <input
               className="question-input"
               type="text"
@@ -128,7 +128,7 @@ const UserInfoSurvey = () => {
         </div>
         <div className="question-container">
           <label className="question-label">
-            Enter Protein:
+            Enter Target Daily Protein:
             <input
               className="question-input"
               type="text"
@@ -140,7 +140,7 @@ const UserInfoSurvey = () => {
         </div>
         <div className="question-container">
           <label className="question-label">
-            Enter Carbs:
+            Enter Target Daily Carbs:
             <input
               className="question-input"
               type="text"
@@ -152,7 +152,7 @@ const UserInfoSurvey = () => {
         </div>
         <div className="question-container">
           <label className="question-label">
-            Enter Fat:
+            Enter Target Daily Fat:
             <input
               className="question-input"
               type="text"
@@ -164,7 +164,7 @@ const UserInfoSurvey = () => {
         </div>
         <div className="question-container">
           <label className="question-label">
-            Enter Meals per Day:
+            Enter Target Meals per Day:
             <input
               className="question-input"
               type="text"

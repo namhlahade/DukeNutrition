@@ -94,8 +94,19 @@ def updateUserInfo():
     mealsPerDay = data.get("num_meals")
 
     if not (calories and protein and carbs and fat and mealsPerDay):
-        print("All questions need to be answered")
-        return jsonify({'error': 'All questions need to be answered'})
+        print("All values must be updated")
+        return jsonify({'error': 'All values must be updated'})
+
+    try:
+        int(calories)
+        int(protein)
+        int(carbs)
+        int(fat)
+        int(mealsPerDay)
+
+    except ValueError:
+        print("Values must be integers")
+        return jsonify({'error': 'Values must be integers'})
 
     db = get_db()
     cursor = db.cursor()

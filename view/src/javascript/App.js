@@ -10,6 +10,7 @@ import {UnauthorizedPage} from './pages/UnauthorizedPage';
 import { ProtectRoutes } from './hooks/protectRoutes';
 import PageLayout from './components/PageLayout.component';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import UserInfoSurvey from './pages/UserInfoSurvey';
 
 
 const ROLES = {
@@ -53,6 +54,7 @@ function App() {
         />
          {/* we want to protect these routes */}
         <Route element={<ProtectRoutes />}>
+          <Route path="/duke-net-nutrition/user-preferences-survey" element={<UserInfoSurvey />} />
             <Route element={<PageLayout />} >
               <Route path="/duke-net-nutrition/dashboard" element={<Dashboard />} />
               <Route path="/duke-net-nutrition/create-meal" element={<MealDisplay />} />
