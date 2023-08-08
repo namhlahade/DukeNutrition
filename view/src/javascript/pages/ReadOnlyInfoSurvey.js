@@ -65,7 +65,6 @@ const cancelButton = {
 const outlinedInput = {
   width: '100%',
   color: 'rgb(10,25,41)',
-  fontSize: '24px',
   marginBottom: "20px",
 };
 
@@ -165,7 +164,7 @@ export const ReadOnlyUserInfo = () => {
           <InputLabel htmlFor="outlined-adornment-amount">Protein (g)</InputLabel>
           <OutlinedInput
             id="outlined-adornment-amount"
-            label="Protein"
+            label="Protein (g)"
             defaultValue={calsAndMacs[1]}
             style={outlinedInput}
             onChange={(e) => setResponses({ ...responses, protein: e.target.value })}
@@ -175,7 +174,7 @@ export const ReadOnlyUserInfo = () => {
           <InputLabel htmlFor="outlined-adornment-amount">Carbs (g)</InputLabel>
           <OutlinedInput
             id="outlined-adornment-amount"
-            label="Carbs"
+            label="Carbs (g)"
             defaultValue={calsAndMacs[2]}
             style={outlinedInput}
             onChange={(e) => setResponses({ ...responses, carbs: e.target.value })}
@@ -185,7 +184,7 @@ export const ReadOnlyUserInfo = () => {
           <InputLabel htmlFor="outlined-adornment-amount">Fat (g)</InputLabel>
           <OutlinedInput
             id="outlined-adornment-amount"
-            label="Fat"
+            label="Fat (g)"
             defaultValue={calsAndMacs[3]}
             style={outlinedInput}
             onChange={(e) => setResponses({ ...responses, fat: e.target.value })}
@@ -217,7 +216,7 @@ export const ReadOnlyUserInfo = () => {
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
           <OutlinedInput
             id="outlined-adornment-amount"
-            label="Protein"
+            label="Protein (g)"
             value={calsAndMacs[1]}
             style={outlinedInput}
             disabled
@@ -227,7 +226,7 @@ export const ReadOnlyUserInfo = () => {
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
           <OutlinedInput
             id="outlined-adornment-amount"
-            label="Carbs"
+            label="Carbs (g)"
             value={calsAndMacs[2]}
             style={outlinedInput}
             disabled
@@ -237,7 +236,7 @@ export const ReadOnlyUserInfo = () => {
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
           <OutlinedInput
             id="outlined-adornment-amount"
-            label="Fat"
+            label="Fat (g)"
             value={calsAndMacs[3]}
             style={outlinedInput}
             disabled
@@ -251,7 +250,7 @@ export const ReadOnlyUserInfo = () => {
             value={calsAndMacs[4]}
             style={outlinedInput}
             disabled
-            startAdornment={<InputLabel htmlFor="outlined-adornment-amount">Meals Per Day</InputLabel>}
+            startAdornment={<InputLabel htmlFor="outlined-adornment-amount">Meals per Day</InputLabel>}
           />
         </FormControl>
         </>}

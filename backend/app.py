@@ -6,7 +6,7 @@ from authentication import authentication_bp
 from dashboard import dashboard_bp
 from meal_cards import mealcards_bp
 from nextMeal import nextMeal_bp
-from profile import profile_bp
+from user_profile import profile_bp
 from user_info import user_info_bp
 
 from flask_jwt_extended import create_access_token

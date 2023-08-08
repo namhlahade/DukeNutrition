@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginForm from './components/login.component';
 import SignUpForm from './components/signup.component';
-import ProfileChange from './components/profileComponent2';
+import {Profile} from './components/profile.component';
 import {Dashboard} from './pages/Dashboard';
 import MealDisplay from './components/mealDisplay.component';
 import {ReadOnlyUserInfo} from "./pages/ReadOnlyInfoSurvey";
@@ -59,7 +59,7 @@ function App() {
               <Route path="/duke-net-nutrition/dashboard" element={<Dashboard />} />
               <Route path="/duke-net-nutrition/create-meal" element={<MealDisplay />} />
               <Route path="/duke-net-nutrition/user-preferences" element={<ReadOnlyUserInfo />} />
-              <Route path="/duke-net-nutrition/profile" element={<ProfileChange />} />
+              <Route path="/duke-net-nutrition/profile" element={<Profile />} />
             </Route>
         </Route>
         {/* catch all */}
