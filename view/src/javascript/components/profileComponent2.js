@@ -3,9 +3,16 @@ import '../../css/userSurvey.css';
 import {Alert} from './Alert.component';
 import { AuthenticationController } from '../controller/AuthenticationController';
 import { useAuth } from '../context/AuthProvider';
+import { Button } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import Avatar, { avatarClasses } from '@mui/material/Avatar';
+import UploadIcon from '@mui/icons-material/Upload';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ProfileIcon from '@mui/icons-material/AccountCircle';
 
 const ProfileChange = () => {
   const [responses, setResponses] = useState({});
+  const [currentProfile, setCurrentProfile] = useState({});
   const [flag, setFlag] = useState(0);
   const [alert, setAlert] = useState(null);
   const authenticationController = new AuthenticationController();
@@ -95,6 +102,7 @@ const ProfileChange = () => {
             <input
               className="question-input"
               type="text"
+              defaultValue={currentProfile["username"]}
               value={responses["newUsername"] || ''}
               onChange={(event) => handleChange(event, "newUsername")}
               onBlur={(event) => handleBlur(event, "newUsername")}
@@ -107,6 +115,7 @@ const ProfileChange = () => {
             <input
               className="question-input"
               type="text"
+              defaultValue={currentProfile["password"]}
               value={responses["newPassword"] || ''}
               onChange={(event) => handleChange(event, "newPassword")}
               onBlur={(event) => handleBlur(event, "newPassword")}
@@ -119,6 +128,7 @@ const ProfileChange = () => {
             <input
               className="question-input"
               type="text"
+              defaultValue={currentProfile["calories"]}
               value={responses["newCalories"] || ''}
               onChange={(event) => handleChange(event, "newCalories")}
               onBlur={(event) => handleBlur(event, "newCalories")}
@@ -131,6 +141,7 @@ const ProfileChange = () => {
             <input
               className="question-input"
               type="text"
+              defaultValue={currentProfile["protein"]}
               value={responses["newProtein"] || ''}
               onChange={(event) => handleChange(event, "newProtein")}
               onBlur={(event) => handleBlur(event, "newProtein")}
@@ -143,6 +154,7 @@ const ProfileChange = () => {
             <input
               className="question-input"
               type="text"
+              defaultValue={currentProfile["carbs"]}
               value={responses["newCarbs"] || ''}
               onChange={(event) => handleChange(event, "newCarbs")}
               onBlur={(event) => handleBlur(event, "newCarbs")}
@@ -155,6 +167,7 @@ const ProfileChange = () => {
             <input
               className="question-input"
               type="text"
+              defaultValue={currentProfile["fat"]}
               value={responses["newFat"] || ''}
               onChange={(event) => handleChange(event, "newFat")}
               onBlur={(event) => handleBlur(event, "newFat")}
@@ -167,6 +180,7 @@ const ProfileChange = () => {
             <input
               className="question-input"
               type="text"
+              defaultValue={currentProfile["num_meals"]}
               value={responses["newNum_meals"] || ''}
               onChange={(event) => handleChange(event, "newNum_meals")}
               onBlur={(event) => handleBlur(event, "newNum_meals")}
@@ -174,7 +188,16 @@ const ProfileChange = () => {
           </label>
         </div>
         {/* Add more questions as needed */}
-        <button type="submit" className="submit-button">Submit</button>
+        <div className={'button-column'}>
+          <Button className='edit-button' type="submit" color="primary" variant="contained" >
+            <EditIcon/>Edit Profile
+          </Button>
+          <br/>
+          <Button className='delete-button' type='button' color='error' variant="contained">
+            <DeleteIcon/>Delete Account
+          </Button>
+          <br/>
+        </div>
       </form>
     </div>
   );

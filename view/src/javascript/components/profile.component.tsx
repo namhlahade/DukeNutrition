@@ -113,6 +113,7 @@ export default function InputAdornments() {
         <Button style={deleteButton} type='button' color='error' variant="contained">
           <DeleteIcon/>Delete Account
         </Button>
+        <br/>
         <Button style={editButton} type="submit" color="primary" variant="contained">
           <EditIcon/>Edit Profile
         </Button>

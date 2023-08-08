@@ -81,3 +81,44 @@ def getUserInfo():
 
     print(userPref)
     return jsonify({'message': f'Preferences retrieved for user: {userid} successfully.', 'userPref': userPref[0]}), 201
+
+
+@user_info_bp.route('/updateUserInfo', methods=['POST'])
+def updateUserInfo():
+    data = request.get_json()
+    userid = data.get("userid")
+    calories = data.get("calories")
+    protein = data.get("protein")
+    carbs = data.get("carbs")
+    fat = data.get("fat")
+    mealsPerDay = data.get("num_meals")
+
+    if not (calories and protein and carbs and fat and mealsPerDay):
+        print("All questions need to be answered")
+        return jsonify({'error': 'All questions need to be answered'})
+
+    db = get_db()
+    cursor = db.cursor()
+    query = cursor.execute(
+        "select * from User_Pref where user_id = ?", (userid,))
+    userPref = query.fetchall()
+    query = cursor.execute(
+        "select * from User_Table where user_id = ?", (userid,))
+    users = query.fetchall()
+
+    if len(userPref) == 0 and len(users) == 0:
+        print("User Account has not been created")
+        return jsonify({'error': 'User has not created an account.'}), 400
+
+    if len(userPref) == 0:
+        print("User preferences have not been created")
+        return jsonify({'error': 'User preferences have not been created.'}), 400
+
+    cursor.execute("UPDATE User_Pref SET calorie_tgt = ?, protein_tgt = ?, carb_tgt = ?, fat_tgt = ?, meal_per_day = ? WHERE user_id = ?",
+                   (calories, protein, carbs, fat, mealsPerDay, userid))
+    query = cursor.execute(
+        "SELECT calorie_tgt, protein_tgt, carb_tgt, fat_tgt, meal_per_day FROM User_Pref WHERE user_id = ?", (userid,))
+    userPref = query.fetchall()
+    db.commit()
+    cursor.close()
+    return jsonify({'message': f'Preferences updated for user: {userid} successfully.', 'userPref': userPref[0]}), 201
